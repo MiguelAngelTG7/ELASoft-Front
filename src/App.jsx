@@ -7,6 +7,8 @@ import Asistencia from "./pages/Asistencia";
 import Notas from "./pages/Notas";
 import PrivateRoute from "./components/PrivateRoute";
 import Alumno from './pages/Alumno';
+import ReporteNotas from "./pages/ReporteNotas";
+
 
 function App() {
   return (
@@ -57,6 +59,15 @@ function App() {
           element={
             <PrivateRoute rolRequerido="alumno">
               <Alumno />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/profesor/notas/:claseId/reporte"
+          element={
+            <PrivateRoute rolRequerido="profesor">
+              <ReporteNotas />
             </PrivateRoute>
           }
         />

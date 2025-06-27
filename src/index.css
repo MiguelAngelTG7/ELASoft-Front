@@ -39,3 +39,16 @@ body {
 .table th, .table td {
   vertical-align: middle;
 }
+
+@media print {
+  button,
+  .btn,
+  nav,
+  .no-print {
+    display: none !important;
+  }
+
+  table {
+    font-size: 12px;
+  }
+}

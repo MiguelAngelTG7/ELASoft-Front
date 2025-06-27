@@ -175,6 +175,14 @@ const Notas = () => {
       {guardado && (
         <div className="alert alert-success mt-3">Notas guardadas correctamente.</div>
       )}
+
+      <button
+        onClick={() => navigate(`/profesor/notas/${claseId}/reporte`)}
+        className="btn btn-outline-primary"
+      >
+        Ver Reporte Imprimible
+      </button>
+
     </div>
   );
 };
