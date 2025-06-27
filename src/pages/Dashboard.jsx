@@ -8,26 +8,24 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get("usuario/")  // este endpoint debe existir en el backend
-      .then(res => setUsuario(res.data))
+    api.get("usuario/")
+      .then(res => {
+        setUsuario(res.data);
+
+        // Redirige según el rol
+        const rol = res.data.rol;
+        if (rol === "director") navigate("/director");
+        else if (rol === "profesor") navigate("/profesor");
+        else if (rol === "alumno") navigate("/alumno");
+        else navigate("/");
+      })
       .catch(() => {
         eliminarToken();
         navigate("/");
       });
   }, []);
 
-  if (!usuario) return <p>Cargando...</p>;
-
-  return (
-    <div>
-      <h2>Bienvenido, {usuario.usuario}</h2>
-      <p>Rol: {usuario.rol}</p>
-      <button onClick={() => {
-        eliminarToken();
-        navigate("/");
-      }}>Cerrar sesión</button>
-    </div>
-  );
+  return <p>Cargando...</p>;
 }
 
 export default Dashboard;
