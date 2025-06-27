@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
-
 const Alumno = () => {
   const [data, setData] = useState(null);
   const [cargando, setCargando] = useState(true);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
+    localStorage.clear();
     navigate('/');
   };
 
@@ -28,45 +26,58 @@ const Alumno = () => {
     fetchDashboard();
   }, []);
 
-  if (cargando) return <p>Cargando tu información...</p>;
-  if (!data) return <p>Error al obtener datos.</p>;
+  if (cargando) return <div className="text-center mt-5">Cargando tu información...</div>;
+  if (!data) return <div className="alert alert-danger mt-5 text-center">Error al obtener datos.</div>;
 
   return (
-    <div className="container">
-      <h2>Bienvenido, {data.alumno_nombre}</h2>
+    <div className="container mt-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2>Bienvenido, {data.alumno_nombre}</h2>
+        <button className="btn btn-outline-danger" onClick={handleLogout}>Salir</button>
+      </div>
+
       {data.cursos.length === 0 ? (
-        <p>Aún no estás inscrito en cursos.</p>
+        <div className="alert alert-warning">Aún no estás inscrito en cursos.</div>
       ) : (
-        <table border="1" cellPadding="8" style={{ width: '100%', marginTop: '1rem' }}>
-          <thead>
-            <tr>
-              <th>Curso</th>
-              <th>Nota 1</th>
-              <th>Nota 2</th>
-              <th>Nota 3</th>
-              <th>Nota 4</th>
-              <th>Promedio</th>
-              <th>Asistencia (%)</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.cursos.map((n, i) => (
-              <tr key={i}>
-                <td>{n.clase?.curso_nombre || n.alumno_nombre}</td>
-                <td>{n.nota1}</td>
-                <td>{n.nota2}</td>
-                <td>{n.nota3}</td>
-                <td>{n.nota4}</td>
-                <td>{n.promedio}</td>
-                <td>{n.asistencia_pct}%</td>
-                <td>{n.estado}</td>
+        <div className="table-responsive">
+          <table className="table table-bordered table-hover align-middle">
+            <thead className="table-primary">
+              <tr>
+                <th>Curso</th>
+                <th>Horarios</th>
+                <th>Nivel</th>
+                <th>Nota 1</th>
+                <th>Nota 2</th>
+                <th>Nota 3</th>
+                <th>Nota 4</th>
+                <th>Promedio</th>
+                <th>Asistencia (%)</th>
+                <th>Estado</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data.cursos.map((n, i) => (
+                <tr key={i}>
+                  <td>{n.curso_nombre || '-'}</td>
+                  <td>{n.horarios?.join(', ') || 'Sin horario'}</td>
+                  <td>{n.nivel_nombre || '-'}</td>
+                  <td>{n.nota1}</td>
+                  <td>{n.nota2}</td>
+                  <td>{n.nota3}</td>
+                  <td>{n.nota4}</td>
+                  <td>{n.promedio}</td>
+                  <td>{n.asistencia_pct}%</td>
+                  <td>
+                    <span className={`badge ${n.estado === 'Aprobado' ? 'bg-success' : 'bg-danger'}`}>
+                      {n.estado}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
-    <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
     </div>
   );
 };

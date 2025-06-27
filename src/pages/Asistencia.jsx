@@ -1,100 +1,94 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from '../services/api';
-import { useNavigate } from 'react-router-dom';
+// src/pages/Asistencia.jsx
 
+import React, { useEffect, useState } from 'react';
+import axios from '../services/api';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const Asistencia = () => {
   const { claseId } = useParams();
-  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]); // fecha actual
-  const [asistencias, setAsistencias] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [mensaje, setMensaje] = useState('');
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
-    navigate('/');
-  };
-
-  const volver = () => {
-    navigate('/profesor');
-  };
-
-  // Cargar la asistencia desde la API
-  const fetchAsistencias = async () => {
-    try {
-      const response = await axios.get(`/clases/${claseId}/asistencia/`, {
-        params: { fecha }
-      });
-      setAsistencias(response.data);
-    } catch (error) {
-      console.error('Error al cargar asistencia:', error);
-    } finally {
-      setCargando(false);
-    }
-  };
+  const [asistencias, setAsistencias] = useState([]);
+  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
+  const [guardado, setGuardado] = useState(false);
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    fetchAsistencias();
-  }, [fecha]);
+    const cargarAsistencia = async () => {
+      try {
+        const resp = await axios.get(`/clases/${claseId}/asistencia/?fecha=${fecha}`);
+        setAsistencias(resp.data);
+      } catch (err) {
+        console.error("Error al obtener asistencia", err);
+      } finally {
+        setCargando(false);
+      }
+    };
+    cargarAsistencia();
+  }, [claseId, fecha]);
 
-  const togglePresente = (index) => {
-    const nuevasAsistencias = [...asistencias];
-    nuevasAsistencias[index].presente = !nuevasAsistencias[index].presente;
-    setAsistencias(nuevasAsistencias);
+  const toggleAsistencia = (alumno_id) => {
+    setAsistencias((prev) =>
+      prev.map((a) =>
+        a.alumno_id === alumno_id ? { ...a, presente: !a.presente } : a
+      )
+    );
   };
 
-  const guardarAsistencia = async () => {
+  const guardar = async () => {
     try {
       await axios.post(`/clases/${claseId}/asistencia/guardar/`, {
         fecha,
-        asistencias
+        asistencias,
       });
-      setMensaje('✅ Asistencia guardada correctamente.');
-    } catch (error) {
-      console.error('Error al guardar asistencia:', error);
-      setMensaje('❌ Error al guardar asistencia.');
+      setGuardado(true);
+      setTimeout(() => setGuardado(false), 2000);
+    } catch (err) {
+      console.error("Error al guardar", err);
     }
   };
 
-  if (cargando) return <p>Cargando asistencia...</p>;
+  const volver = () => navigate("/profesor");
 
   return (
-    <div className="container">
-      <h2>Asistencia</h2>
+    <div className="container py-4">
+      <h2 className="mb-3">Registro de Asistencia</h2>
 
-      <label>
-        Fecha:{' '}
-        <input
-          type="date"
-          value={fecha}
-          onChange={(e) => setFecha(e.target.value)}
-        />
-      </label>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <label htmlFor="fecha" className="form-label">Fecha:</label>
+          <input
+            type="date"
+            className="form-control"
+            id="fecha"
+            value={fecha}
+            onChange={(e) => setFecha(e.target.value)}
+          />
+        </div>
+        <div>
+          <button onClick={guardar} className="btn btn-success me-2">Guardar</button>
+          <button onClick={volver} className="btn btn-secondary">Volver</button>
+        </div>
+      </div>
 
-      {mensaje && <p>{mensaje}</p>}
-
-      {asistencias.length === 0 ? (
-        <p>No hay alumnos registrados para esta clase.</p>
+      {cargando ? (
+        <p>Cargando...</p>
       ) : (
-        <table border="1" cellPadding="10" style={{ marginTop: '1rem' }}>
+        <table className="table table-bordered table-hover">
           <thead>
             <tr>
               <th>Alumno</th>
-              <th>Presente</th>
+              <th>Asistencia</th>
             </tr>
           </thead>
           <tbody>
-            {asistencias.map((asistencia, index) => (
-              <tr key={asistencia.alumno_id}>
-                <td>{asistencia.alumno_nombre}</td>
+            {asistencias.map((a) => (
+              <tr key={a.alumno_id}>
+                <td>{a.alumno_nombre}</td>
                 <td>
                   <input
                     type="checkbox"
-                    checked={asistencia.presente}
-                    onChange={() => togglePresente(index)}
+                    checked={a.presente}
+                    onChange={() => toggleAsistencia(a.alumno_id)}
                   />
                 </td>
               </tr>
@@ -103,13 +97,9 @@ const Asistencia = () => {
         </table>
       )}
 
-      <button onClick={guardarAsistencia} style={{ marginTop: '1rem' }}>
-        Guardar asistencia
-      </button>
-      <div>
-        <button className="btn btn-secondary me-2" onClick={volver}>← Atrás</button>
-        <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
-      </div>
+      {guardado && (
+        <div className="alert alert-success mt-3">Asistencia guardada correctamente.</div>
+      )}
     </div>
   );
 };

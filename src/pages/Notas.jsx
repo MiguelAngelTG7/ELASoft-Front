@@ -1,78 +1,106 @@
+// src/pages/Notas.jsx
+
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-
+import { useParams, useNavigate } from 'react-router-dom';
 
 const Notas = () => {
   const { claseId } = useParams();
-  const [notas, setNotas] = useState([]);
-  const [mensaje, setMensaje] = useState('');
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
-    navigate('/');
-  };
-
-  const volver = () => {
-    navigate('/profesor');
-  };
+  const [notas, setNotas] = useState([]);
+  const [guardado, setGuardado] = useState(false);
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    const fetchNotas = async () => {
+    const cargarNotas = async () => {
       try {
-        const response = await axios.get(`/clases/${claseId}/notas/`);
-        setNotas(response.data);
-      } catch (error) {
-        console.error("Error al obtener notas:", error);
+        const resp = await axios.get(`/clases/${claseId}/notas/`);
+        setNotas(resp.data);
+      } catch (err) {
+        console.error("Error al cargar notas:", err);
+      } finally {
+        setCargando(false);
       }
     };
-
-    fetchNotas();
+    cargarNotas();
   }, [claseId]);
 
-  const handleChange = (index, campo, valor) => {
-    const nuevasNotas = [...notas];
-    nuevasNotas[index][campo] = parseFloat(valor);
-    setNotas(nuevasNotas);
+  const cambiarNota = (alumno_id, campo, valor) => {
+    let nuevaNota = parseFloat(valor);
+    if (isNaN(nuevaNota)) nuevaNota = 0;
+    if (nuevaNota < 0) nuevaNota = 0;
+    if (nuevaNota > 20) nuevaNota = 20;
+
+    setNotas((prev) =>
+      prev.map((n) =>
+        n.alumno === alumno_id
+          ? {
+              ...n,
+              [campo]: nuevaNota,
+              promedio: calcularPromedio({
+                ...n,
+                [campo]: nuevaNota
+              }),
+              estado: calcularEstado({
+                ...n,
+                [campo]: nuevaNota
+              }),
+            }
+          : n
+      )
+    );
   };
 
-  const guardarNotas = async () => {
+  const calcularPromedio = (nota) => {
+    const sum = [nota.nota1, nota.nota2, nota.nota3, nota.nota4].reduce(
+      (acc, val) => acc + (parseFloat(val) || 0),
+      0
+    );
+    return +(sum / 4).toFixed(2);
+  };
+
+  const calcularEstado = (nota) => {
+    const promedio = calcularPromedio(nota);
+    return promedio >= 13 ? 'Aprobado' : 'Desaprobado';
+  };
+
+  const guardar = async () => {
     try {
-      const notasTransformadas = notas.map(n => ({
-        alumno_id: n.alumno,  // Backend espera "alumno_id"
-        nota1: n.nota1,
-        nota2: n.nota2,
-        nota3: n.nota3,
-        nota4: n.nota4
-      }));
+      const payload = {
+        notas: notas.map(n => ({
+          alumno_id: n.alumno, // CAMBIO PRINCIPAL
+          nota1: parseFloat(n.nota1) || 0,
+          nota2: parseFloat(n.nota2) || 0,
+          nota3: parseFloat(n.nota3) || 0,
+          nota4: parseFloat(n.nota4) || 0,
+        }))
+      };
 
-      await axios.post(`/clases/${claseId}/notas/`, {
-        notas: notasTransformadas
-      });
-
-      // 🔁 Recargar las notas desde el backend para ver promedios y estado actualizados
-      const response = await axios.get(`/clases/${claseId}/notas/`);
-      setNotas(response.data);
-
-      setMensaje('✅ Notas guardadas correctamente');
-    } catch (error) {
-      console.error('❌ Error al guardar notas:', error);
-      setMensaje('❌ Error al guardar notas');
+      await axios.post(`/clases/${claseId}/notas/`, payload);
+      setGuardado(true);
+      setTimeout(() => setGuardado(false), 2000);
+    } catch (err) {
+      console.error("Error al guardar notas:", err);
     }
   };
 
-  return (
-    <div className="container">
-      <h2>Notas</h2>
-      {mensaje && <p>{mensaje}</p>}
+  const volver = () => navigate("/profesor");
 
-      {notas.length === 0 ? (
-        <p>No hay alumnos registrados en esta clase.</p>
+  return (
+    <div className="container py-4">
+      <h2 className="mb-3">Registro de Notas</h2>
+
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <button onClick={guardar} className="btn btn-success me-2">Guardar</button>
+          <button onClick={volver} className="btn btn-secondary">Volver</button>
+        </div>
+      </div>
+
+      {cargando ? (
+        <p>Cargando notas...</p>
       ) : (
-        <table border="1" cellPadding="8" style={{ width: '100%', marginBottom: '1rem' }}>
+        <table className="table table-bordered table-striped table-hover">
           <thead>
             <tr>
               <th>Alumno</th>
@@ -81,40 +109,72 @@ const Notas = () => {
               <th>Nota 3</th>
               <th>Nota 4</th>
               <th>Promedio</th>
-              <th>Asistencia %</th>
+              <th>Asistencia (%)</th>
               <th>Estado</th>
             </tr>
           </thead>
           <tbody>
-            {notas.map((n, idx) => (
-              <tr key={`row-${n.alumno || idx}`}>
+            {notas.map((n) => (
+              <tr key={n.id}>
                 <td>{n.alumno_nombre}</td>
-                {[1, 2, 3, 4].map(i => (
-                  <td key={`nota${i}-${n.alumno || idx}`}>
-                    <input
-                      type="number"
-                      min="0"
-                      max="20"
-                      step="0.1"
-                      value={n[`nota${i}`]}
-                      onChange={e => handleChange(idx, `nota${i}`, e.target.value)}
-                    />
-                  </td>
-                ))}
-                <td>{n.promedio}</td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    min="0"
+                    max="20"
+                    value={n.nota1}
+                    onChange={(e) => cambiarNota(n.alumno, 'nota1', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    min="0"
+                    max="20"
+                    value={n.nota2}
+                    onChange={(e) => cambiarNota(n.alumno, 'nota2', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    min="0"
+                    max="20"
+                    value={n.nota3}
+                    onChange={(e) => cambiarNota(n.alumno, 'nota3', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    min="0"
+                    max="20"
+                    value={n.nota4}
+                    onChange={(e) => cambiarNota(n.alumno, 'nota4', e.target.value)}
+                  />
+                </td>
+                <td>{n.promedio?.toFixed(2)}</td>
                 <td>{n.asistencia_pct}%</td>
-                <td>{n.estado}</td>
+                <td>
+                  <span
+                    className={`badge bg-${n.estado === 'Aprobado' ? 'success' : 'danger'}`}
+                  >
+                    {n.estado}
+                  </span>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
 
-      <button onClick={guardarNotas}>Guardar notas</button>
-      <div>
-        <button className="btn btn-secondary me-2" onClick={volver}>← Atrás</button>
-        <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
-      </div>
+      {guardado && (
+        <div className="alert alert-success mt-3">Notas guardadas correctamente.</div>
+      )}
     </div>
   );
 };

@@ -1,62 +1,77 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
 
 const ClasesProfesor = () => {
   const [clases, setClases] = useState([]);
   const [cargando, setCargando] = useState(true);
   const navigate = useNavigate();
-  
+
+  useEffect(() => {
+    const obtenerClases = async () => {
+      try {
+        const resp = await axios.get('/clases/profesor/');
+        setClases(resp.data);
+      } catch (error) {
+        console.error('Error al obtener clases:', error);
+      } finally {
+        setCargando(false);
+      }
+    };
+    obtenerClases();
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
     navigate('/');
   };
 
-  useEffect(() => {
-    const fetchClases = async () => {
-      try {
-        const response = await axios.get('clases/profesor/');
-        setClases(response.data);
-      } catch (error) {
-        console.error('Error al cargar clases:', error);
-      } finally {
-        setCargando(false);
-      }
-    };
-
-    fetchClases();
-  }, []);
-
-  if (cargando) return <p>Cargando clases...</p>;
+  if (cargando) return <div className="text-center mt-5">Cargando clases...</div>;
 
   return (
-    <div className="container">
-      <h2>Mis Clases</h2>
+    <div className="container py-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2>Mis Clases</h2>
+        <button onClick={handleLogout} className="btn btn-outline-danger">Salir</button>
+      </div>
+
       {clases.length === 0 ? (
-        <p>No tienes clases asignadas aún.</p>
+        <p>No tienes clases asignadas.</p>
       ) : (
-        <ul>
-          {clases.map(clase => (
-            <li key={clase.id} style={{ marginBottom: '1rem' }}>
-              <strong>{clase.curso_nombre}</strong> — {clase.periodo_nombre}
-              <br />
-              <em>Horarios: {clase.horarios.join(', ')}</em>
-              <div>
-                <Link to={`/profesor/asistencia/${clase.id}`} style={{ marginRight: '10px' }}>
-                  📆 Tomar asistencia
-                </Link>
-                <Link to={`/profesor/notas/${clase.id}`}>
-                  📝 Registrar notas
-                </Link>
+        <div className="row g-3">
+          {clases.map((clase, i) => (
+            <div className="col-md-6" key={i}>
+              <div className="card shadow-sm h-100">
+                <div className="card-body">
+                  <h5 className="card-title">{clase.curso_nombre}</h5>
+                  <p className="card-text">
+                    <strong>Periodo:</strong> {clase.periodo_nombre}<br />
+                    <strong>Horarios:</strong><br />
+                    {clase.horarios.map((h, j) => (
+                      <div key={j}>{h}</div>
+                    ))}
+                  </p>
+                  <div className="d-flex gap-2 mt-3">
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
+                    >
+                      Asistencia
+                    </button>
+                    <button
+                      className="btn btn-success btn-sm"
+                      onClick={() => navigate(`/profesor/notas/${clase.id}`)}
+                    >
+                      Notas
+                    </button>
+                  </div>
+                </div>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
-    <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
     </div>
   );
 };
