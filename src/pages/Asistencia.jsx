@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '../services/api';
+import { useNavigate } from 'react-router-dom';
+
 
 const Asistencia = () => {
   const { claseId } = useParams();
@@ -8,6 +10,17 @@ const Asistencia = () => {
   const [asistencias, setAsistencias] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [mensaje, setMensaje] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    navigate('/');
+  };
+
+  const volver = () => {
+    navigate('/profesor');
+  };
 
   // Cargar la asistencia desde la API
   const fetchAsistencias = async () => {
@@ -93,6 +106,10 @@ const Asistencia = () => {
       <button onClick={guardarAsistencia} style={{ marginTop: '1rem' }}>
         Guardar asistencia
       </button>
+      <div>
+        <button className="btn btn-secondary me-2" onClick={volver}>← Atrás</button>
+        <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Director from "./pages/Director";
-import Profesor from "./pages/Profesor";
 import ClasesProfesor from "./pages/ClasesProfesor";
 import Asistencia from "./pages/Asistencia";
 import Notas from "./pages/Notas";
@@ -30,21 +29,11 @@ function App() {
           path="/profesor"
           element={
             <PrivateRoute rolRequerido="profesor">
-              <Profesor />
-            </PrivateRoute>
-          }
-        />
-
-        {/* Nuevas rutas del profesor */}
-        <Route
-          path="/profesor/clases"
-          element={
-            <PrivateRoute rolRequerido="profesor">
               <ClasesProfesor />
             </PrivateRoute>
           }
         />
-        
+
         <Route
           path="/profesor/asistencia/:claseId"
           element={

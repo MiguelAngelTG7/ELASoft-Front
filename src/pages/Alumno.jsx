@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
+import { useNavigate } from 'react-router-dom';
+
 
 const Alumno = () => {
   const [data, setData] = useState(null);
   const [cargando, setCargando] = useState(true);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    navigate('/');
+  };
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -57,6 +66,7 @@ const Alumno = () => {
           </tbody>
         </table>
       )}
+    <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
     </div>
   );
 };

@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const Notas = () => {
   const { claseId } = useParams();
   const [notas, setNotas] = useState([]);
   const [mensaje, setMensaje] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    navigate('/');
+  };
+
+  const volver = () => {
+    navigate('/profesor');
+  };
 
   useEffect(() => {
     const fetchNotas = async () => {
@@ -98,6 +111,10 @@ const Notas = () => {
       )}
 
       <button onClick={guardarNotas}>Guardar notas</button>
+      <div>
+        <button className="btn btn-secondary me-2" onClick={volver}>← Atrás</button>
+        <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
+      </div>
     </div>
   );
 };
