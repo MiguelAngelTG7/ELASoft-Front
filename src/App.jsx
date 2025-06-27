@@ -9,7 +9,6 @@ import Notas from "./pages/Notas";
 import PrivateRoute from "./components/PrivateRoute";
 import Alumno from './pages/Alumno';
 
-
 function App() {
   return (
     <BrowserRouter>
