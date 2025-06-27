@@ -29,7 +29,7 @@ const Notas = () => {
   const guardarNotas = async () => {
     try {
       const notasTransformadas = notas.map(n => ({
-        alumno_id: n.alumno,  // ✅ Backend espera "alumno_id"
+        alumno_id: n.alumno,  // Backend espera "alumno_id"
         nota1: n.nota1,
         nota2: n.nota2,
         nota3: n.nota3,
@@ -39,6 +39,10 @@ const Notas = () => {
       await axios.post(`/clases/${claseId}/notas/`, {
         notas: notasTransformadas
       });
+
+      // 🔁 Recargar las notas desde el backend para ver promedios y estado actualizados
+      const response = await axios.get(`/clases/${claseId}/notas/`);
+      setNotas(response.data);
 
       setMensaje('✅ Notas guardadas correctamente');
     } catch (error) {

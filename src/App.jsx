@@ -3,11 +3,12 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Director from "./pages/Director";
 import Profesor from "./pages/Profesor";
-import Alumno from "./pages/Alumno";
 import ClasesProfesor from "./pages/ClasesProfesor";
 import Asistencia from "./pages/Asistencia";
 import Notas from "./pages/Notas";
 import PrivateRoute from "./components/PrivateRoute";
+import Alumno from './pages/Alumno';
+
 
 function App() {
   return (
@@ -35,15 +36,6 @@ function App() {
           }
         />
 
-        <Route
-          path="/alumno"
-          element={
-            <PrivateRoute rolRequerido="alumno">
-              <Alumno />
-            </PrivateRoute>
-          }
-        />
-
         {/* Nuevas rutas del profesor */}
         <Route
           path="/profesor/clases"
@@ -53,6 +45,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        
         <Route
           path="/profesor/asistencia/:claseId"
           element={
@@ -61,6 +54,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        
         <Route
           path="/profesor/notas/:claseId"
           element={
@@ -69,6 +63,16 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/alumno"
+          element={
+            <PrivateRoute rolRequerido="alumno">
+              <Alumno />
+            </PrivateRoute>
+          }
+        />
+
       </Routes>
     </BrowserRouter>
   );
