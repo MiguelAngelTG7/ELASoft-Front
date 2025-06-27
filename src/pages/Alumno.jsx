@@ -36,6 +36,16 @@ const Alumno = () => {
         <button className="btn btn-outline-danger" onClick={handleLogout}>Salir</button>
       </div>
 
+      {/* ✅ Botón para ver reporte imprimible */}
+      <div className="mb-4 text-end">
+        <button
+          className="btn btn-outline-secondary"
+          onClick={() => navigate('/alumno/reporte')}
+        >
+          Ver Reporte Imprimible
+        </button>
+      </div>
+
       {data.cursos.length === 0 ? (
         <div className="alert alert-warning">Aún no estás inscrito en cursos.</div>
       ) : (

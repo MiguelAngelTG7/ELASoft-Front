@@ -1,5 +1,3 @@
-// src/pages/ReporteNotas.jsx
-
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useParams, useNavigate } from 'react-router-dom';

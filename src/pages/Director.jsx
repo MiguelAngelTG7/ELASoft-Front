@@ -88,9 +88,22 @@ const Director = () => {
                 </td>
               </tr>
             ))}
+
+
+            
           </tbody>
         </table>
       </div>
+      <div>. </div>
+      <div className="mb-3 text-end">
+        <button
+          className="btn btn-outline-secondary"
+          onClick={() => navigate("/director/reporte")}
+        >
+          Ver Reporte Imprimible
+        </button>
+      </div>
+
     </div>
   );
 };
