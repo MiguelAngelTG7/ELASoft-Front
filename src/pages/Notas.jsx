@@ -33,7 +33,7 @@ const Notas = () => {
 
     setNotas((prev) =>
       prev.map((n) =>
-        n.alumno === alumno_id
+        n.alumno_id === alumno_id
           ? {
               ...n,
               [campo]: nuevaNota,
@@ -68,7 +68,7 @@ const Notas = () => {
     try {
       const payload = {
         notas: notas.map(n => ({
-          alumno_id: n.alumno, // CAMBIO PRINCIPAL
+          alumno_id: n.alumno_id,
           nota1: parseFloat(n.nota1) || 0,
           nota2: parseFloat(n.nota2) || 0,
           nota3: parseFloat(n.nota3) || 0,
@@ -81,6 +81,7 @@ const Notas = () => {
       setTimeout(() => setGuardado(false), 2000);
     } catch (err) {
       console.error("Error al guardar notas:", err);
+      alert("Hubo un error al guardar las notas. Intente nuevamente.");
     }
   };
 
@@ -115,7 +116,7 @@ const Notas = () => {
           </thead>
           <tbody>
             {notas.map((n) => (
-              <tr key={n.id}>
+              <tr key={n.alumno_id}>
                 <td>{n.alumno_nombre}</td>
                 <td>
                   <input
@@ -124,7 +125,7 @@ const Notas = () => {
                     min="0"
                     max="20"
                     value={n.nota1}
-                    onChange={(e) => cambiarNota(n.alumno, 'nota1', e.target.value)}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'nota1', e.target.value)}
                   />
                 </td>
                 <td>
@@ -134,7 +135,7 @@ const Notas = () => {
                     min="0"
                     max="20"
                     value={n.nota2}
-                    onChange={(e) => cambiarNota(n.alumno, 'nota2', e.target.value)}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'nota2', e.target.value)}
                   />
                 </td>
                 <td>
@@ -144,7 +145,7 @@ const Notas = () => {
                     min="0"
                     max="20"
                     value={n.nota3}
-                    onChange={(e) => cambiarNota(n.alumno, 'nota3', e.target.value)}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'nota3', e.target.value)}
                   />
                 </td>
                 <td>
@@ -154,7 +155,7 @@ const Notas = () => {
                     min="0"
                     max="20"
                     value={n.nota4}
-                    onChange={(e) => cambiarNota(n.alumno, 'nota4', e.target.value)}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'nota4', e.target.value)}
                   />
                 </td>
                 <td>{n.promedio?.toFixed(2)}</td>
@@ -182,7 +183,6 @@ const Notas = () => {
       >
         Ver Reporte Imprimible
       </button>
-
     </div>
   );
 };

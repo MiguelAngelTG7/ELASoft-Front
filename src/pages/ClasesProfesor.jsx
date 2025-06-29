@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const ClasesProfesor = () => {
   const [clases, setClases] = useState([]);
@@ -31,8 +32,25 @@ const ClasesProfesor = () => {
 
   return (
     <div className="container py-4">
+    <div className="d-flex justify-content-between align-items-center mb-3">
+      <button
+        className="btn btn-primary"
+        onClick={() => navigate('/profesor/crear-alumno')}
+      >
+        Crear nuevo Alumno
+      </button>
+      <button
+        className="btn btn-primary"
+        onClick={() => navigate('/profesor/alumnos')}
+      >
+        Lista de Alumnos
+      </button>
+    </div>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Mis Clases</h2>
+
+
+        <h1>Mis Clases</h1>
+
         <button onClick={handleLogout} className="btn btn-outline-danger">Salir</button>
       </div>
 
@@ -47,10 +65,15 @@ const ClasesProfesor = () => {
                   <h5 className="card-title">{clase.curso_nombre}</h5>
                   <p className="card-text">
                     <strong>Periodo:</strong> {clase.periodo_nombre}<br />
-                    <strong>Horarios:</strong><br />
+                    <strong>Horario:</strong><br />
                     {clase.horarios.map((h, j) => (
                       <div key={j}>{h}</div>
                     ))}
+                    <td>
+                      <Link to={`/profesor/asignar-alumnos/${clase.id}`} className="btn btn-sm btn-outline-primary">
+                        Asignar alumnos
+                      </Link>
+                    </td>
                   </p>
                   <div className="d-flex gap-2 mt-3">
                     <button
@@ -72,6 +95,7 @@ const ClasesProfesor = () => {
           ))}
         </div>
       )}
+    
     </div>
   );
 };
