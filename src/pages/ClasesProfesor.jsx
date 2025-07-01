@@ -11,7 +11,7 @@ const ClasesProfesor = () => {
   useEffect(() => {
     const obtenerClases = async () => {
       try {
-        const resp = await axios.get('/clases/profesor/');
+        const resp = await axios.get('/profesor/clases/');
         setClases(resp.data);
       } catch (error) {
         console.error('Error al obtener clases:', error);
@@ -34,13 +34,13 @@ const ClasesProfesor = () => {
     <div className="container py-4">
     <div className="d-flex justify-content-between align-items-center mb-3">
       <button
-        className="btn btn-primary"
+        className="btn btn-outline-danger"
         onClick={() => navigate('/profesor/crear-alumno')}
       >
         Crear nuevo Alumno
       </button>
       <button
-        className="btn btn-primary"
+        className="btn btn-outline-primary"
         onClick={() => navigate('/profesor/alumnos')}
       >
         Lista de Alumnos
@@ -70,14 +70,14 @@ const ClasesProfesor = () => {
                       <div key={j}>{h}</div>
                     ))}
                     <td>
-                      <Link to={`/profesor/asignar-alumnos/${clase.id}`} className="btn btn-sm btn-outline-primary">
-                        Asignar alumnos
+                      <Link to={`/profesor/asignar-alumnos/${clase.id}`} className="btn btn-sm btn-outline-danger">
+                        Administrar Alumnos
                       </Link>
                     </td>
                   </p>
                   <div className="d-flex gap-2 mt-3">
                     <button
-                      className="btn btn-primary btn-sm"
+                      className="btn btn-success btn-sm"
                       onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
                     >
                       Asistencia

@@ -35,10 +35,6 @@ const ListaAlumnos = () => {
     }
   };
 
-  const imprimir = () => {
-    window.print();
-  };
-
   return (
     <div className="container py-4">
       <h2 className="mb-3">Lista de Alumnos</h2>
@@ -57,8 +53,7 @@ const ListaAlumnos = () => {
             </option>
           ))}
         </select>
-        <button onClick={cargarAlumnos} className="btn btn-primary me-2">Buscar</button>
-        <button onClick={imprimir} className="btn btn-outline-secondary">Imprimir</button>
+        <button onClick={cargarAlumnos} className="btn btn-primary me-2" disabled={!claseId}>Buscar</button>
       </div>
 
       {claseInfo.clase_nombre && (
@@ -99,18 +94,25 @@ const ListaAlumnos = () => {
                 <td>{a.email}</td>
                 <td>{a.telefono}</td>
                 <td>{a.direccion}</td>
-                <td>{a.interesado ? '✅' : ''}</td>
-                <td>{a.nuevo_creyente ? '✅' : ''}</td>
-                <td>{a.bautizado ? '✅' : ''}</td>
-                <td>{a.tiene_ministerio ? '✅' : ''}</td>
+                <td>{a.interesado ? '✓' : ''}</td>
+                <td>{a.nuevo_creyente ? '✓' : ''}</td>
+                <td>{a.bautizado ? '✓' : ''}</td>
+                <td>{a.tiene_ministerio ? '✓' : ''}</td>
               </tr>
             ))
           )}
         </tbody>
       </table>
       <small>Sim = Simparizante, NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small>
+
+      <div className="text-center mt-4 no-print">
+        <button className="btn btn-outline-secondary me-3" onClick={() => window.print()}>
+          Imprimir / Guardar PDF
+        </button>
+        <button onClick={() => window.history.back()} className="btn btn-secondary">Volver</button> 
+      </div>
+
     </div>
-    
   );
 };
 

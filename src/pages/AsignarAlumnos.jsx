@@ -52,7 +52,7 @@ const AsignarAlumnos = () => {
     <div className="container py-4">
  
 
-      <h3>Asignar alumnos a la clase</h3>
+      <h3>Asignar | Remover alumnos a la clase</h3>
 
       <div className="input-group mb-3">
         <input
@@ -62,7 +62,7 @@ const AsignarAlumnos = () => {
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
         />
-        <button className="btn btn-primary" onClick={buscarAlumnos}>
+        <button className="btn btn-primary" onClick={buscarAlumnos} disabled={!busqueda}>
           Buscar
         </button>
         <button className="btn btn-secondary ms-2" onClick={() => navigate(-1)}>

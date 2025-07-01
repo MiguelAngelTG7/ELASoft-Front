@@ -51,7 +51,7 @@ const ListaAlumnosDirector = () => {
           ))}
         </select>
 
-        <button onClick={cargarAlumnos} className="btn btn-primary me-2">Buscar</button>
+        <button onClick={cargarAlumnos} className="btn btn-primary me-2" disabled={!claseId}>Buscar</button>
       </div>
 
       {claseSeleccionada && (
@@ -83,16 +83,15 @@ const ListaAlumnosDirector = () => {
               <td>{a.edad || '-'}</td>
               <td>{a.telefono}</td>
               <td>{a.direccion}</td>
-              <td>{a.interesado ? '✅' : ''}</td>
-              <td>{a.nuevo_creyente ? '✅' : ''}</td>
-              <td>{a.bautizado ? '✅' : ''}</td>
-              <td>{a.ministerio ? '✅' : ''}</td>
+              <td>{a.interesado ? '✓' : ''}</td>
+              <td>{a.nuevo_creyente ? '✓' : ''}</td>
+              <td>{a.bautizado ? '✓' : ''}</td>
+              <td>{a.tiene_ministerio ? '✓' : ''}</td>
             </tr>
           ))}
         </tbody>
       </table>
       <small>Sim = Simparizante, NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small>
-
 
       <div className="text-center mt-4">
         <button className="btn btn-outline-secondary me-3" onClick={() => window.print()}>
