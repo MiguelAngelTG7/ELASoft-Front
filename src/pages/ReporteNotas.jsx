@@ -94,6 +94,7 @@ const ReporteNotas = () => {
           </button>
         </div>
       </div>
+
     </div>
   );
 };

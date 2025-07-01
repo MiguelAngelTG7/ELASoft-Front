@@ -16,6 +16,7 @@ import RegistrarAlumno from "./pages/RegistrarAlumno";
 import CrearAlumno from "./pages/CrearAlumno";
 import ListaAlumnos from "./pages/ListaAlumnos";
 import ListaAlumnosDirector from './pages/ListaAlumnosDirector';
+import ReporteAsistencia from "./pages/ReporteAsistencia";
 
 import PrivateRoute from "./components/PrivateRoute";
 import Layout from "./pages/Layout"; 
@@ -124,6 +125,14 @@ function App() {
             element={
               <PrivateRoute rolRequerido="profesor">
                 <ListaAlumnos />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profesor/asistencia/:claseId/reporte"
+            element={
+              <PrivateRoute rolRequerido="profesor">
+                <ReporteAsistencia />
               </PrivateRoute>
             }
           />

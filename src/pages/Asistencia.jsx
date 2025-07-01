@@ -1,5 +1,6 @@
 // src/pages/Asistencia.jsx
 
+
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -7,16 +8,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 const Asistencia = () => {
   const { claseId } = useParams();
   const navigate = useNavigate();
-  const [asistencias, setAsistencias] = useState([]);
-  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0]);
+  const [alumnos, setAlumnos] = useState([]); // [{ alumno_id, alumno_nombre, asistencias: [{fecha, presente}] }]
+  const [fechas, setFechas] = useState([]); // ["2025-07-01", ...]
   const [guardado, setGuardado] = useState(false);
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     const cargarAsistencia = async () => {
       try {
-        const resp = await axios.get(`/clases/${claseId}/asistencia/?fecha=${fecha}`);
-        setAsistencias(resp.data);
+        const resp = await axios.get(`/clases/${claseId}/asistencia/`);
+        setAlumnos(resp.data.alumnos);
+        setFechas(resp.data.fechas);
       } catch (err) {
         console.error("Error al obtener asistencia", err);
       } finally {
@@ -24,12 +26,19 @@ const Asistencia = () => {
       }
     };
     cargarAsistencia();
-  }, [claseId, fecha]);
+  }, [claseId]);
 
-  const toggleAsistencia = (alumno_id) => {
-    setAsistencias((prev) =>
+  const toggleAsistencia = (alumno_id, fecha_idx) => {
+    setAlumnos((prev) =>
       prev.map((a) =>
-        a.alumno_id === alumno_id ? { ...a, presente: !a.presente } : a
+        a.alumno_id === alumno_id
+          ? {
+              ...a,
+              asistencias: a.asistencias.map((asist, idx) =>
+                idx === fecha_idx ? { ...asist, presente: !asist.presente } : asist
+              ),
+            }
+          : a
       )
     );
   };
@@ -37,8 +46,7 @@ const Asistencia = () => {
   const guardar = async () => {
     try {
       await axios.post(`/clases/${claseId}/asistencia/guardar/`, {
-        fecha,
-        asistencias,
+        asistencias: alumnos,
       });
       setGuardado(true);
       setTimeout(() => setGuardado(false), 2000);
@@ -54,20 +62,12 @@ const Asistencia = () => {
       <h2 className="mb-3">Registro de Asistencia</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <label htmlFor="fecha" className="form-label">Fecha:</label>
-          <input
-            type="date"
-            className="form-control"
-            id="fecha"
-            value={fecha}
-            onChange={(e) => setFecha(e.target.value)}
-          />
-        </div>
-        <div>
-          <button onClick={guardar} className="btn btn-success me-2">Guardar</button>
+   
+        <div className="d-flex gap-2">
+          <button onClick={guardar} className="btn btn-success">Guardar</button>
           <button onClick={volver} className="btn btn-secondary">Volver</button>
         </div>
+        
       </div>
 
       {cargando ? (
@@ -77,22 +77,37 @@ const Asistencia = () => {
           <thead>
             <tr>
               <th>Alumno</th>
-              <th>Asistencia</th>
+              {fechas.map((f, idx) => (
+                <th key={idx}>{f}</th>
+              ))}
+              <th>Presentes</th>
+              <th>Ausentes</th>
+              <th>% Asistencia</th>
             </tr>
           </thead>
           <tbody>
-            {asistencias.map((a) => (
-              <tr key={a.alumno_id}>
-                <td>{a.alumno_nombre}</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={a.presente}
-                    onChange={() => toggleAsistencia(a.alumno_id)}
-                  />
-                </td>
-              </tr>
-            ))}
+            {alumnos.map((a) => {
+              const presentes = a.asistencias.filter(asist => asist.presente).length;
+              const ausentes = a.asistencias.length - presentes;
+              const porcentaje = a.asistencias.length > 0 ? ((presentes / a.asistencias.length) * 100).toFixed(2) : '0.00';
+              return (
+                <tr key={a.alumno_id}>
+                  <td>{a.alumno_nombre}</td>
+                  {a.asistencias.map((asist, idx) => (
+                    <td key={idx} style={{ textAlign: 'center' }}>
+                      <input
+                        type="checkbox"
+                        checked={asist.presente}
+                        onChange={() => toggleAsistencia(a.alumno_id, idx)}
+                      />
+                    </td>
+                  ))}
+                  <td style={{ textAlign: 'center' }}>{presentes}</td>
+                  <td style={{ textAlign: 'center' }}>{ausentes}</td>
+                  <td style={{ textAlign: 'center' }}>{porcentaje}%</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}
@@ -100,6 +115,14 @@ const Asistencia = () => {
       {guardado && (
         <div className="alert alert-success mt-3">Asistencia guardada correctamente.</div>
       )}
+
+      <button
+        onClick={() => navigate(`/profesor/asistencia/${claseId}/reporte`)}
+        className="btn btn-outline-primary"
+      >
+        Ver Reporte Imprimible
+      </button>
+
     </div>
   );
 };
