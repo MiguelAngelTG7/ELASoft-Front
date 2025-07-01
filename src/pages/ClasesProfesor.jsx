@@ -62,7 +62,7 @@ const ClasesProfesor = () => {
             <div className="col-md-6" key={i}>
               <div className="card shadow-sm h-100">
                 <div className="card-body">
-                  <h5 className="card-title">{clase.curso_nombre}</h5>
+                  <h5 className="card-title">{clase.nombre}</h5>
                   <p className="card-text">
                     <strong>Periodo:</strong> {clase.periodo_nombre}<br />
                     <strong>Horario:</strong><br />

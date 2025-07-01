@@ -33,36 +33,44 @@ const Director = () => {
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold text-primary">Dashboard Académico - Director</h2>
-        <button onClick={handleLogout} className="btn btn-danger">Salir</button>
+        <h2 className="fw-bold text-primary">Reporte Académico General</h2>
+        <div className="mb-3 text-end">
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => navigate("/director/alumnos")}
+        >
+          Ver Lista Alumnos
+        </button>
+        </div>
+
       </div>
 
       <div className="table-responsive">
         <table className="table table-hover align-middle table-bordered">
           <thead className="table-light">
             <tr>
-              <th>Curso</th>
               <th>Nivel</th>
+              <th>Curso</th>
               <th>Horarios</th>
               <th>Periodo</th>
-              <th>Total alumnos</th>
-              <th>Con notas</th>
-              <th>Aprobados</th>
-              <th>% Aprobados</th>
-              <th>Asistencia Promedio</th>
+              <th>Alum</th>
+              <th>Notas</th>
+              <th>Aprob</th>
+              <th>% Aprob</th>
+              <th>Asist Prom</th>
             </tr>
           </thead>
           <tbody>
             {data.map((curso, idx) => (
               <tr key={idx}>
+                <td className="fw-bold">{curso.nivel}</td>
                 <td className="fw-semibold">{curso.curso}</td>
-                <td>{curso.nivel}</td>
-                <td>
+                <td className="fw-semibold">
                   {curso.horarios.map((h, i) => (
                     <div key={i}>{h}</div>
                   ))}
                 </td>
-                <td>{curso.periodo}</td>
+                <td className="fw-semibold">{curso.periodo}</td>
                 <td>{curso.total_alumnos}</td>
                 <td>{curso.alumnos_con_notas}</td>
                 <td>
@@ -94,15 +102,18 @@ const Director = () => {
           </tbody>
         </table>
       </div>
-      <div>. </div>
-      <div className="mb-3 text-end">
+
+      <div className="text-center mt-4">
         <button
-          className="btn btn-outline-secondary"
+          className="btn btn-outline-secondary me-3"
           onClick={() => navigate("/director/reporte")}
         >
-          Ver Reporte Imprimible
+          Imprimir Reporte
         </button>
+        <button onClick={handleLogout} className="btn btn-secondary">Salir</button>
       </div>
+
+      
 
     </div>
   );

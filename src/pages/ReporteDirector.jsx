@@ -31,8 +31,8 @@ const ReporteDirector = () => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Curso</th>
             <th>Nivel</th>
+            <th>Curso</th>
             <th>Horarios</th>
             <th>Periodo</th>
             <th>Alumnos</th>
@@ -46,8 +46,8 @@ const ReporteDirector = () => {
           {data.map((c, i) => (
             <tr key={i}>
               <td>{i + 1}</td>
-              <td>{c.curso}</td>
               <td>{c.nivel}</td>
+              <td>{c.curso}</td>
               <td>{c.horarios.join(', ')}</td>
               <td>{c.periodo}</td>
               <td>{c.total_alumnos}</td>
@@ -68,6 +68,7 @@ const ReporteDirector = () => {
           Volver
         </button>
       </div>
+      
     </div>
   );
 };

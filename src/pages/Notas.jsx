@@ -109,8 +109,8 @@ const Notas = () => {
               <th>Nota 2</th>
               <th>Nota 3</th>
               <th>Nota 4</th>
-              <th>Promedio</th>
-              <th>Asistencia (%)</th>
+              <th>Prom</th>
+              <th>Asist (%)</th>
               <th>Estado</th>
             </tr>
           </thead>

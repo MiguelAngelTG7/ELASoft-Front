@@ -33,20 +33,9 @@ const Alumno = () => {
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Bienvenido, {data.alumno_nombre}</h2>
-        <button className="btn btn-outline-danger" onClick={handleLogout}>Salir</button>
       </div>
 
-      {/* ✅ Botón para ver reporte imprimible */}
-      <div className="mb-4 text-end">
-        <button
-          className="btn btn-outline-secondary"
-          onClick={() => navigate('/alumno/reporte')}
-        >
-          Ver Reporte Imprimible
-        </button>
-      </div>
-
-      {data.cursos.length === 0 ? (
+      {data.clases.length === 0 ? (
         <div className="alert alert-warning">Aún no estás inscrito en cursos.</div>
       ) : (
         <div className="table-responsive">
@@ -66,7 +55,7 @@ const Alumno = () => {
               </tr>
             </thead>
             <tbody>
-              {data.cursos.map((n, i) => (
+              {data.clases.map((n, i) => (
                 <tr key={i}>
                   <td>{n.curso_nombre || '-'}</td>
                   <td>{n.horarios?.join(', ') || 'Sin horario'}</td>
@@ -86,6 +75,12 @@ const Alumno = () => {
               ))}
             </tbody>
           </table>
+          <div className="text-center mt-4">
+            <button className="btn btn-outline-secondary me-3" onClick={() => navigate("/alumno/reporte")}>
+              Imprimir Reporte
+            </button>
+            <button className="btn btn-secondary" onClick={handleLogout}>Salir</button>
+          </div>
         </div>
       )}
     </div>

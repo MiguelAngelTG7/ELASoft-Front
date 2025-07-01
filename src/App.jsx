@@ -15,7 +15,7 @@ import BuscarAlumnos from "./pages/BuscarAlumnos";
 import RegistrarAlumno from "./pages/RegistrarAlumno";
 import CrearAlumno from "./pages/CrearAlumno";
 import ListaAlumnos from "./pages/ListaAlumnos";
-
+import ListaAlumnosDirector from './pages/ListaAlumnosDirector';
 
 import PrivateRoute from "./components/PrivateRoute";
 import Layout from "./pages/Layout"; 
@@ -24,12 +24,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Todas las rutas con Layout (incluido Login ahora) */}
         <Route element={<Layout />}>
-          <Route path="/" element={<Login />} /> {/* 🔄 Login aquí */}
-
+          <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
 
+          {/* Director */}
           <Route
             path="/director"
             element={
@@ -38,52 +37,6 @@ function App() {
               </PrivateRoute>
             }
           />
-
-          <Route
-            path="/profesor"
-            element={
-              <PrivateRoute rolRequerido="profesor">
-                <ClasesProfesor />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/profesor/asistencia/:claseId"
-            element={
-              <PrivateRoute rolRequerido="profesor">
-                <Asistencia />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/profesor/notas/:claseId"
-            element={
-              <PrivateRoute rolRequerido="profesor">
-                <Notas />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/profesor/notas/:claseId/reporte"
-            element={
-              <PrivateRoute rolRequerido="profesor">
-                <ReporteNotas />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/alumno"
-            element={
-              <PrivateRoute rolRequerido="alumno">
-                <Alumno />
-              </PrivateRoute>
-            }
-          />
-
           <Route
             path="/director/reporte"
             element={
@@ -92,16 +45,48 @@ function App() {
               </PrivateRoute>
             }
           />
-
           <Route
-            path="/alumno/reporte"
+            path="/director/alumnos"
             element={
-              <PrivateRoute rolRequerido="alumno">
-                <ReporteAlumno />
+              <PrivateRoute rolRequerido="director">
+                <ListaAlumnosDirector />
               </PrivateRoute>
             }
           />
 
+          {/* Profesor */}
+          <Route
+            path="/profesor"
+            element={
+              <PrivateRoute rolRequerido="profesor">
+                <ClasesProfesor />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profesor/asistencia/:claseId"
+            element={
+              <PrivateRoute rolRequerido="profesor">
+                <Asistencia />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profesor/notas/:claseId"
+            element={
+              <PrivateRoute rolRequerido="profesor">
+                <Notas />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profesor/notas/:claseId/reporte"
+            element={
+              <PrivateRoute rolRequerido="profesor">
+                <ReporteNotas />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/profesor/asignar-alumnos/:claseId"
             element={
@@ -110,7 +95,6 @@ function App() {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/profesor/clases/:claseId/buscar"
             element={
@@ -119,7 +103,6 @@ function App() {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/profesor/clase/:claseId/registrar-alumno"
             element={
@@ -128,7 +111,6 @@ function App() {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/profesor/crear-alumno"
             element={
@@ -137,9 +119,32 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/profesor/alumnos"
+            element={
+              <PrivateRoute rolRequerido="profesor">
+                <ListaAlumnos />
+              </PrivateRoute>
+            }
+          />
 
-          <Route path="/profesor/alumnos" element={<ListaAlumnos />} />
-
+          {/* Alumno */}
+          <Route
+            path="/alumno"
+            element={
+              <PrivateRoute rolRequerido="alumno">
+                <Alumno />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/alumno/reporte"
+            element={
+              <PrivateRoute rolRequerido="alumno">
+                <ReporteAlumno />
+              </PrivateRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

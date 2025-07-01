@@ -43,7 +43,7 @@ const ReporteAlumno = () => {
           </tr>
         </thead>
         <tbody>
-          {data.cursos.map((c, i) => (
+          {data.clases.map((c, i) => (
             <tr key={i}>
               <td>{c.curso_nombre}</td>
               <td>{c.horarios.join(', ')}</td>
@@ -65,10 +65,10 @@ const ReporteAlumno = () => {
       </table>
 
       <div className="text-center mt-4 d-print-none">
-        <button className="btn btn-outline-primary me-2" onClick={() => window.print()}>
+        <button className="btn btn-outline-secondary me-3" onClick={() => window.print()}>
           Imprimir / Guardar PDF
         </button>
-        <button className="btn btn-outline-secondary" onClick={() => window.history.back()}>
+        <button className="btn btn-secondary" onClick={() => window.history.back()}>
           Volver
         </button>
       </div>
