@@ -108,7 +108,7 @@ const Director = () => {
           className="btn btn-outline-secondary me-3"
           onClick={() => navigate("/director/reporte")}
         >
-          Imprimir Reporte
+            Imprimir / Guardar PDF
         </button>
         <button onClick={handleLogout} className="btn btn-secondary">Salir</button>
       </div>

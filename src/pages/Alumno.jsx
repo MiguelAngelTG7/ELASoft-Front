@@ -78,7 +78,7 @@ const Alumno = () => {
           </table>
           <div className="text-center mt-4">
             <button className="btn btn-outline-secondary me-3" onClick={() => navigate("/alumno/reporte")}>
-              Imprimir Reporte
+                Imprimir / Guardar PDF
             </button>
             <button className="btn btn-secondary" onClick={handleLogout}>Salir</button>
           </div>
