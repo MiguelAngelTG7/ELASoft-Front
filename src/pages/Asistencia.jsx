@@ -1,5 +1,4 @@
-// src/pages/Asistencia.jsx
-
+// Dashboard del Profesor para registrar asistencia de alumnos
 
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';

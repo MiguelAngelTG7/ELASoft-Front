@@ -1,4 +1,5 @@
-// src/pages/BuscarAlumnos.jsx
+// Buscar Alumnos para asignar/remover a/de una clase específica
+
 import React, { useState } from 'react';
 import axios from '../services/api';
 import { useParams } from 'react-router-dom';

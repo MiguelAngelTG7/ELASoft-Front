@@ -1,3 +1,5 @@
+// Dahsboard General del Director
+
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -5,6 +7,11 @@ import { useNavigate } from 'react-router-dom';
 const Director = () => {
   const [data, setData] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [mostrarCursosPeriodo, setMostrarCursosPeriodo] = useState(false);
+  const [periodos, setPeriodos] = useState([]);
+  const [periodoId, setPeriodoId] = useState("");
+  const [cursosPorPeriodo, setCursosPorPeriodo] = useState([]);
+  const [cargandoPeriodo, setCargandoPeriodo] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -27,94 +34,144 @@ const Director = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (mostrarCursosPeriodo) {
+      axios.get('/director/periodos/')
+        .then(res => setPeriodos(res.data.periodos))
+        .catch(() => setPeriodos([]));
+    }
+  }, [mostrarCursosPeriodo]);
+
+  useEffect(() => {
+    if (periodoId) {
+      setCargandoPeriodo(true);
+      axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
+        .then(res => setCursosPorPeriodo(res.data.dashboard))
+        .catch(() => setCursosPorPeriodo([]))
+        .finally(() => setCargandoPeriodo(false));
+    } else {
+      setCursosPorPeriodo([]);
+    }
+  }, [periodoId]);
+
   if (cargando) return <div className="text-center mt-5">Cargando información...</div>;
   if (!data.length) return <div className="text-center mt-5">No hay datos disponibles.</div>;
+
+  const volver = () => navigate('/director');
+
 
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold text-primary">Reporte Académico General</h2>
+        <h2 className="fw-bold text-primary">Dashboard del Director</h2>
         <div className="mb-3 text-end">
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => navigate("/director/alumnos")}
-        >
-          Ver Lista Alumnos
-        </button>
+          <button
+            className="btn btn-outline-primary"
+            onClick={() => navigate("/director/alumnos")}
+          >
+            Ver Lista de Alumnos
+          </button>
+          <br />
+          <button
+            className="btn btn-outline-primary mt-2"
+            onClick={() => navigate("/director/profesores")}
+          >
+            Ver Lista de Profesores
+          </button>
+          <br />
+          <button
+            className="btn btn-outline-primary mt-2"
+            onClick={() => navigate("/director/cursos")}
+          >
+            Ver Lista de Cursos
+          </button>
+          <br />
+          <button className="btn btn-danger mt-2" onClick={handleLogout}>Salir</button>
+
         </div>
-
       </div>
 
-      <div className="table-responsive">
-        <table className="table table-hover align-middle table-bordered">
-          <thead className="table-light">
-            <tr>
-              <th>Nivel</th>
-              <th>Curso</th>
-              <th>Horarios</th>
-              <th>Periodo</th>
-              <th>Alum</th>
-              <th>Notas</th>
-              <th>Aprob</th>
-              <th>% Aprob</th>
-              <th>Asist Prom</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((curso, idx) => (
-              <tr key={idx}>
-                <td className="fw-bold">{curso.nivel}</td>
-                <td className="fw-semibold">{curso.curso}</td>
-                <td className="fw-semibold">
-                  {curso.horarios.map((h, i) => (
-                    <div key={i}>{h}</div>
-                  ))}
-                </td>
-                <td className="fw-semibold">{curso.periodo}</td>
-                <td>{curso.total_alumnos}</td>
-                <td>{curso.alumnos_con_notas}</td>
-                <td>
-                  <span className={`badge ${curso.porcentaje_aprobados >= 70 ? 'bg-success' : 'bg-warning text-dark'}`}>
-                    {curso.aprobados}
-                  </span>
-                </td>
-                <td>
-                  <div className="progress" style={{ height: '20px' }}>
-                    <div
-                      className={`progress-bar ${curso.porcentaje_aprobados >= 70 ? 'bg-success' : 'bg-warning text-dark'}`}
-                      role="progressbar"
-                      style={{ width: `${curso.porcentaje_aprobados}%` }}
-                    >
-                      {curso.porcentaje_aprobados}%
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <span className="badge bg-info text-dark">
-                    {curso.asistencia_promedio}%
-                  </span>
-                </td>
-              </tr>
+
+      {/* Cursos por periodo académico */}
+      {mostrarCursosPeriodo && (
+        <div className="mt-5">
+          <h4>Cursos por Periodo Académico</h4>
+          <select
+            className="form-select mb-3"
+            style={{ width: 400 }}
+            value={periodoId}
+            onChange={(e) => setPeriodoId(e.target.value)}
+          >
+            <option value="">Seleccione un periodo académico</option>
+            {periodos.map(p => (
+              <option key={p.id} value={p.id}>{p.nombre}</option>
             ))}
+          </select>
 
+          {cargandoPeriodo && <div>Cargando cursos...</div>}
 
-            
-          </tbody>
-        </table>
-      </div>
+          {!cargandoPeriodo && cursosPorPeriodo.length > 0 && (
+            <table className="table table-bordered">
+              <thead className="table-light">
+                <tr>
+                  <th>Nivel</th>
+                  <th>Curso</th>
+                  <th>Horario</th>
+                  <th>Maestro Titular</th>
+                  <th>Maestro Asistente</th>
+                  <th>Alumnos</th>
+                  <th>% Asistencia</th>
+                  <th>% Aprobados</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cursosPorPeriodo.map((clase, i) => (
+                  <tr key={i}>
+                    <td>{clase.nivel}</td>
+                    <td className="fw-semibold" >{clase.curso}</td>
+                    <td>
+                      {clase.horarios?.map((h, i) => <div key={i}>{h}</div>)}
+                    </td>
+                    <td>
+                      {clase.maestro_titular?.nombre_completo || "—"}
+                    </td>
+                    <td>
+                      {clase.maestro_asistente?.nombre_completo || "—"}
+                    </td>
+                    <td>{clase.total_alumnos}</td>
+                    <td>
+                      <div className="progress" style={{ height: '20px' }}>
+                        <div
+                          className="progress-bar bg-info text-dark"
+                          role="progressbar"
+                          style={{ width: `${clase.asistencia_promedio}%` }}
+                        >
+                          {clase.asistencia_promedio}%
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="progress" style={{ height: '20px' }}>
+                        <div
+                          className={`progress-bar ${clase.porcentaje_aprobados >= 70 ? 'bg-success' : 'bg-warning text-dark'}`}
+                          role="progressbar"
+                          style={{ width: `${clase.porcentaje_aprobados}%` }}
+                        >
+                          {clase.porcentaje_aprobados}%
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
 
-      <div className="text-center mt-4">
-        <button
-          className="btn btn-outline-secondary me-3"
-          onClick={() => navigate("/director/reporte")}
-        >
-            Imprimir / Guardar PDF
-        </button>
-        <button onClick={handleLogout} className="btn btn-secondary">Salir</button>
-      </div>
-
-      
-
+          {!cargandoPeriodo && periodoId && cursosPorPeriodo.length === 0 && (
+            <div>No hay datos para este periodo.</div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

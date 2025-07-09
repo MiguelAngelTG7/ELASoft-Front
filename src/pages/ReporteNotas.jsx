@@ -1,3 +1,5 @@
+// Reporte para el Profesor de Notas del Alumno para imprimir o guardar como PDF
+
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useParams, useNavigate } from 'react-router-dom';

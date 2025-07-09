@@ -1,3 +1,5 @@
+// Formulario para crear un nuevo alumno en la plataforma
+
 import React, { useState, useEffect } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';

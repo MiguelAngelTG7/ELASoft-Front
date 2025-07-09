@@ -1,3 +1,6 @@
+// Permite importar y renderizar componentes comunes como Header y Footer
+// y el Outlet para las rutas anidadas
+
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';

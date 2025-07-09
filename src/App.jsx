@@ -20,6 +20,7 @@ import ReporteAsistencia from "./pages/ReporteAsistencia";
 import PrivateRoute from "./components/PrivateRoute";
 import Layout from "./pages/Layout"; 
 import ListaProfesoresDirector from "./pages/ListaProfesoresDirector";
+import ListaCursosDirector from './pages/ListaCursosDirector';
 
 function App() {
   return (
@@ -162,6 +163,17 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          <Route 
+            path="/director/cursos" 
+            element={
+              <PrivateRoute rolRequerido="director">
+                <ListaCursosDirector />
+              </PrivateRoute>
+                
+            } 
+          />
+
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,4 +1,5 @@
-//Dashboard del Alumno
+//Dashboard General del Alumno
+
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -80,7 +81,7 @@ const Alumno = () => {
             <button className="btn btn-outline-secondary me-3" onClick={() => navigate("/alumno/reporte")}>
                 Imprimir / Guardar PDF
             </button>
-            <button className="btn btn-secondary" onClick={handleLogout}>Salir</button>
+            <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
           </div>
         </div>
       )}

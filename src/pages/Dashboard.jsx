@@ -1,3 +1,5 @@
+// Dahsboard Principal que redirige según el rol del usuario
+
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { eliminarToken } from "../utils/auth";

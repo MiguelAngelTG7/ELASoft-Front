@@ -1,3 +1,5 @@
+// Reportes del Director para imprimir o guardar como PDF --- NO EN USO
+
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';

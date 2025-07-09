@@ -1,4 +1,4 @@
-// src/pages/Notas.jsx
+// Dashboard del Profesor para registrar notas de alumnos
 
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';

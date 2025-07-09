@@ -1,3 +1,5 @@
+// Dashboard del Profesor para crear un nuevo alumno y asignarlo a una clase
+
 import React, { useState } from 'react';
 import axios from '../services/api';
 import { useParams, useNavigate } from 'react-router-dom';

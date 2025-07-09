@@ -1,3 +1,5 @@
+// Reporte para el Profesor de Asistencia del Alumno para imprimir o guardar como PDF
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api.jsx';

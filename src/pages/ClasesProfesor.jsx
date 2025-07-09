@@ -1,3 +1,5 @@
+// Dashboard General del Profesor para ver y administrar sus clases
+
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -49,9 +51,9 @@ const ClasesProfesor = () => {
       <div className="d-flex justify-content-between align-items-center mb-4">
 
 
-        <h1>Mis Clases</h1>
+        <h1>Dashboard del Maestro</h1>
 
-        <button onClick={handleLogout} className="btn btn-outline-danger">Salir</button>
+        <button onClick={handleLogout} className="btn btn-danger">Salir</button>
       </div>
 
       {clases.length === 0 ? (

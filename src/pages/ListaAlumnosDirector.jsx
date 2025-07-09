@@ -1,3 +1,5 @@
+// Lista de Alumnos para el Director
+
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -29,8 +31,8 @@ const ListaAlumnosDirector = () => {
 
   return (
     <div className="container py-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Lista de Alumnos</h2>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="fw-bold text-primary">Lista de Alumnos</h2>
  
       </div>
 
