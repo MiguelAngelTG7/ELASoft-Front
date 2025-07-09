@@ -16,4 +16,16 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Servicio para obtener profesores por periodo académico
+export const getProfesoresPorPeriodo = async (periodoId) => {
+  const response = await api.get(`/director/profesores/?periodo_id=${periodoId}`);
+  return response.data.profesores;
+};
+
+// Servicio para obtener periodos académicos
+export const getPeriodosAcademicos = async () => {
+  const response = await api.get("/director/periodos/");
+  return response.data.periodos; // Ajusta según la respuesta real de tu backend
+};
+
 export default api;
