@@ -19,6 +19,7 @@ import ListaAlumnosDirector from './pages/ListaAlumnosDirector';
 import ReporteAsistencia from "./pages/ReporteAsistencia";
 import PrivateRoute from "./components/PrivateRoute";
 import Layout from "./pages/Layout"; 
+import ListaProfesoresDirector from "./pages/ListaProfesoresDirector";
 
 function App() {
   return (
