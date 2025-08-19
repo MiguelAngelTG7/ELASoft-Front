@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
-import logoela from '../assets/logoela.jpg'; // Asegúrate de que la ruta sea correcta
+import logoela from '../assets/logoela.png'; // Asegúrate de que la ruta sea correcta
 
 const Login = () => {
   const [username, setUsername] = useState('');
