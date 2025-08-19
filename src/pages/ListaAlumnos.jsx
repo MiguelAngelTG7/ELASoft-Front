@@ -105,7 +105,7 @@ const ListaAlumnos = () => {
           )}
         </tbody>
       </table>
-      <small>Sim = Simparizante, NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small>
+      <small>Sim = Simpatizante, NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small>
 
       <div className="text-center mt-4 no-print">
         <button className="btn btn-outline-secondary me-3" onClick={() => window.print()}>

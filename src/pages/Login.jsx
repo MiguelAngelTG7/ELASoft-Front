@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import logoela from '../assets/logoela.jpg'; // Asegúrate de que la ruta sea correcta
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -26,6 +27,14 @@ const Login = () => {
   return (
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card p-4 shadow" style={{ width: '100%', maxWidth: '400px' }}>
+        <div className="d-flex justify-content-center mb-3">
+          <img
+            src={logoela}
+            alt="Logo ELA"
+            style={{ width: '100%', maxWidth: '340px', height: 'auto' }}
+            className="mb-2"
+          />
+        </div>
         <h2 className="text-center mb-4">Iniciar Sesión</h2>
         {mensaje && <div className="alert alert-danger">{mensaje}</div>}
         <form onSubmit={handleLogin}>
