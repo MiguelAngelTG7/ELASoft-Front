@@ -31,7 +31,7 @@ const Login = () => {
           <img
             src={logoela}
             alt="Logo ELA"
-            style={{ width: '100%', maxWidth: '340px', height: 'auto' }}
+            style={{ width: '100%', maxWidth: '77px', height: 'auto' }}
             className="mb-2"
           />
         </div>
