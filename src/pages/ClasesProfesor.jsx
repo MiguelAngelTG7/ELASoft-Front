@@ -73,7 +73,7 @@ const ClasesProfesor = () => {
                     ))}
                     <td>
                       <Link to={`/profesor/asignar-alumnos/${clase.id}`} className="btn btn-sm btn-outline-danger">
-                        Administrar Alumnos
+                        Asignar|Remover Alumnos
                       </Link>
                     </td>
                   </p>
