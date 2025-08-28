@@ -61,12 +61,10 @@ const Asistencia = () => {
       <h2 className="mb-3">Registro de Asistencia</h2>
 
       <div className="d-flex justify-content-between align-items-center mb-4">
-   
         <div className="d-flex gap-2">
           <button onClick={guardar} className="btn btn-success">Guardar</button>
           <button onClick={volver} className="btn btn-secondary">Volver</button>
         </div>
-        
       </div>
 
       {cargando ? (
@@ -91,7 +89,17 @@ const Asistencia = () => {
               const porcentaje = a.asistencias.length > 0 ? ((presentes / a.asistencias.length) * 100).toFixed(2) : '0.00';
               return (
                 <tr key={a.alumno_id}>
-                  <td>{a.alumno_nombre}</td>
+                  <td
+                    title={a.alumno_nombre}
+                    style={{
+                      maxWidth: "200px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap"
+                    }}
+                  >
+                    {a.alumno_nombre}
+                  </td>
                   {a.asistencias.map((asist, idx) => (
                     <td key={idx} style={{ textAlign: 'center' }}>
                       <input
@@ -121,7 +129,6 @@ const Asistencia = () => {
       >
         Ver Reporte Imprimible
       </button>
-
     </div>
   );
 };
