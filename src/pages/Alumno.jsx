@@ -15,7 +15,19 @@ const Alumno = () => {
 
   useEffect(() => {
     const fetchDashboard = async () => {
-      // ...tu lógica de fetch aquí...
+      try {
+        const response = await fetch('https://elasoft-back.onrender.com/api/alumno/dashboard/', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access')}`
+          }
+        });
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        setData(null);
+      } finally {
+        setCargando(false);
+      }
     };
     fetchDashboard();
   }, []);
