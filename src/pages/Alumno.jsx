@@ -50,10 +50,9 @@ const Alumno = () => {
               <tr>
                 <th>Curso</th>
                 <th>Horarios</th>
-                <th>Nivel</th>
                 <th>Participación</th>
                 <th>Tareas</th>
-                <th>Examen Final</th>
+                <th>Examen Final</th> 
                 <th>Promedio</th>
                 <th>Asistencia (%)</th>
                 <th>Estado</th>
@@ -64,7 +63,6 @@ const Alumno = () => {
                 <tr key={i}>
                   <td>{n.curso_nombre || '-'}</td>
                   <td>{n.horarios?.join(', ') || 'Sin horario'}</td>
-                  <td>{n.nivel_nombre || '-'}</td>
                   <td>{n.participacion}</td>
                   <td>{n.tareas}</td>
                   <td>{n.examen_final}</td>
