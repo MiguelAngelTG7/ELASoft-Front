@@ -20,7 +20,7 @@ const Alumno = () => {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('access')}`
           }
-        });
+        }); 
         const result = await response.json();
         setData(result);
       } catch (error) {
