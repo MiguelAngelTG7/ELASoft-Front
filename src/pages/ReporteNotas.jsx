@@ -23,7 +23,7 @@ const ReporteNotas = () => {
           setCurso({
             nombre: clase.curso_nombre,
             nivel: clase.nivel_nombre,
-            horarios: clase.horarios.join(', '),
+            horarios: Array.isArray(clase.horarios) ? clase.horarios.join(', ') : '',
           });
         }
       } catch (err) {
@@ -56,10 +56,9 @@ const ReporteNotas = () => {
           <tr>
             <th>#</th>
             <th>Alumno</th>
-            <th>Nota 1</th>
-            <th>Nota 2</th>
-            <th>Nota 3</th>
-            <th>Nota 4</th>
+            <th>Participación</th>
+            <th>Tareas</th>
+            <th>Examen final</th>
             <th>Promedio</th>
             <th>Asistencia (%)</th>
             <th>Estado</th>
@@ -67,14 +66,13 @@ const ReporteNotas = () => {
         </thead>
         <tbody>
           {notas.map((n, i) => (
-            <tr key={n.id}>
+            <tr key={n.id || n.alumno_id || i}>
               <td>{i + 1}</td>
               <td>{n.alumno_nombre}</td>
-              <td>{n.nota1}</td>
-              <td>{n.nota2}</td>
-              <td>{n.nota3}</td>
-              <td>{n.nota4}</td>
-              <td>{n.promedio?.toFixed(2)}</td>
+              <td>{n.participacion}</td>
+              <td>{n.tareas}</td>
+              <td>{n.examen_final}</td>
+              <td>{n.promedio?.toFixed ? n.promedio.toFixed(2) : n.promedio}</td>
               <td>{n.asistencia_pct}%</td>
               <td>
                 <span className={`badge bg-${n.estado === 'Aprobado' ? 'success' : 'danger'}`}>

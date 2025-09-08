@@ -52,16 +52,17 @@ const Notas = () => {
   };
 
   const calcularPromedio = (nota) => {
-    const sum = [nota.nota1, nota.nota2, nota.nota3, nota.nota4].reduce(
+    const sum = [nota.participacion, nota.tareas, nota.examen_final].reduce(
       (acc, val) => acc + (parseFloat(val) || 0),
       0
     );
-    return +(sum / 4).toFixed(2);
+    return +(sum / 3).toFixed(2);
   };
 
   const calcularEstado = (nota) => {
     const promedio = calcularPromedio(nota);
-    return promedio >= 13 ? 'Aprobado' : 'Desaprobado';
+    // Asistencia mínima 70% y promedio mínimo 14
+    return promedio >= 14 && (nota.asistencia_pct || 0) >= 70 ? 'Aprobado' : 'Desaprobado';
   };
 
   const guardar = async () => {
@@ -69,10 +70,9 @@ const Notas = () => {
       const payload = {
         notas: notas.map(n => ({
           alumno_id: n.alumno_id,
-          nota1: parseFloat(n.nota1) || 0,
-          nota2: parseFloat(n.nota2) || 0,
-          nota3: parseFloat(n.nota3) || 0,
-          nota4: parseFloat(n.nota4) || 0,
+          participacion: parseFloat(n.participacion) || 0,
+          tareas: parseFloat(n.tareas) || 0,
+          examen_final: parseFloat(n.examen_final) || 0,
         }))
       };
 
@@ -105,10 +105,9 @@ const Notas = () => {
           <thead>
             <tr>
               <th>Alumno</th>
-              <th>Nota 1</th>
-              <th>Nota 2</th>
-              <th>Nota 3</th>
-              <th>Nota 4</th>
+              <th>Participación</th>
+              <th>Tareas</th>
+              <th>Examen final</th>
               <th>Prom</th>
               <th>Asist (%)</th>
               <th>Estado</th>
@@ -124,8 +123,8 @@ const Notas = () => {
                     className="form-control"
                     min="0"
                     max="20"
-                    value={n.nota1}
-                    onChange={(e) => cambiarNota(n.alumno_id, 'nota1', e.target.value)}
+                    value={n.participacion}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'participacion', e.target.value)}
                   />
                 </td>
                 <td>
@@ -134,8 +133,8 @@ const Notas = () => {
                     className="form-control"
                     min="0"
                     max="20"
-                    value={n.nota2}
-                    onChange={(e) => cambiarNota(n.alumno_id, 'nota2', e.target.value)}
+                    value={n.tareas}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'tareas', e.target.value)}
                   />
                 </td>
                 <td>
@@ -144,18 +143,8 @@ const Notas = () => {
                     className="form-control"
                     min="0"
                     max="20"
-                    value={n.nota3}
-                    onChange={(e) => cambiarNota(n.alumno_id, 'nota3', e.target.value)}
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    className="form-control"
-                    min="0"
-                    max="20"
-                    value={n.nota4}
-                    onChange={(e) => cambiarNota(n.alumno_id, 'nota4', e.target.value)}
+                    value={n.examen_final}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'examen_final', e.target.value)}
                   />
                 </td>
                 <td>{n.promedio?.toFixed(2)}</td>
