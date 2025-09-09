@@ -48,12 +48,6 @@ const ClasesProfesor = () => {
         <h1>Dashboard del Maestro</h1>
         <button onClick={handleLogout} className="btn btn-danger">Salir</button>
       </div>
-      {/* Nombre del profesor */}
-      {profesor && (
-        <div className="mb-3">
-          <h4 className="fw-normal">{profesor.first_name} {profesor.last_name}</h4>
-        </div>
-      )}
       {/* Botones debajo del nombre del profesor */}
       <div className="d-flex gap-2 mb-4">
         <button
@@ -78,6 +72,12 @@ const ClasesProfesor = () => {
               <div className="card shadow-sm h-100">
                 <div className="card-body">
                   <h5 className="card-title">{clase.nombre}</h5>
+                  {/* Nombre del profesor dentro de la tarjeta */}
+                  {profesor && (
+                    <div className="mb-2 text-muted" style={{ fontSize: '1rem' }}>
+                      <strong>Profesor:</strong> {profesor.first_name} {profesor.last_name}
+                    </div>
+                  )}
                   <p className="card-text">
                     <strong>Periodo:</strong> {clase.periodo_nombre}<br />
                     <strong>Horario:</strong><br />
