@@ -25,9 +25,15 @@ const ListaCursosDirector = () => {
       axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
         .then(res => {
           // Ordenar primero por nivel (numérico ascendente) y luego por nombre de curso (alfabético)
+          const normalizaNivel = (nivel) => {
+            if (!nivel) return 0;
+            // Buscar el primer número en el string (soporta 'NIVEL 1', 'Nivel 2', etc.)
+            const match = String(nivel).match(/(\d+)/);
+            return match ? parseInt(match[1], 10) : 0;
+          };
           const cursosOrdenados = [...res.data.dashboard].sort((a, b) => {
-            const nA = parseInt((a.nivel || '').replace(/\D/g, '')) || 0;
-            const nB = parseInt((b.nivel || '').replace(/\D/g, '')) || 0;
+            const nA = normalizaNivel(a.nivel);
+            const nB = normalizaNivel(b.nivel);
             if (nA !== nB) return nA - nB;
             // Si el nivel es igual, ordenar por nombre de curso
             if ((a.curso || '') < (b.curso || '')) return -1;
