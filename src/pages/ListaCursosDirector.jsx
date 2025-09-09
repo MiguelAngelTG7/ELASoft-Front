@@ -23,7 +23,15 @@ const ListaCursosDirector = () => {
     if (periodoId) {
       setCargando(true);
       axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
-        .then(res => setCursos(res.data.dashboard))
+        .then(res => {
+          // Ordenar cursos por nivel (asumiendo que nivel es un string como 'Nivel 1', 'Nivel 2', ...)
+          const cursosOrdenados = [...res.data.dashboard].sort((a, b) => {
+            const nA = parseInt((a.nivel || '').replace(/\D/g, '')) || 0;
+            const nB = parseInt((b.nivel || '').replace(/\D/g, '')) || 0;
+            return nA - nB;
+          });
+          setCursos(cursosOrdenados);
+        })
         .catch(() => setCursos([]))
         .finally(() => setCargando(false));
     } else {
