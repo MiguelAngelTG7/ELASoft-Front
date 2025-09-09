@@ -24,7 +24,7 @@ const ClasesProfesor = () => {
     };
     const obtenerPerfil = async () => {
       try {
-        const resp = await axios.get('/usuarios/');
+        const resp = await axios.get('/usuario/');
         setProfesor(resp.data);
       } catch (error) {
         console.error('Error al obtener perfil:', error);
