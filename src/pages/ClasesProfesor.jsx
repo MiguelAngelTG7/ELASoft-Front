@@ -45,7 +45,13 @@ const ClasesProfesor = () => {
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1>Dashboard del Maestro</h1>
+        <div>
+          <h1>Dashboard del Maestro</h1>
+          {/* Nombre del profesor debajo del título */}
+          {profesor && (
+            <h4 className="fw-normal mt-2">{profesor.first_name} {profesor.last_name}</h4>
+          )}
+        </div>
         <button onClick={handleLogout} className="btn btn-danger">Salir</button>
       </div>
       {/* Botones debajo del nombre del profesor */}
@@ -72,12 +78,7 @@ const ClasesProfesor = () => {
               <div className="card shadow-sm h-100">
                 <div className="card-body">
                   <h5 className="card-title">{clase.nombre}</h5>
-                  {/* Nombre del profesor dentro de la tarjeta */}
-                  {profesor && (
-                    <div className="mb-2 text-muted" style={{ fontSize: '1rem' }}>
-                      <strong>Profesor:</strong> {profesor.first_name} {profesor.last_name}
-                    </div>
-                  )}
+              {/* Nombre del profesor dentro de la tarjeta - eliminado */}
                   <p className="card-text">
                     <strong>Periodo:</strong> {clase.periodo_nombre}<br />
                     <strong>Horario:</strong><br />
