@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 const ClasesProfesor = () => {
   const [clases, setClases] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [profesor, setProfesor] = useState(null); // Nuevo estado para el profesor
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +22,16 @@ const ClasesProfesor = () => {
         setCargando(false);
       }
     };
+    const obtenerPerfil = async () => {
+      try {
+        const resp = await axios.get('/usuarios/me/');
+        setProfesor(resp.data);
+      } catch (error) {
+        console.error('Error al obtener perfil:', error);
+      }
+    };
     obtenerClases();
+    obtenerPerfil();
   }, []);
 
   const handleLogout = () => {
@@ -34,28 +44,31 @@ const ClasesProfesor = () => {
 
   return (
     <div className="container py-4">
-    <div className="d-flex justify-content-between align-items-center mb-3">
-      <button
-        className="btn btn-outline-danger"
-        onClick={() => navigate('/profesor/crear-alumno')}
-      >
-        Crear nuevo Alumno
-      </button>
-      <button
-        className="btn btn-outline-primary"
-        onClick={() => navigate('/profesor/alumnos')}
-      >
-        Lista de Alumnos
-      </button>
-    </div>
       <div className="d-flex justify-content-between align-items-center mb-4">
-
-
         <h1>Dashboard del Maestro</h1>
-
         <button onClick={handleLogout} className="btn btn-danger">Salir</button>
       </div>
-
+      {/* Nombre del profesor */}
+      {profesor && (
+        <div className="mb-3">
+          <h4 className="fw-normal">{profesor.first_name} {profesor.last_name}</h4>
+        </div>
+      )}
+      {/* Botones debajo del nombre del profesor */}
+      <div className="d-flex gap-2 mb-4">
+        <button
+          className="btn btn-outline-danger"
+          onClick={() => navigate('/profesor/crear-alumno')}
+        >
+          Crear nuevo Alumno
+        </button>
+        <button
+          className="btn btn-outline-primary"
+          onClick={() => navigate('/profesor/alumnos')}
+        >
+          Lista de Alumnos
+        </button>
+      </div>
       {clases.length === 0 ? (
         <p>No tienes clases asignadas.</p>
       ) : (
@@ -97,7 +110,6 @@ const ClasesProfesor = () => {
           ))}
         </div>
       )}
-    
     </div>
   );
 };
