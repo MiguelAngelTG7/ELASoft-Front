@@ -24,7 +24,7 @@ const ClasesProfesor = () => {
     };
     const obtenerPerfil = async () => {
       try {
-        const resp = await axios.get('/usuarios/me/');
+        const resp = await axios.get('/usuarios/');
         setProfesor(resp.data);
       } catch (error) {
         console.error('Error al obtener perfil:', error);
@@ -33,7 +33,7 @@ const ClasesProfesor = () => {
     obtenerClases();
     obtenerPerfil();
   }, []);
-
+  
   const handleLogout = () => {
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
