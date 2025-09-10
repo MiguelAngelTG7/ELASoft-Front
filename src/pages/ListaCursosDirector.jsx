@@ -112,10 +112,6 @@ const ListaCursosDirector = () => {
 
         return (
           <>
-            {/* Gráfico de barras */}
-            <div className="mb-4">
-              <Bar data={barData} options={barOptions} />
-            </div>
             <table className="table table-bordered">
               <thead className="table-light">
                 <tr>
@@ -178,7 +174,7 @@ const ListaCursosDirector = () => {
                 ))}
               </tbody>
             </table>
-            {/* Tabla de totales al final, antes de los botones */}
+            {/* Tabla de totales al final */}
             <div className="row justify-content-center mb-4">
               <div className="col-md-8">
                 <table className="table table-bordered table-info fw-bold mb-0">
@@ -204,6 +200,10 @@ const ListaCursosDirector = () => {
                   </tbody>
                 </table>
               </div>
+            </div>
+            {/* Gráfico de barras al final */}
+            <div className="mb-4">
+              <Bar data={barData} options={barOptions} />
             </div>
           </>
         );
