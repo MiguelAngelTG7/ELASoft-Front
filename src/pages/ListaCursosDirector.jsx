@@ -82,83 +82,97 @@ const ListaCursosDirector = () => {
         const asistenciaTotal = totalAlumnos ? (sumaAsistencia / totalAlumnos).toFixed(2) : '0.00';
         const aprobadosTotal = totalAlumnos ? (sumaAprobados / totalAlumnos).toFixed(2) : '0.00';
         return (
-          <table className="table table-bordered">
-            <thead className="table-light">
-              <tr>
-                <th>Nivel</th>
-                <th>Curso</th>
-                <th>Horario</th>
-                <th>Maestro Titular</th>
-                <th>Maestro Asistente</th>
-                <th>Alumnos</th>
-                <th>% Asistencia</th>
-                <th>% Aprobados</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cursos.map((clase, i) => (
-                <tr key={i}>
-                  <td>{clase.nivel}</td>
-                  <td>{clase.curso}</td>
-                  <td>{clase.horarios?.map((h, i) => <div key={i}>{h}</div>)}</td>
-                  <td>{clase.maestro_titular?.nombre_completo || "—"}</td>
-                  <td>{clase.maestro_asistente?.nombre_completo || "—"}</td>
-                  <td>{clase.total_alumnos}</td>
-                  {/* Asistencia */}
-                  <td>
-                      <div className="progress" style={{ height: '20px' }}>
-                          <div
-                          className={`progress-bar ${
-                              clase.asistencia_promedio <= 30
-                              ? 'bg-danger'
-                              : clase.asistencia_promedio <= 70
-                              ? 'bg-warning text-dark'
-                              : 'bg-success'
-                          }`}
-                          role="progressbar"
-                          style={{ width: `${clase.asistencia_promedio}%` }}
-                          >
-                          {clase.asistencia_promedio}%
-                          </div>
-                      </div>
-                  </td>
-                  {/* Aprobados */}
-                  <td>
-                      <div className="progress" style={{ height: '20px' }}>
-                          <div
-                          className={`progress-bar ${
-                              clase.porcentaje_aprobados < 50
-                              ? 'bg-danger'
-                              : clase.porcentaje_aprobados < 80
-                              ? 'bg-warning text-dark'
-                              : 'bg-success'
-                          }`}
-                          role="progressbar"
-                          style={{ width: `${clase.porcentaje_aprobados}%` }}
-                          >
-                          {clase.porcentaje_aprobados}%
-                          </div>
-                      </div>
-                  </td>
+          <>
+            <table className="table table-bordered">
+              <thead className="table-light">
+                <tr>
+                  <th>Nivel</th>
+                  <th>Curso</th>
+                  <th>Horario</th>
+                  <th>Maestro Titular</th>
+                  <th>Maestro Asistente</th>
+                  <th>Alumnos</th>
+                  <th>% Asistencia</th>
+                  <th>% Aprobados</th>
                 </tr>
-              ))}
-              {/* Fila de totales */}
-              <tr className="table-info fw-bold">
-                <td colSpan={5} className="text-end">Totales:</td>
-                <td>{totalAlumnos}</td>
-                <td>{asistenciaTotal}%</td>
-                <td>{aprobadosTotal}%</td>
-              </tr>
-              <tr className="table-info fw-bold">
-                <td colSpan={5} className="text-end">Total de Maestros:</td>
-                <td colSpan={3}>{totalMaestros}</td>
-              </tr>
-              <tr className="table-info fw-bold">
-                <td colSpan={5} className="text-end">Total de Cursos:</td>
-                <td colSpan={3}>{totalCursos}</td>
-              </tr>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {cursos.map((clase, i) => (
+                  <tr key={i}>
+                    <td>{clase.nivel}</td>
+                    <td>{clase.curso}</td>
+                    <td>{clase.horarios?.map((h, i) => <div key={i}>{h}</div>)}</td>
+                    <td>{clase.maestro_titular?.nombre_completo || "—"}</td>
+                    <td>{clase.maestro_asistente?.nombre_completo || "—"}</td>
+                    <td>{clase.total_alumnos}</td>
+                    {/* Asistencia */}
+                    <td>
+                        <div className="progress" style={{ height: '20px' }}>
+                            <div
+                            className={`progress-bar ${
+                                clase.asistencia_promedio <= 30
+                                ? 'bg-danger'
+                                : clase.asistencia_promedio <= 70
+                                ? 'bg-warning text-dark'
+                                : 'bg-success'
+                            }`}
+                            role="progressbar"
+                            style={{ width: `${clase.asistencia_promedio}%` }}
+                            >
+                            {clase.asistencia_promedio}%
+                            </div>
+                        </div>
+                    </td>
+                    {/* Aprobados */}
+                    <td>
+                        <div className="progress" style={{ height: '20px' }}>
+                            <div
+                            className={`progress-bar ${
+                                clase.porcentaje_aprobados < 50
+                                ? 'bg-danger'
+                                : clase.porcentaje_aprobados < 80
+                                ? 'bg-warning text-dark'
+                                : 'bg-success'
+                            }`}
+                            role="progressbar"
+                            style={{ width: `${clase.porcentaje_aprobados}%` }}
+                            >
+                            {clase.porcentaje_aprobados}%
+                            </div>
+                        </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {/* Tabla de totales al final, antes de los botones */}
+            <div className="row justify-content-center mb-4">
+              <div className="col-md-8">
+                <table className="table table-bordered table-info fw-bold mb-0">
+                  <tbody>
+                    <tr>
+                      <td className="text-end">Total de Alumnos:</td>
+                      <td>{totalAlumnos}</td>
+                      <td className="text-end">% Total Asistencia:</td>
+                      <td>{asistenciaTotal}%</td>
+                    </tr>
+                    <tr>
+                      <td className="text-end">% Total Aprobados:</td>
+                      <td>{aprobadosTotal}%</td>
+                      <td className="text-end">Total de Maestros:</td>
+                      <td>{totalMaestros}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-end">Total de Cursos:</td>
+                      <td>{totalCursos}</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
         );
       })()}
 
