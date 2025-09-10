@@ -69,73 +69,98 @@ const ListaCursosDirector = () => {
 
       {cargando && <div>Cargando cursos...</div>}
 
-      {!cargando && cursos.length > 0 && (
-        <table className="table table-bordered">
-          <thead className="table-light">
-            <tr>
-              <th>Nivel</th>
-              <th>Curso</th>
-              <th>Horario</th>
-              <th>Maestro Titular</th>
-              <th>Maestro Asistente</th>
-              <th>Alumnos</th>
-              <th>% Asistencia</th>
-              <th>% Aprobados</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cursos.map((clase, i) => (
-              <tr key={i}>
-                <td>{clase.nivel}</td>
-                <td>{clase.curso}</td>
-                <td>{clase.horarios?.map((h, i) => <div key={i}>{h}</div>)}</td>
-                <td>{clase.maestro_titular?.nombre_completo || "—"}</td>
-                <td>{clase.maestro_asistente?.nombre_completo || "—"}</td>
-                <td>{clase.total_alumnos}</td>
-
-                {/* Asistencia */}
-                <td>
-                    <div className="progress" style={{ height: '20px' }}>
-                        <div
-                        className={`progress-bar ${
-                            clase.asistencia_promedio <= 30
-                            ? 'bg-danger'
-                            : clase.asistencia_promedio <= 70
-                            ? 'bg-warning text-dark'
-                            : 'bg-success'
-                        }`}
-                        role="progressbar"
-                        style={{ width: `${clase.asistencia_promedio}%` }}
-                        >
-                        {clase.asistencia_promedio}%
-                        </div>
-                    </div>
-                </td>
-
-                {/* Aprobados */}
-                <td>
-                    <div className="progress" style={{ height: '20px' }}>
-                        <div
-                        className={`progress-bar ${
-                            clase.porcentaje_aprobados < 50
-                            ? 'bg-danger'
-                            : clase.porcentaje_aprobados < 80
-                            ? 'bg-warning text-dark'
-                            : 'bg-success'
-                        }`}
-                        role="progressbar"
-                        style={{ width: `${clase.porcentaje_aprobados}%` }}
-                        >
-                        {clase.porcentaje_aprobados}%
-                        </div>
-                    </div>
-                </td>
-
+      {!cargando && cursos.length > 0 && (() => {
+        // Calcular totales
+        const totalAlumnos = cursos.reduce((acc, c) => acc + (c.total_alumnos || 0), 0);
+        const sumaAsistencia = cursos.reduce((acc, c) => acc + ((c.asistencia_promedio || 0) * (c.total_alumnos || 0)), 0);
+        const sumaAprobados = cursos.reduce((acc, c) => acc + ((c.porcentaje_aprobados || 0) * (c.total_alumnos || 0)), 0);
+        const totalMaestros = new Set([
+          ...cursos.map(c => c.maestro_titular?.nombre_completo).filter(Boolean),
+          ...cursos.map(c => c.maestro_asistente?.nombre_completo).filter(Boolean)
+        ]).size;
+        const totalCursos = cursos.length;
+        const asistenciaTotal = totalAlumnos ? (sumaAsistencia / totalAlumnos).toFixed(2) : '0.00';
+        const aprobadosTotal = totalAlumnos ? (sumaAprobados / totalAlumnos).toFixed(2) : '0.00';
+        return (
+          <table className="table table-bordered">
+            <thead className="table-light">
+              <tr>
+                <th>Nivel</th>
+                <th>Curso</th>
+                <th>Horario</th>
+                <th>Maestro Titular</th>
+                <th>Maestro Asistente</th>
+                <th>Alumnos</th>
+                <th>% Asistencia</th>
+                <th>% Aprobados</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {cursos.map((clase, i) => (
+                <tr key={i}>
+                  <td>{clase.nivel}</td>
+                  <td>{clase.curso}</td>
+                  <td>{clase.horarios?.map((h, i) => <div key={i}>{h}</div>)}</td>
+                  <td>{clase.maestro_titular?.nombre_completo || "—"}</td>
+                  <td>{clase.maestro_asistente?.nombre_completo || "—"}</td>
+                  <td>{clase.total_alumnos}</td>
+                  {/* Asistencia */}
+                  <td>
+                      <div className="progress" style={{ height: '20px' }}>
+                          <div
+                          className={`progress-bar ${
+                              clase.asistencia_promedio <= 30
+                              ? 'bg-danger'
+                              : clase.asistencia_promedio <= 70
+                              ? 'bg-warning text-dark'
+                              : 'bg-success'
+                          }`}
+                          role="progressbar"
+                          style={{ width: `${clase.asistencia_promedio}%` }}
+                          >
+                          {clase.asistencia_promedio}%
+                          </div>
+                      </div>
+                  </td>
+                  {/* Aprobados */}
+                  <td>
+                      <div className="progress" style={{ height: '20px' }}>
+                          <div
+                          className={`progress-bar ${
+                              clase.porcentaje_aprobados < 50
+                              ? 'bg-danger'
+                              : clase.porcentaje_aprobados < 80
+                              ? 'bg-warning text-dark'
+                              : 'bg-success'
+                          }`}
+                          role="progressbar"
+                          style={{ width: `${clase.porcentaje_aprobados}%` }}
+                          >
+                          {clase.porcentaje_aprobados}%
+                          </div>
+                      </div>
+                  </td>
+                </tr>
+              ))}
+              {/* Fila de totales */}
+              <tr className="table-info fw-bold">
+                <td colSpan={5} className="text-end">Totales:</td>
+                <td>{totalAlumnos}</td>
+                <td>{asistenciaTotal}%</td>
+                <td>{aprobadosTotal}%</td>
+              </tr>
+              <tr className="table-info fw-bold">
+                <td colSpan={5} className="text-end">Total de Maestros:</td>
+                <td colSpan={3}>{totalMaestros}</td>
+              </tr>
+              <tr className="table-info fw-bold">
+                <td colSpan={5} className="text-end">Total de Cursos:</td>
+                <td colSpan={3}>{totalCursos}</td>
+              </tr>
+            </tbody>
+          </table>
+        );
+      })()}
 
       {!cargando && periodoId && cursos.length === 0 && (
         <div>No hay cursos para este periodo.</div>
