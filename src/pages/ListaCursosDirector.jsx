@@ -3,6 +3,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const ListaCursosDirector = () => {
   const [periodos, setPeriodos] = useState([]);
@@ -81,8 +85,37 @@ const ListaCursosDirector = () => {
         const totalCursos = cursos.length;
         const asistenciaTotal = totalAlumnos ? (sumaAsistencia / totalAlumnos).toFixed(2) : '0.00';
         const aprobadosTotal = totalAlumnos ? (sumaAprobados / totalAlumnos).toFixed(2) : '0.00';
+
+        // Datos para el gráfico
+        const barData = {
+          labels: cursos.map(c => c.curso),
+          datasets: [
+            {
+              label: 'Alumnos',
+              data: cursos.map(c => c.total_alumnos || 0),
+              backgroundColor: 'rgba(54, 162, 235, 0.7)',
+            },
+          ],
+        };
+
+        const barOptions = {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'Alumnos por Curso' },
+          },
+          scales: {
+            x: { title: { display: true, text: 'Curso' } },
+            y: { title: { display: true, text: 'Alumnos' }, beginAtZero: true },
+          },
+        };
+
         return (
           <>
+            {/* Gráfico de barras */}
+            <div className="mb-4">
+              <Bar data={barData} options={barOptions} />
+            </div>
             <table className="table table-bordered">
               <thead className="table-light">
                 <tr>
