@@ -71,7 +71,7 @@ const ListaAlumnos = () => {
         <thead className="table-light">
           <tr>
             <th>Nombre</th>
-            <th>FechaNac</th>
+            <th>Fecha Nacim</th>
             <th>Edad</th>
             <th>Email</th>
             <th>Teléfono</th>
