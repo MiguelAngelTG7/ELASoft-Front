@@ -1,7 +1,7 @@
 // Lista de Profesores para el Director
 
 import React, { useEffect, useState } from "react";
-import axios from "../services/api";
+import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const ListaProfesoresDirector = () => {
@@ -9,33 +9,33 @@ const ListaProfesoresDirector = () => {
   const [periodoId, setPeriodoId] = useState("");
   const [profesores, setProfesores] = useState([]);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
-    useEffect(() => {
-      axios.get('/director/periodos/')
-        .then(res => setPeriodos(res.data.periodos))
-        .catch(() => setPeriodos([]));
-    }, []);
+  useEffect(() => {
+    axios.get('/director/periodos/')
+      .then(res => setPeriodos(res.data.periodos))
+      .catch(() => setPeriodos([]));
+  }, []);
 
-    useEffect(() => {
-      if (!periodoId) {
-        setProfesores([]);
-        return;
-      }
-      setLoading(true);
-      axios.get(`/director/profesores/?periodo_id=${periodoId}`)
-        .then(res => setProfesores(Array.isArray(res.data.profesores) ? res.data.profesores : []))
-        .catch(() => setProfesores([]))
-        .finally(() => setLoading(false));
-    }, [periodoId]);
+  useEffect(() => {
+    if (!periodoId) {
+      setProfesores([]);
+      return;
+    }
+    setLoading(true);
+    axios.get(`/director/profesores-reporte/?periodo_id=${periodoId}`)
+      .then(res => setProfesores(Array.isArray(res.data.profesores) ? res.data.profesores : []))
+      .catch(() => setProfesores([]))
+      .finally(() => setLoading(false));
+  }, [periodoId]);
 
   const imprimir = () => window.print();
+  const navigate = useNavigate();
   const volver = () => navigate('/director');
 
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold text-primary">Lista de Profesores</h2>
+        <h2 className="fw-bold text-primary">Lista de Maestros</h2>
       </div>
 
       <select
@@ -58,26 +58,25 @@ const ListaProfesoresDirector = () => {
         <table className="table table-bordered">
           <thead className="table-light">
             <tr>
-              <th>Nombre del Profesor</th>
-              <th>Curso</th>
-              <th>Periodo</th>
-              <th>Acciones</th>
+              <th>Nombre</th>
+              <th>Cursos</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Dirección</th>
             </tr>
           </thead>
           <tbody>
             {profesores.map((profesor) => (
               <tr key={profesor.id}>
-                <td>{profesor.nombre}</td>
-                <td>{profesor.curso}</td>
-                <td>{profesor.periodo}</td>
+                <td>{profesor.nombre_completo}</td>
                 <td>
-                  <button className="btn btn-primary btn-sm me-2">
-                    Ver Detalles
-                  </button>
-                  <button className="btn btn-danger btn-sm">
-                    Eliminar
-                  </button>
+                  {profesor.cursos && profesor.cursos.length > 0
+                    ? profesor.cursos.join(", ")
+                    : "Sin clases"}
                 </td>
+                <td>{profesor.email}</td>
+                <td>{profesor.telefono}</td>
+                <td>{profesor.direccion}</td>
               </tr>
             ))}
           </tbody>
@@ -92,7 +91,7 @@ const ListaProfesoresDirector = () => {
         <button className="btn btn-outline-secondary me-3" onClick={() => window.print()}>
           Imprimir / Guardar PDF
         </button>
-        <button onClick={volver} className="btn btn-secondary">Volver</button>
+       <button onClick={volver} className="btn btn-secondary">Volver</button>
       </div>
 
     </div>
