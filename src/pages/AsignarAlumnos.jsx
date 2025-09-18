@@ -72,7 +72,7 @@ const AsignarAlumnos = () => {
           Buscar
         </button>
         <button className="btn btn-secondary" onClick={() => navigate(-1)}>
-          Atrás
+          Volver
         </button>
       </div>
 
