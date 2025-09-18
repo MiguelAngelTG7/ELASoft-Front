@@ -11,23 +11,23 @@ const ListaProfesoresDirector = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios.get('/periodos/')
-      .then(res => setPeriodos(res.data.periodos))
-      .catch(() => setPeriodos([]));
-  }, []);
+    useEffect(() => {
+      axios.get('/director/periodos/')
+        .then(res => setPeriodos(res.data.periodos))
+        .catch(() => setPeriodos([]));
+    }, []);
 
-  useEffect(() => {
-    if (!periodoId) {
-      setProfesores([]);
-      return;
-    }
-    setLoading(true);
-    axios.get(`/profesores/?periodo_id=${periodoId}`)
-      .then(res => setProfesores(Array.isArray(res.data.profesores) ? res.data.profesores : []))
-      .catch(() => setProfesores([]))
-      .finally(() => setLoading(false));
-  }, [periodoId]);
+    useEffect(() => {
+      if (!periodoId) {
+        setProfesores([]);
+        return;
+      }
+      setLoading(true);
+      axios.get(`/director/profesores/?periodo_id=${periodoId}`)
+        .then(res => setProfesores(Array.isArray(res.data.profesores) ? res.data.profesores : []))
+        .catch(() => setProfesores([]))
+        .finally(() => setLoading(false));
+    }, [periodoId]);
 
   const imprimir = () => window.print();
   const volver = () => navigate('/director');

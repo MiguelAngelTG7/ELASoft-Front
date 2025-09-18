@@ -31,7 +31,6 @@ const ListaCursosDirector = () => {
     setCargando(true);
     axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
       .then(res => {
-        // Asegurar que la respuesta sea un array
         const rawCursos = Array.isArray(res.data?.dashboard) ? res.data.dashboard : [];
         const normalizaNivel = (nivel) => {
           if (!nivel) return 0;
