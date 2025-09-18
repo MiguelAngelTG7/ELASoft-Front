@@ -81,7 +81,7 @@ const Director = () => {
           <br />
           <button
             className="btn btn-outline-primary mt-2"
-            onClick={() => navigate("/director/cursos")}
+            onClick={() => navigate("/director/clases")}
           >
             Ver Lista de Cursos
           </button>
