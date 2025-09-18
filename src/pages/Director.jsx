@@ -92,6 +92,7 @@ const Director = () => {
       >
             Crear nuevo Alumno
           </button>
+          <br />
           <button className="btn btn-danger mt-2" onClick={handleLogout}>Salir</button>
           <br />
         </div>
