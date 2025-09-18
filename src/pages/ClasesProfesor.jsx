@@ -57,12 +57,6 @@ const ClasesProfesor = () => {
       {/* Botones debajo del nombre del profesor */}
       <div className="d-flex gap-2 mb-4">
         <button
-          className="btn btn-outline-danger"
-          onClick={() => navigate('/profesor/crear-alumno')}
-        >
-          Crear nuevo Alumno
-        </button>
-        <button
           className="btn btn-outline-primary"
           onClick={() => navigate('/profesor/alumnos')}
         >
