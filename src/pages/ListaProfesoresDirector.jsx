@@ -110,14 +110,4 @@ const ListaProfesoresDirector = () => {
   );
 };
 
-export async function getPeriodosAcademicos() {
-  try {
-    const response = await fetch(`${API_URL}/director/periodos/`);
-    const data = await response.json();
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    return [];
-  }
-}
-
 export default ListaProfesoresDirector;
