@@ -19,7 +19,7 @@ const ListaCursosDirector = () => {
 
   useEffect(() => {
     axios.get('/director/periodos/')
-      .then(res => setPeriodos(res.data.periodos))
+      .then(res => setPeriodos(Array.isArray(res.data) ? res.data : []))
       .catch(() => setPeriodos([]));
   }, []);
 
