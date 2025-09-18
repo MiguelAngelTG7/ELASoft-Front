@@ -56,11 +56,11 @@ const AsignarAlumnos = () => {
 
       <h3>Asignar | Remover alumnos a la clase</h3>
 
-      <div className="mb-3 d-flex align-items-center gap-2">
+      <div className="mb-3 d-flex align-items-center" style={{ gap: '16px' }}>
         <input
           type="text"
           className="form-control"
-          style={{ maxWidth: 250 }}
+          style={{ maxWidth: 375 }}
           placeholder="Buscar por nombre, apellido, correo..."
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
@@ -71,7 +71,7 @@ const AsignarAlumnos = () => {
         <button className="btn btn-primary" onClick={buscarAlumnos} disabled={!busqueda}>
           Buscar
         </button>
-        <button className="btn btn-secondary ms-2" onClick={() => navigate(-1)}>
+        <button className="btn btn-secondary" onClick={() => navigate(-1)}>
           Atrás
         </button>
       </div>
