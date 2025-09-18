@@ -87,7 +87,13 @@ const Director = () => {
           </button>
           <br />
           <button className="btn btn-danger mt-2" onClick={handleLogout}>Salir</button>
-
+          <br />
+          <button
+            className="btn btn-outline-success"
+            onClick={() => navigate('/director/crear-alumno')}
+          >
+            Crear nuevo Alumno
+          </button>
         </div>
       </div>
 

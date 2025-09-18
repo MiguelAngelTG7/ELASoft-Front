@@ -56,12 +56,13 @@ const ClasesProfesor = () => {
       </div>
       {/* Botones debajo del nombre del profesor */}
       <div className="d-flex gap-2 mb-4">
-        <button
+        {/* Elimina o comenta este bloque */}
+        {/* <button
           className="btn btn-outline-danger"
           onClick={() => navigate('/profesor/crear-alumno')}
         >
           Crear nuevo Alumno
-        </button>
+        </button> */}
         <button
           className="btn btn-outline-primary"
           onClick={() => navigate('/profesor/alumnos')}

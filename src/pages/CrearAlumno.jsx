@@ -42,13 +42,13 @@ const CrearAlumno = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMensaje('');
     try {
-      await axios.post('/profesor/crear-alumno/', formData);
-      setMensaje('Alumno creado correctamente.');
+      await axios.post('/director/crear-alumno/', formData); // <-- usa la ruta del director
+      setMensaje('Alumno creado exitosamente');
       setTimeout(() => navigate('/profesor'), 1500);
     } catch (error) {
-      console.error('Error al crear alumno:', error);
-      setMensaje('Error al crear el alumno.');
+      setMensaje('Error al crear alumno');
     }
   };
 

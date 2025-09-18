@@ -173,6 +173,13 @@ function App() {
                 
             } 
           />
+          <Route 
+            path="/director/crear-alumno" 
+            element={
+              <PrivateRoute rolRequerido="director">
+                <CrearAlumno />
+              </PrivateRoute>
+            } />
 
         </Route>
       </Routes>
