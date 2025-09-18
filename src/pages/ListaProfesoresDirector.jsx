@@ -12,7 +12,7 @@ const ListaProfesoresDirector = () => {
 
   useEffect(() => {
     getPeriodosAcademicos()
-      .then(setPeriodos)
+      .then(data => setPeriodos(Array.isArray(data) ? data : []))
       .catch(() => setPeriodos([]));
   }, []);
 
@@ -54,7 +54,7 @@ const ListaProfesoresDirector = () => {
         onChange={e => setPeriodoId(e.target.value)}
       >
         <option value="">Seleccione un periodo académico</option>
-        {periodos.map(p => (
+        {(Array.isArray(periodos) ? periodos : []).map(p => (
           <option key={p.id} value={p.id}>
             {p.nombre}
           </option>
