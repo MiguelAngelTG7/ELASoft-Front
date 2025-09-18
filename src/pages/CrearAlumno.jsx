@@ -15,37 +15,14 @@ const CrearAlumno = () => {
     fecha_nacimiento: '',
     direccion: '',
     telefono: '',
-    grupo_sanguineo: '',
-    alergias: '',
     interesado: false,
     nuevo_creyente: false,
     bautizado: false,
     tiene_ministerio: false,
-    periodo_id: '', // Nuevo campo
     class_id: '',
   });
 
-  const [periodos, setPeriodos] = useState([]);
-  const [clases, setClases] = useState([]);
   const [mensaje, setMensaje] = useState('');
-
-  // Obtener periodos al cargar
-  useEffect(() => {
-    axios.get('/periodos/')
-      .then(res => setPeriodos(res.data))
-      .catch(err => console.error('Error al obtener periodos:', err));
-  }, []);
-
-  // Obtener clases del ciclo seleccionado
-  useEffect(() => {
-    if (formData.periodo_id) {
-      axios.get(`/clases/?periodo_id=${formData.periodo_id}`)
-        .then(res => setClases(res.data))
-        .catch(err => console.error('Error al obtener clases:', err));
-    } else {
-      setClases([]);
-    }
-  }, [formData.periodo_id]);
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
@@ -107,14 +84,6 @@ const CrearAlumno = () => {
             <label>Teléfono</label>
             <input type="text" name="telefono" className="form-control" onChange={handleChange} />
           </div>
-          <div className="col-md-6 mb-2">
-            <label>Grupo Sanguíneo</label>
-            <input type="text" name="grupo_sanguineo" className="form-control" onChange={handleChange} />
-          </div>
-          <div className="col-md-6 mb-2">
-            <label>Alergias</label>
-            <textarea name="alergias" className="form-control" onChange={handleChange}></textarea>
-          </div>
 
           <div className="col-md-3 mb-2 form-check">
             <input type="checkbox" name="interesado" className="form-check-input" onChange={handleChange} />
@@ -131,45 +100,6 @@ const CrearAlumno = () => {
           <div className="col-md-3 mb-2 form-check">
             <input type="checkbox" name="tiene_ministerio" className="form-check-input" onChange={handleChange} />
             <label className="form-check-label">Tiene ministerio</label>
-          </div>
-
-          {/* Selector de ciclo */}
-          <div className="col-md-12 mb-3">
-            <label>Selecciona ciclo</label>
-            <select
-              name="periodo_id"
-              className="form-control"
-              value={formData.periodo_id}
-              onChange={handleChange}
-              required
-            >
-              <option value="">-- Selecciona un ciclo --</option>
-              {periodos.map(p => (
-                <option key={p.id} value={p.id}>
-                  {p.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Selector de clase */}
-          <div className="col-md-12 mb-3">
-            <label>Asignar a una clase</label>
-            <select
-              name="class_id"
-              className="form-control"
-              value={formData.class_id}
-              onChange={handleChange}
-              required
-              disabled={!formData.periodo_id}
-            >
-              <option value="">-- Selecciona una clase --</option>
-              {clases.map(c => (
-                <option key={c.id} value={c.id}>
-                  {c.nombre_completo}
-                </option>
-              ))}
-            </select>
           </div>
         </div>
 
