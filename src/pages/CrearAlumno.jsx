@@ -105,7 +105,7 @@ const CrearAlumno = () => {
 
         <div className="d-flex gap-2 mt-3">
           <button type="submit" className="btn btn-success">Crear Alumno</button>
-          <button type="button" className="btn btn-secondary" onClick={() => navigate('/director')}>Atrás</button>
+          <button type="button" className="btn btn-secondary" onClick={() => navigate('/director')}>Volver</button>
         </div>
       </form>
     </div>

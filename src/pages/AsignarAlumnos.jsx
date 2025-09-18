@@ -56,13 +56,17 @@ const AsignarAlumnos = () => {
 
       <h3>Asignar | Remover alumnos a la clase</h3>
 
-      <div className="input-group mb-3">
+      <div className="mb-3 d-flex align-items-center gap-2">
         <input
           type="text"
           className="form-control"
+          style={{ maxWidth: 250 }}
           placeholder="Buscar por nombre, apellido, correo..."
           value={busqueda}
           onChange={(e) => setBusqueda(e.target.value)}
+          onKeyDown={e => {
+            if (e.key === 'Enter' && busqueda) buscarAlumnos();
+          }}
         />
         <button className="btn btn-primary" onClick={buscarAlumnos} disabled={!busqueda}>
           Buscar
