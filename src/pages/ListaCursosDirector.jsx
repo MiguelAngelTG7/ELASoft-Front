@@ -24,32 +24,32 @@ const ListaCursosDirector = () => {
   }, []);
 
   useEffect(() => {
-    if (periodoId) {
-      setCargando(true);
-      axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
-        .then(res => {
-          // Asegurar que la respuesta sea un array
-          const rawCursos = Array.isArray(res.data?.dashboard) ? res.data.dashboard : [];
-          const normalizaNivel = (nivel) => {
-            if (!nivel) return 0;
-            const match = String(nivel).match(/(\d+)/);
-            return match ? parseInt(match[1], 10) : 0;
-          };
-          const cursosOrdenados = [...rawCursos].sort((a, b) => {
-            const nA = normalizaNivel(a.nivel);
-            const nB = normalizaNivel(b.nivel);
-            if (nA !== nB) return nA - nB;
-            if ((a.curso || '') < (b.curso || '')) return -1;
-            if ((a.curso || '') > (b.curso || '')) return 1;
-            return 0;
-          });
-          setCursos(cursosOrdenados);
-        })
-        .catch(() => setCursos([]))
-        .finally(() => setCargando(false));
-    } else {
+    if (!periodoId) {
       setCursos([]);
+      return;
     }
+    setCargando(true);
+    axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
+      .then(res => {
+        // Asegurar que la respuesta sea un array
+        const rawCursos = Array.isArray(res.data?.dashboard) ? res.data.dashboard : [];
+        const normalizaNivel = (nivel) => {
+          if (!nivel) return 0;
+          const match = String(nivel).match(/(\d+)/);
+          return match ? parseInt(match[1], 10) : 0;
+        };
+        const cursosOrdenados = [...rawCursos].sort((a, b) => {
+          const nA = normalizaNivel(a.nivel);
+          const nB = normalizaNivel(b.nivel);
+          if (nA !== nB) return nA - nB;
+          if ((a.curso || '') < (b.curso || '')) return -1;
+          if ((a.curso || '') > (b.curso || '')) return 1;
+          return 0;
+        });
+        setCursos(cursosOrdenados);
+      })
+      .catch(() => setCursos([]))
+      .finally(() => setCargando(false));
   }, [periodoId]);
 
   return (

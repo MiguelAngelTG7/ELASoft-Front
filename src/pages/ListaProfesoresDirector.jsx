@@ -1,7 +1,7 @@
 // Lista de Profesores para el Director
 
 import React, { useEffect, useState } from "react";
-import { getPeriodosAcademicos, getProfesoresPorPeriodo } from "../services/api";
+import axios from "../services/api";
 import { useNavigate } from 'react-router-dom';
 
 const ListaProfesoresDirector = () => {
@@ -9,42 +9,33 @@ const ListaProfesoresDirector = () => {
   const [periodoId, setPeriodoId] = useState("");
   const [profesores, setProfesores] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getPeriodosAcademicos()
-      .then(setPeriodos)
+    axios.get('/director/periodos/')
+      .then(res => setPeriodos(res.data.periodos))
       .catch(() => setPeriodos([]));
   }, []);
 
   useEffect(() => {
-    if (periodoId) {
-      setLoading(true);
-      getProfesoresPorPeriodo(periodoId)
-        .then((data) => {
-          // Si la respuesta es un objeto con array, tomar el array
-          if (Array.isArray(data)) {
-            setProfesores(data);
-          } else if (Array.isArray(data?.profesores)) {
-            setProfesores(data.profesores);
-          } else {
-            setProfesores([]);
-          }
-        })
-        .catch(() => setProfesores([]))
-        .finally(() => setLoading(false));
-    } else {
+    if (!periodoId) {
       setProfesores([]);
+      return;
     }
+    setLoading(true);
+    axios.get(`/director/profesores/?periodo_id=${periodoId}`)
+      .then(res => setProfesores(Array.isArray(res.data.profesores) ? res.data.profesores : []))
+      .catch(() => setProfesores([]))
+      .finally(() => setLoading(false));
   }, [periodoId]);
 
   const imprimir = () => window.print();
-  const navigate = useNavigate();
   const volver = () => navigate('/director');
 
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold text-primary">Lista de Maestros</h2>
+        <h2 className="fw-bold text-primary">Lista de Profesores</h2>
       </div>
 
       <select
@@ -63,36 +54,37 @@ const ListaProfesoresDirector = () => {
 
       {loading && <div>Cargando...</div>}
 
-  {!loading && Array.isArray(profesores) && profesores.length > 0 && (
+      {!loading && Array.isArray(profesores) && profesores.length > 0 && (
         <table className="table table-bordered">
           <thead className="table-light">
             <tr>
-              <th>Nombre</th>
-              <th>Cursos</th>
-              <th>Email</th>
-              <th>Teléfono</th>
-              <th>Dirección</th>
+              <th>Nombre del Profesor</th>
+              <th>Curso</th>
+              <th>Periodo</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             {profesores.map((profesor) => (
               <tr key={profesor.id}>
-                <td>{profesor.nombre_completo}</td>
+                <td>{profesor.nombre}</td>
+                <td>{profesor.curso}</td>
+                <td>{profesor.periodo}</td>
                 <td>
-                  {profesor.cursos && profesor.cursos.length > 0
-                    ? profesor.cursos.join(", ")
-                    : "Sin clases"}
+                  <button className="btn btn-primary btn-sm me-2">
+                    Ver Detalles
+                  </button>
+                  <button className="btn btn-danger btn-sm">
+                    Eliminar
+                  </button>
                 </td>
-                <td>{profesor.email}</td>
-                <td>{profesor.telefono}</td>
-                <td>{profesor.direccion}</td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
 
-  {!loading && Array.isArray(profesores) && profesores.length === 0 && periodoId && (
+      {!loading && Array.isArray(profesores) && profesores.length === 0 && periodoId && (
         <div>No hay profesores para este periodo.</div>
       )}
 
@@ -100,7 +92,7 @@ const ListaProfesoresDirector = () => {
         <button className="btn btn-outline-secondary me-3" onClick={() => window.print()}>
           Imprimir / Guardar PDF
         </button>
-       <button onClick={volver} className="btn btn-secondary">Volver</button>
+        <button onClick={volver} className="btn btn-secondary">Volver</button>
       </div>
 
     </div>
