@@ -12,7 +12,10 @@ const ListaProfesoresDirector = () => {
 
   useEffect(() => {
     getPeriodosAcademicos()
-      .then(data => setPeriodos(Array.isArray(data) ? data : []))
+      .then(data => {
+        console.log("Periodos recibidos:", data); // <-- Agrega este log
+        setPeriodos(Array.isArray(data) ? data : []);
+      })
       .catch(() => setPeriodos([]));
   }, []);
 
@@ -106,5 +109,15 @@ const ListaProfesoresDirector = () => {
     </div>
   );
 };
+
+export async function getPeriodosAcademicos() {
+  try {
+    const response = await fetch(`${API_URL}/director/periodos/`);
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    return [];
+  }
+}
 
 export default ListaProfesoresDirector;
