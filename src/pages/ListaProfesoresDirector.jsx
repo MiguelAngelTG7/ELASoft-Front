@@ -12,7 +12,7 @@ const ListaProfesoresDirector = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/director/periodos/')
+    axios.get('/periodos/')
       .then(res => setPeriodos(res.data.periodos))
       .catch(() => setPeriodos([]));
   }, []);
@@ -23,7 +23,7 @@ const ListaProfesoresDirector = () => {
       return;
     }
     setLoading(true);
-    axios.get(`/director/profesores/?periodo_id=${periodoId}`)
+    axios.get(`/profesores/?periodo_id=${periodoId}`)
       .then(res => setProfesores(Array.isArray(res.data.profesores) ? res.data.profesores : []))
       .catch(() => setProfesores([]))
       .finally(() => setLoading(false));
