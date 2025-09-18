@@ -16,8 +16,6 @@ const RegistrarAlumno = () => {
     fecha_nacimiento: '',
     direccion: '',
     telefono: '',
-    grupo_sanguineo: '',
-    alergias: '',
     interesado: false,
     nuevo_creyente: false,
     bautizado: false,
@@ -88,14 +86,6 @@ const RegistrarAlumno = () => {
           <div className="col-md-6">
             <label>Teléfono</label>
             <input name="telefono" className="form-control" value={form.telefono} onChange={handleChange} />
-          </div>
-          <div className="col-md-6">
-            <label>Grupo sanguíneo</label>
-            <input name="grupo_sanguineo" className="form-control" value={form.grupo_sanguineo} onChange={handleChange} />
-          </div>
-          <div className="col-md-12">
-            <label>Alergias</label>
-            <input name="alergias" className="form-control" value={form.alergias} onChange={handleChange} />
           </div>
           <div className="col-md-3">
             <label><input type="checkbox" name="interesado" checked={form.interesado} onChange={handleChange} /> Interesado</label>
