@@ -20,7 +20,16 @@ const ListaProfesoresDirector = () => {
     if (periodoId) {
       setLoading(true);
       getProfesoresPorPeriodo(periodoId)
-        .then((data) => setProfesores(Array.isArray(data) ? data : []))
+        .then((data) => {
+          // Si la respuesta es un objeto con array, tomar el array
+          if (Array.isArray(data)) {
+            setProfesores(data);
+          } else if (Array.isArray(data?.profesores)) {
+            setProfesores(data.profesores);
+          } else {
+            setProfesores([]);
+          }
+        })
         .catch(() => setProfesores([]))
         .finally(() => setLoading(false));
     } else {
@@ -54,7 +63,7 @@ const ListaProfesoresDirector = () => {
 
       {loading && <div>Cargando...</div>}
 
-      {!loading && Array.isArray(profesores) && profesores.length > 0 && (
+  {!loading && Array.isArray(profesores) && profesores.length > 0 && (
         <table className="table table-bordered">
           <thead className="table-light">
             <tr>
@@ -83,7 +92,7 @@ const ListaProfesoresDirector = () => {
         </table>
       )}
 
-      {!loading && Array.isArray(profesores) && profesores.length === 0 && periodoId && (
+  {!loading && Array.isArray(profesores) && profesores.length === 0 && periodoId && (
         <div>No hay profesores para este periodo.</div>
       )}
 

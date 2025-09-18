@@ -28,18 +28,17 @@ const ListaCursosDirector = () => {
       setCargando(true);
       axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
         .then(res => {
-          // Ordenar primero por nivel (numérico ascendente) y luego por nombre de curso (alfabético)
+          // Asegurar que la respuesta sea un array
+          const rawCursos = Array.isArray(res.data?.dashboard) ? res.data.dashboard : [];
           const normalizaNivel = (nivel) => {
             if (!nivel) return 0;
-            // Buscar el primer número en el string (soporta 'NIVEL 1', 'Nivel 2', etc.)
             const match = String(nivel).match(/(\d+)/);
             return match ? parseInt(match[1], 10) : 0;
           };
-          const cursosOrdenados = [...res.data.dashboard].sort((a, b) => {
+          const cursosOrdenados = [...rawCursos].sort((a, b) => {
             const nA = normalizaNivel(a.nivel);
             const nB = normalizaNivel(b.nivel);
             if (nA !== nB) return nA - nB;
-            // Si el nivel es igual, ordenar por nombre de curso
             if ((a.curso || '') < (b.curso || '')) return -1;
             if ((a.curso || '') > (b.curso || '')) return 1;
             return 0;
@@ -73,7 +72,7 @@ const ListaCursosDirector = () => {
 
       {cargando && <div>Cargando cursos...</div>}
 
-      {!cargando && cursos.length > 0 && (() => {
+  {!cargando && Array.isArray(cursos) && cursos.length > 0 && (() => {
         // Calcular totales
         const totalAlumnos = cursos.reduce((acc, c) => acc + (c.total_alumnos || 0), 0);
         const sumaAsistencia = cursos.reduce((acc, c) => acc + ((c.asistencia_promedio || 0) * (c.total_alumnos || 0)), 0);
@@ -209,7 +208,7 @@ const ListaCursosDirector = () => {
         );
       })()}
 
-      {!cargando && periodoId && cursos.length === 0 && (
+  {!cargando && periodoId && Array.isArray(cursos) && cursos.length === 0 && (
         <div>No hay cursos para este periodo.</div>
       )}
 
