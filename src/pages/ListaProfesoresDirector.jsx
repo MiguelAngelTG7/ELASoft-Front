@@ -1,7 +1,7 @@
 // Lista de Profesores para el Director
 
 import React, { useEffect, useState } from "react";
-import axios from '../services/api';
+import { getPeriodosAcademicos, getProfesoresPorPeriodo } from "../services/api";
 import { useNavigate } from 'react-router-dom';
 
 const ListaProfesoresDirector = () => {
@@ -11,21 +11,30 @@ const ListaProfesoresDirector = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    axios.get('/director/periodos/')
-      .then(res => setPeriodos(res.data.periodos))
+    getPeriodosAcademicos()
+      .then(setPeriodos)
       .catch(() => setPeriodos([]));
   }, []);
 
   useEffect(() => {
-    if (!periodoId) {
+    if (periodoId) {
+      setLoading(true);
+      getProfesoresPorPeriodo(periodoId)
+        .then((data) => {
+          // Si la respuesta es un objeto con array, tomar el array
+          if (Array.isArray(data)) {
+            setProfesores(data);
+          } else if (Array.isArray(data?.profesores)) {
+            setProfesores(data.profesores);
+          } else {
+            setProfesores([]);
+          }
+        })
+        .catch(() => setProfesores([]))
+        .finally(() => setLoading(false));
+    } else {
       setProfesores([]);
-      return;
     }
-    setLoading(true);
-    axios.get(`/director/profesores-reporte/?periodo_id=${periodoId}`)
-      .then(res => setProfesores(Array.isArray(res.data.profesores) ? res.data.profesores : []))
-      .catch(() => setProfesores([]))
-      .finally(() => setLoading(false));
   }, [periodoId]);
 
   const imprimir = () => window.print();
@@ -54,7 +63,7 @@ const ListaProfesoresDirector = () => {
 
       {loading && <div>Cargando...</div>}
 
-      {!loading && Array.isArray(profesores) && profesores.length > 0 && (
+  {!loading && Array.isArray(profesores) && profesores.length > 0 && (
         <table className="table table-bordered">
           <thead className="table-light">
             <tr>
@@ -83,7 +92,7 @@ const ListaProfesoresDirector = () => {
         </table>
       )}
 
-      {!loading && Array.isArray(profesores) && profesores.length === 0 && periodoId && (
+  {!loading && Array.isArray(profesores) && profesores.length === 0 && periodoId && (
         <div>No hay profesores para este periodo.</div>
       )}
 

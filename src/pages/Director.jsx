@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-
 // Dahsboard General del Director
+
+import React, { useEffect, useState } from 'react';
+import axios from '../services/api';
+import { useNavigate } from 'react-router-dom';
+
 const Director = () => {
   const [data, setData] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -12,16 +13,6 @@ const Director = () => {
   const [cursosPorPeriodo, setCursosPorPeriodo] = useState([]);
   const [cargandoPeriodo, setCargandoPeriodo] = useState(false);
   const navigate = useNavigate();
-
-  // Función robusta para navegación
-  const handleNavigate = (path) => {
-    try {
-      navigate(path);
-    } catch (error) {
-      console.error("Error de navegación:", error);
-      alert("Hubo un problema al navegar. Intenta de nuevo.");
-    }
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('access');
@@ -43,10 +34,31 @@ const Director = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (mostrarCursosPeriodo) {
+      axios.get('/director/periodos/')
+        .then(res => setPeriodos(res.data.periodos))
+        .catch(() => setPeriodos([]));
+    }
+  }, [mostrarCursosPeriodo]);
+
+  useEffect(() => {
+    if (periodoId) {
+      setCargandoPeriodo(true);
+      axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
+        .then(res => setCursosPorPeriodo(res.data.dashboard))
+        .catch(() => setCursosPorPeriodo([]))
+        .finally(() => setCargandoPeriodo(false));
+    } else {
+      setCursosPorPeriodo([]);
+    }
+  }, [periodoId]);
+
   if (cargando) return <div className="text-center mt-5">Cargando información...</div>;
-  if (!Array.isArray(data) || data.length === 0) return <div className="text-center mt-5">No hay datos disponibles.</div>;
+  if (!data.length) return <div className="text-center mt-5">No hay datos disponibles.</div>;
 
   const volver = () => navigate('/director');
+
 
   return (
     <div className="container py-4">
@@ -55,29 +67,29 @@ const Director = () => {
         <div className="mb-3 text-end">
           <button
             className="btn btn-outline-primary"
-            onClick={() => handleNavigate("/director/alumnos")}
+            onClick={() => navigate("/director/alumnos")}
           >
             Ver Lista de Alumnos
           </button>
           <br />
           <button
             className="btn btn-outline-primary mt-2"
-            onClick={() => handleNavigate("/director/profesores")}
+            onClick={() => navigate("/director/profesores")}
           >
             Ver Lista de Profesores
           </button>
           <br />
           <button
             className="btn btn-outline-primary mt-2"
-            onClick={() => handleNavigate("/director/clases")}
+            onClick={() => navigate("/director/clases")}
           >
             Ver Lista de Cursos
           </button>
           <br />
           <button
             className="btn btn-outline-danger mt-2"
-            onClick={() => handleNavigate('/director/crear-alumno')}
-          >
+            onClick={() => navigate('/director/crear-alumno')}
+      >
             Crear nuevo Alumno
           </button>
           <br />
@@ -85,6 +97,7 @@ const Director = () => {
           <br />
         </div>
       </div>
+
 
       {/* Cursos por periodo académico */}
       {mostrarCursosPeriodo && (
@@ -97,14 +110,14 @@ const Director = () => {
             onChange={(e) => setPeriodoId(e.target.value)}
           >
             <option value="">Seleccione un periodo académico</option>
-            {Array.isArray(periodos) && periodos.map(p => (
+            {periodos.map(p => (
               <option key={p.id} value={p.id}>{p.nombre}</option>
             ))}
           </select>
 
           {cargandoPeriodo && <div>Cargando cursos...</div>}
 
-          {!cargandoPeriodo && Array.isArray(cursosPorPeriodo) && cursosPorPeriodo.length > 0 && (
+          {!cargandoPeriodo && cursosPorPeriodo.length > 0 && (
             <table className="table table-bordered">
               <thead className="table-light">
                 <tr>
@@ -119,9 +132,10 @@ const Director = () => {
                 </tr>
               </thead>
               <tbody>
-                {Array.isArray(cursosPorPeriodo) && cursosPorPeriodo.map((clase, i) => (
+                {cursosPorPeriodo.map((clase, i) => (
                   <tr key={i}>
-                    <td className="fw-semibold" onClick={() => handleNavigate("/director/alumnos")}>{clase.curso}</td>
+                    <td>{clase.nivel}</td>
+                    <td className="fw-semibold" >{clase.curso}</td>
                     <td>
                       {clase.horarios?.map((h, i) => <div key={i}>{h}</div>)}
                     </td>
@@ -160,7 +174,7 @@ const Director = () => {
             </table>
           )}
 
-          {!cargandoPeriodo && periodoId && Array.isArray(cursosPorPeriodo) && cursosPorPeriodo.length === 0 && (
+          {!cargandoPeriodo && periodoId && cursosPorPeriodo.length === 0 && (
             <div>No hay datos para este periodo.</div>
           )}
         </div>
