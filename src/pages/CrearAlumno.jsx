@@ -15,8 +15,6 @@ const CrearAlumno = () => {
     fecha_nacimiento: '',
     direccion: '',
     telefono: '',
-    grupo_sanguineo: '',
-    alergias: '',
     interesado: false,
     nuevo_creyente: false,
     bautizado: false,
@@ -92,14 +90,6 @@ const CrearAlumno = () => {
           <div className="col-md-6 mb-2">
             <label>Teléfono</label>
             <input type="text" name="telefono" className="form-control" onChange={handleChange} />
-          </div>
-          <div className="col-md-6 mb-2">
-            <label>Grupo Sanguíneo</label>
-            <input type="text" name="grupo_sanguineo" className="form-control" onChange={handleChange} />
-          </div>
-          <div className="col-md-6 mb-2">
-            <label>Alergias</label>
-            <textarea name="alergias" className="form-control" onChange={handleChange}></textarea>
           </div>
 
           <div className="col-md-3 mb-2 form-check">
