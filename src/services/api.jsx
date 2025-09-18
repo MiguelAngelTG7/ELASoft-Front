@@ -56,9 +56,8 @@ export const getProfesoresPorPeriodo = async (periodoId) => {
 // Servicio para obtener periodos académicos
 export async function getPeriodosAcademicos() {
   try {
-    const response = await fetch(`${API_URL}/director/periodos/`);
-    const data = await response.json();
-    return Array.isArray(data) ? data : [];
+    const response = await api.get("/director/periodos/");
+    return Array.isArray(response.data) ? response.data : [];
   } catch (error) {
     return [];
   }
