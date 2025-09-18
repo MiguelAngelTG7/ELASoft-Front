@@ -29,7 +29,7 @@ const CrearAlumno = () => {
 
   // Obtener periodos al cargar
   useEffect(() => {
-    axios.get('/director/periodos/')
+    axios.get('/periodos/')
       .then(res => setPeriodos(res.data))
       .catch(err => console.error('Error al obtener periodos:', err));
   }, []);
@@ -37,7 +37,7 @@ const CrearAlumno = () => {
   // Obtener clases del ciclo seleccionado
   useEffect(() => {
     if (formData.periodo_id) {
-      axios.get(`/director/clases/?periodo_id=${formData.periodo_id}`)
+      axios.get(`/clases/?periodo_id=${formData.periodo_id}`)
         .then(res => setClases(res.data))
         .catch(err => console.error('Error al obtener clases:', err));
     } else {
