@@ -65,7 +65,7 @@ const ListaCursosDirector = () => {
         onChange={(e) => setPeriodoId(e.target.value)}
       >
         <option value="">Seleccione un periodo académico</option>
-        {periodos.map(p => (
+        {(Array.isArray(periodos) ? periodos : []).map(p => (
           <option key={p.id} value={p.id}>{p.nombre}</option>
         ))}
       </select>
