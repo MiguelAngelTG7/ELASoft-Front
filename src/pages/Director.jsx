@@ -44,7 +44,7 @@ const Director = () => {
   }, []);
 
   if (cargando) return <div className="text-center mt-5">Cargando información...</div>;
-  if (!data.length) return <div className="text-center mt-5">No hay datos disponibles.</div>;
+  if (!Array.isArray(data) || data.length === 0) return <div className="text-center mt-5">No hay datos disponibles.</div>;
 
   const volver = () => navigate('/director');
 
@@ -97,14 +97,14 @@ const Director = () => {
             onChange={(e) => setPeriodoId(e.target.value)}
           >
             <option value="">Seleccione un periodo académico</option>
-            {periodos.map(p => (
+            {Array.isArray(periodos) && periodos.map(p => (
               <option key={p.id} value={p.id}>{p.nombre}</option>
             ))}
           </select>
 
           {cargandoPeriodo && <div>Cargando cursos...</div>}
 
-          {!cargandoPeriodo && cursosPorPeriodo.length > 0 && (
+          {!cargandoPeriodo && Array.isArray(cursosPorPeriodo) && cursosPorPeriodo.length > 0 && (
             <table className="table table-bordered">
               <thead className="table-light">
                 <tr>
@@ -119,7 +119,7 @@ const Director = () => {
                 </tr>
               </thead>
               <tbody>
-                {cursosPorPeriodo.map((clase, i) => (
+                {Array.isArray(cursosPorPeriodo) && cursosPorPeriodo.map((clase, i) => (
                   <tr key={i}>
                     <td className="fw-semibold" onClick={() => handleNavigate("/director/alumnos")}>{clase.curso}</td>
                     <td>
@@ -160,7 +160,7 @@ const Director = () => {
             </table>
           )}
 
-          {!cargandoPeriodo && periodoId && cursosPorPeriodo.length === 0 && (
+          {!cargandoPeriodo && periodoId && Array.isArray(cursosPorPeriodo) && cursosPorPeriodo.length === 0 && (
             <div>No hay datos para este periodo.</div>
           )}
         </div>
