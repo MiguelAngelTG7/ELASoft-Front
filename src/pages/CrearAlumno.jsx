@@ -19,24 +19,38 @@ const CrearAlumno = () => {
     nuevo_creyente: false,
     bautizado: false,
     tiene_ministerio: false,
+    periodo_id: '', // Nuevo campo
     class_id: '',
   });
 
+  const [periodos, setPeriodos] = useState([]);
   const [clases, setClases] = useState([]);
   const [mensaje, setMensaje] = useState('');
 
-  // Obtener clases del profesor
+  // Obtener periodos al cargar
   useEffect(() => {
-    axios.get('/profesor/clases/')
-      .then(res => setClases(res.data))
-      .catch(err => console.error('Error al obtener clases:', err));
+    axios.get('/director/periodos/')
+      .then(res => setPeriodos(res.data))
+      .catch(err => console.error('Error al obtener periodos:', err));
   }, []);
+
+  // Obtener clases del ciclo seleccionado
+  useEffect(() => {
+    if (formData.periodo_id) {
+      axios.get(`/director/clases/?periodo_id=${formData.periodo_id}`)
+        .then(res => setClases(res.data))
+        .catch(err => console.error('Error al obtener clases:', err));
+    } else {
+      setClases([]);
+    }
+  }, [formData.periodo_id]);
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
+      ...(name === 'periodo_id' ? { class_id: '' } : {}), // Limpia clase si cambia ciclo
     }));
   };
 
@@ -44,9 +58,9 @@ const CrearAlumno = () => {
     e.preventDefault();
     setMensaje('');
     try {
-      await axios.post('/director/crear-alumno/', formData); // <-- usa la ruta del director
+      await axios.post('/director/crear-alumno/', formData);
       setMensaje('Alumno creado exitosamente');
-      setTimeout(() => navigate('/profesor'), 1500);
+      setTimeout(() => navigate('/director'), 1500);
     } catch (error) {
       setMensaje('Error al crear alumno');
     }
@@ -109,9 +123,36 @@ const CrearAlumno = () => {
             <label className="form-check-label">Tiene ministerio</label>
           </div>
 
+          {/* Selector de ciclo */}
+          <div className="col-md-12 mb-3">
+            <label>Selecciona ciclo</label>
+            <select
+              name="periodo_id"
+              className="form-control"
+              value={formData.periodo_id}
+              onChange={handleChange}
+              required
+            >
+              <option value="">-- Selecciona un ciclo --</option>
+              {periodos.map(p => (
+                <option key={p.id} value={p.id}>
+                  {p.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Selector de clase */}
           <div className="col-md-12 mb-3">
             <label>Asignar a una clase</label>
-            <select name="class_id" className="form-control" value={formData.class_id} onChange={handleChange} required>
+            <select
+              name="class_id"
+              className="form-control"
+              value={formData.class_id}
+              onChange={handleChange}
+              required
+              disabled={!formData.periodo_id}
+            >
               <option value="">-- Selecciona una clase --</option>
               {clases.map(c => (
                 <option key={c.id} value={c.id}>

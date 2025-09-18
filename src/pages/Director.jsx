@@ -87,7 +87,7 @@ const Director = () => {
           </button>
           <br />
           <button
-            className="btn btn-outline-success"
+            className="btn btn-outline-success mt-2"
             onClick={() => navigate('/director/crear-alumno')}
           >
             Crear nuevo Alumno
