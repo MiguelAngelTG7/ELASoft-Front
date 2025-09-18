@@ -71,7 +71,12 @@ const ListaCursosDirector = () => {
 
       {cargando && <div>Cargando cursos...</div>}
 
-  {!cargando && Array.isArray(cursos) && cursos.length > 0 && (() => {
+      {!cargando && (!Array.isArray(cursos) || cursos.length === 0) && periodoId && (
+        <div>No hay cursos para este periodo.</div>
+      )}
+
+      {!cargando && Array.isArray(cursos) && cursos.length > 0 && (() => {
+        console.log('Cursos:', cursos);
         // Calcular totales
         const totalAlumnos = cursos.reduce((acc, c) => acc + (c.total_alumnos || 0), 0);
         const sumaAsistencia = cursos.reduce((acc, c) => acc + ((c.asistencia_promedio || 0) * (c.total_alumnos || 0)), 0);
@@ -206,10 +211,6 @@ const ListaCursosDirector = () => {
           </>
         );
       })()}
-
-  {!cargando && periodoId && Array.isArray(cursos) && cursos.length === 0 && (
-        <div>No hay cursos para este periodo.</div>
-      )}
 
       <div className="text-center mt-4">
         <button className="btn btn-outline-secondary me-3" onClick={() => window.print()}>
