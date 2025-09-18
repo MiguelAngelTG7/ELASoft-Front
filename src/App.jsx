@@ -165,7 +165,7 @@ function App() {
           />
 
           <Route 
-            path="/director/cursos" 
+            path="/director/clases" 
             element={
               <PrivateRoute rolRequerido="director">
                 <ListaCursosDirector />

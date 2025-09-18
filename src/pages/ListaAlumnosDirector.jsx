@@ -12,7 +12,7 @@ const ListaAlumnosDirector = () => {
 
   useEffect(() => {
     const fetchClases = async () => {
-      const res = await axios.get('/director/clases/');
+  const res = await axios.get('/director/clases/');
       setClases(res.data);
     };
     fetchClases();
