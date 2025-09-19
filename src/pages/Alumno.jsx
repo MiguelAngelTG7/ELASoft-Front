@@ -61,7 +61,8 @@ const Alumno = () => {
             </thead>
             <tbody>
               {data.clases.map((n, i) => {
-                console.log(n); // <-- Log para ver la estructura de cada curso
+                // Log para ver el ID y nombre del curso
+                console.log(`Curso: ${n.curso_nombre}, ID: ${n.id}`);
                 return (
                   <React.Fragment key={i}>
                     <tr>
@@ -81,6 +82,11 @@ const Alumno = () => {
                     <tr>
                       <td colSpan="8">
                         <RecursosCurso claseId={n.id} esProfesor={false} />
+                        {n.id === 23 && n.curso_nombre?.toLowerCase().includes('ética') && (
+                          <div className="alert alert-info mt-2">
+                            Mostrando recursos para Ética Cristiana PM (ID: 23)
+                          </div>
+                        )}
                       </td>
                     </tr>
                   </React.Fragment>
