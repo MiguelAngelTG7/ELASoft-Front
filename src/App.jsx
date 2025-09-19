@@ -130,6 +130,14 @@ function App() {
             }
           />
           <Route
+            path="/profesor/alumnos/:claseId"
+            element={
+              <PrivateRoute rolRequerido="profesor">
+                <ListaAlumnos />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/profesor/asistencia/:claseId/reporte"
             element={
               <PrivateRoute rolRequerido="profesor">

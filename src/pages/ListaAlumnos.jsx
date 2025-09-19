@@ -2,61 +2,34 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
+import { useParams } from 'react-router-dom';
 
 const ListaAlumnos = () => {
-  const [clases, setClases] = useState([]);
-  const [claseId, setClaseId] = useState('');
+  const params = useParams();
+  const claseId = params.claseId || '';
   const [alumnos, setAlumnos] = useState([]);
   const [claseInfo, setClaseInfo] = useState({});
 
-  // Cargar clases del profesor
+  // Cargar alumnos automáticamente si hay claseId en la URL
   useEffect(() => {
-    const fetchClases = async () => {
+    const cargarAlumnos = async () => {
       try {
-        const res = await axios.get('/profesor/clases/');
-        setClases(res.data);
+        if (!claseId) return;
+        const res = await axios.get(`/profesor/alumnos/?clase_id=${claseId}`);
+        setAlumnos(Array.isArray(res.data.alumnos) ? res.data.alumnos : []);
+        setClaseInfo(res.data.clase || {});
       } catch (error) {
-        console.error("Error al cargar clases:", error);
+        console.error("Error al cargar alumnos:", error);
+        setAlumnos([]);
+        setClaseInfo({});
       }
     };
-    fetchClases();
-  }, []);
-
-  // Cargar alumnos según clase seleccionada
-  const cargarAlumnos = async () => {
-    try {
-      if (!claseId) return;
-
-      const res = await axios.get(`/profesor/alumnos/?clase_id=${claseId}`);
-      setAlumnos(Array.isArray(res.data.alumnos) ? res.data.alumnos : []);
-      setClaseInfo(res.data.clase || {});
-    } catch (error) {
-      console.error("Error al cargar alumnos:", error);
-      setAlumnos([]);
-      setClaseInfo({});
-    }
-  };
+    cargarAlumnos();
+  }, [claseId]);
 
   return (
     <div className="container py-4">
       <h2 className="mb-3">Lista de Alumnos</h2>
-
-      <div className="d-flex mb-3 no-print">
-        <select
-          className="form-select me-2"
-          style={{ width: 350 }}
-          value={claseId}
-          onChange={e => setClaseId(e.target.value)}
-        >
-          <option value="">Escoge Clase y Horario</option>
-          {clases.map(clase => (
-            <option key={clase.id} value={clase.id}>
-              {clase.nombre_completo}
-            </option>
-          ))}
-        </select>
-        <button onClick={cargarAlumnos} className="btn btn-primary me-2" disabled={!claseId}>Buscar</button>
-      </div>
 
       {claseInfo.clase_nombre && (
         <div className="mb-3">
@@ -113,7 +86,6 @@ const ListaAlumnos = () => {
         </button>
         <button onClick={() => window.history.back()} className="btn btn-secondary">Volver</button> 
       </div>
-
     </div>
   );
 };
