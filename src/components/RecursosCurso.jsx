@@ -16,6 +16,17 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
       .catch(() => setRecursos([]));
   }, [claseId, esProfesor]);
 
+  // Eliminar recurso
+  const handleEliminar = async (id) => {
+    if (!window.confirm('¿Seguro que deseas eliminar este recurso?')) return;
+    try {
+      await axios.delete(`/profesor/recursos/${claseId}/`, { data: { id } });
+      setRecursos(prev => prev.filter(r => r.id !== id));
+    } catch (err) {
+      alert('Error al eliminar recurso');
+    }
+  };
+
   const handleChange = e => {
     setNuevoRecurso({ ...nuevoRecurso, [e.target.name]: e.target.value });
   };
@@ -80,9 +91,20 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
                 <br />
                 <a href={r.url} target="_blank" rel="noopener noreferrer">{r.url}</a>
               </span>
-              <span className="text-muted" style={{ fontSize: 12 }}>
-                {r.fecha ? new Date(r.fecha).toLocaleDateString() : ""}
-              </span>
+              <div className="d-flex align-items-center" style={{ gap: '0.5rem' }}>
+                <span className="text-muted" style={{ fontSize: 12 }}>
+                  {r.fecha ? new Date(r.fecha).toLocaleDateString() : ""}
+                </span>
+                {esProfesor && (
+                  <button
+                    className="btn btn-outline-danger btn-sm"
+                    title="Eliminar recurso"
+                    onClick={() => handleEliminar(r.id)}
+                  >
+                    Eliminar
+                  </button>
+                )}
+              </div>
             </li>
           ))
         )}
