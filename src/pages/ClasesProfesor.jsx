@@ -73,7 +73,7 @@ const ClasesProfesor = () => {
                     className="d-grid mt-3"
                     style={{
                       gridTemplateColumns: '1fr 1fr',
-                      columnGap: '3rem', // Triple de la distancia estándar (usualmente 1rem)
+                      columnGap: '3rem',
                       rowGap: '0.5rem',
                       width: '80%',
                       margin: '0 auto'
@@ -99,16 +99,16 @@ const ClasesProfesor = () => {
                       <button
                         className="btn btn-success btn-sm"
                         style={{ width: '100%' }}
-                        onClick={() => navigate(`/profesor/notas/${clase.id}`)}
+                        onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
                       >
-                        Notas
+                        Asistencia
                       </button>
                       <button
                         className="btn btn-success btn-sm"
                         style={{ width: '100%' }}
-                        onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
+                        onClick={() => navigate(`/profesor/notas/${clase.id}`)}
                       >
-                        Asistencia
+                        Notas
                       </button>
                     </div>
                   </div>
