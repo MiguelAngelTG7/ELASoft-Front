@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "../services/api";
 
 const RecursosCurso = ({ claseId, esProfesor }) => {
+  console.log("RecursosCurso - claseId:", claseId); // <-- Agrega este log
+
   const [recursos, setRecursos] = useState([]);
   const [nuevoRecurso, setNuevoRecurso] = useState({ titulo: "", url: "", tipo: "video" });
 
   useEffect(() => {
     axios.get(`/profesor/recursos/${claseId}/`)
-      .then(res => setRecursos(res.data))
+      .then(res => {
+        console.log("Recursos recibidos:", res.data); // <-- Log de respuesta
+        setRecursos(res.data);
+      })
       .catch(() => setRecursos([]));
   }, [claseId]);
 
