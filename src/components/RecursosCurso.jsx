@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "../services/api";
 
 const RecursosCurso = ({ claseId, esProfesor }) => {
-  console.log("RecursosCurso - claseId:", claseId); // <-- Agrega este log
-
   const [recursos, setRecursos] = useState([]);
   const [nuevoRecurso, setNuevoRecurso] = useState({ titulo: "", url: "", tipo: "video" });
 
   useEffect(() => {
-    axios.get(`/profesor/recursos/${claseId}/`)
-      .then(res => {
-        console.log("Recursos recibidos:", res.data); // <-- Log de respuesta
-        setRecursos(res.data);
-      })
+    if (!claseId) return;
+    const endpoint = esProfesor
+      ? `/profesor/recursos/${claseId}/`
+      : `/alumno/recursos/${claseId}/`;
+
+    axios.get(endpoint)
+      .then(res => setRecursos(Array.isArray(res.data) ? res.data : []))
       .catch(() => setRecursos([]));
-  }, [claseId]);
+  }, [claseId, esProfesor]);
 
   const handleChange = e => {
     setNuevoRecurso({ ...nuevoRecurso, [e.target.name]: e.target.value });
@@ -25,7 +25,7 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
     if (!nuevoRecurso.titulo || !nuevoRecurso.url) return;
     try {
       const res = await axios.post(`/profesor/recursos/${claseId}/`, nuevoRecurso);
-      setRecursos([...recursos, res.data]);
+      setRecursos(prev => [...prev, res.data]);
       setNuevoRecurso({ titulo: "", url: "", tipo: "video" });
     } catch (err) {
       alert("Error al agregar recurso");
@@ -80,7 +80,9 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
                 <br />
                 <a href={r.url} target="_blank" rel="noopener noreferrer">{r.url}</a>
               </span>
-              <span className="text-muted" style={{ fontSize: 12 }}>{new Date(r.fecha).toLocaleDateString()}</span>
+              <span className="text-muted" style={{ fontSize: 12 }}>
+                {r.fecha ? new Date(r.fecha).toLocaleDateString() : ""}
+              </span>
             </li>
           ))
         )}
