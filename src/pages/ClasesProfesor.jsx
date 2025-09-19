@@ -72,7 +72,7 @@ const ClasesProfesor = () => {
                       <div key={j}>{h}</div>
                     ))}
                   </p>
-                  <div className="d-flex gap-2 mt-3">
+                  <div className="d-grid gap-2 mt-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
                     <button
                       className="btn btn-outline-primary btn-sm"
                       onClick={() => navigate(`/profesor/alumnos/${clase.id}`)}
@@ -81,18 +81,18 @@ const ClasesProfesor = () => {
                     </button>
                     <Link
                       to={`/profesor/asignar-alumnos/${clase.id}`}
-                      className="btn btn-sm btn-outline-danger"
+                      className="btn btn-outline-danger btn-sm"
                     >
                       Asignar | Remover Alumnos
                     </Link>
                     <button
-                      className="btn btn-success btn-sm"
+                      className="btn btn-outline-success btn-sm"
                       onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
                     >
                       Asistencia
                     </button>
                     <button
-                      className="btn btn-success btn-sm"
+                      className="btn btn-outline-success btn-sm"
                       onClick={() => navigate(`/profesor/notas/${clase.id}`)}
                     >
                       Notas
