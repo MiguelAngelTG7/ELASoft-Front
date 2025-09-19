@@ -75,28 +75,28 @@ const ClasesProfesor = () => {
                   <div className="d-grid gap-2 mt-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
                     <button
                       className="btn btn-outline-primary btn-sm"
-                      style={{ width: '66%' }}
+                      style={{ width: '75%' }}
                       onClick={() => navigate(`/profesor/alumnos/${clase.id}`)}
                     >
                       Lista de Alumnos
                     </button>
                     <button
                       className="btn btn-outline-danger btn-sm"
-                      style={{ width: '66%' }}
+                      style={{ width: '75%' }}
                       onClick={() => navigate(`/profesor/asignar-alumnos/${clase.id}`)}
                     >
                       Asignar | Remover Alumnos
                     </button>
                     <button
                       className="btn btn-outline-success btn-sm"
-                      style={{ width: '66%' }}
+                      style={{ width: '75%' }}
                       onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
                     >
                       Asistencia
                     </button>
                     <button
                       className="btn btn-outline-success btn-sm"
-                      style={{ width: '66%' }}
+                      style={{ width: '75%' }}
                       onClick={() => navigate(`/profesor/notas/${clase.id}`)}
                     >
                       Notas
