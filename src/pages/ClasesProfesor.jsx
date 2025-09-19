@@ -65,13 +65,10 @@ const ClasesProfesor = () => {
               <div className="card shadow-sm h-100">
                 <div className="card-body d-flex flex-column align-items-center justify-content-center">
                   <h5 className="card-title">{clase.nombre}</h5>
-                  <p className="card-text text-center">
-                    <strong>Periodo:</strong> {clase.periodo_nombre}<br />
-                    <strong>Horario:</strong><br />
-                    {clase.horarios.map((h, j) => (
-                      <div key={j}>{h}</div>
-                    ))}
-                  </p>
+                  <div className="d-flex justify-content-center align-items-center mb-2" style={{ gap: '1rem' }}>
+                    <span><strong>Periodo:</strong> {clase.periodo_nombre}</span>
+                    <span><strong>Horario:</strong> {clase.horarios.join(', ')}</span>
+                  </div>
                   <div
                     className="d-grid gap-2 mt-3"
                     style={{
@@ -82,14 +79,14 @@ const ClasesProfesor = () => {
                   >
                     <div className="d-grid gap-2">
                       <button
-                        className="btn btn-outline-primary btn-sm"
+                        className="btn btn-primary btn-sm"
                         style={{ width: '100%' }}
                         onClick={() => navigate(`/profesor/alumnos/${clase.id}`)}
                       >
                         Lista de Alumnos
                       </button>
                       <button
-                        className="btn btn-outline-danger btn-sm"
+                        className="btn btn-danger btn-sm"
                         style={{ width: '100%' }}
                         onClick={() => navigate(`/profesor/asignar-alumnos/${clase.id}`)}
                       >
@@ -98,14 +95,14 @@ const ClasesProfesor = () => {
                     </div>
                     <div className="d-grid gap-2">
                       <button
-                        className="btn btn-outline-success btn-sm"
+                        className="btn btn-success btn-sm"
                         style={{ width: '100%' }}
                         onClick={() => navigate(`/profesor/notas/${clase.id}`)}
                       >
                         Notas
                       </button>
                       <button
-                        className="btn btn-outline-success btn-sm"
+                        className="btn btn-success btn-sm"
                         style={{ width: '100%' }}
                         onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
                       >
