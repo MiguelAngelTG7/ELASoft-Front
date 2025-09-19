@@ -60,14 +60,18 @@ const Asistencia = () => {
     <div className="container py-4">
       <h2 className="mb-3">Registro de Asistencia</h2>
 
+      {/* Mensaje debajo del botón Guardar */}
       <div className="d-flex justify-content-between align-items-center mb-4">
-   
         <div className="d-flex gap-2">
           <button onClick={guardar} className="btn btn-success">Guardar</button>
           <button onClick={volver} className="btn btn-secondary">Volver</button>
         </div>
-        
       </div>
+      {guardado && (
+        <div className="alert alert-success mb-3" style={{ maxWidth: 350 }}>
+          Asistencia guardada correctamente.
+        </div>
+      )}
 
       {cargando ? (
         <p>Cargando...</p>
@@ -109,10 +113,6 @@ const Asistencia = () => {
             })}
           </tbody>
         </table>
-      )}
-
-      {guardado && (
-        <div className="alert alert-success mt-3">Asistencia guardada correctamente.</div>
       )}
 
       <button

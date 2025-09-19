@@ -97,6 +97,12 @@ const Notas = () => {
           <button onClick={volver} className="btn btn-secondary">Volver</button>
         </div>
       </div>
+      {/* Mensaje debajo del botón Guardar */}
+      {guardado && (
+        <div className="alert alert-success mb-3" style={{ maxWidth: 350 }}>
+          Notas guardadas correctamente.
+        </div>
+      )}
 
       {cargando ? (
         <p>Cargando notas...</p>
@@ -160,10 +166,6 @@ const Notas = () => {
             ))}
           </tbody>
         </table>
-      )}
-
-      {guardado && (
-        <div className="alert alert-success mt-3">Notas guardadas correctamente.</div>
       )}
 
       <button
