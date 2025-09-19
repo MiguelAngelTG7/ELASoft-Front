@@ -70,9 +70,11 @@ const ClasesProfesor = () => {
                     <span><strong>Horario:</strong> {clase.horarios.join(', ')}</span>
                   </div>
                   <div
-                    className="d-grid gap-2 mt-3"
+                    className="d-grid mt-3"
                     style={{
                       gridTemplateColumns: '1fr 1fr',
+                      columnGap: '3rem', // Triple de la distancia estándar (usualmente 1rem)
+                      rowGap: '0.5rem',
                       width: '80%',
                       margin: '0 auto'
                     }}
