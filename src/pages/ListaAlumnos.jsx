@@ -49,10 +49,10 @@ const ListaAlumnos = () => {
             <th>Email</th>
             <th>Teléfono</th>
             <th>Dirección</th>
-            <th>Sim</th>
-            <th>NC</th>
-            <th>Btz</th>
-            <th>Min</th>
+            {/* <th>Sim</th> */}
+            {/* <th>NC</th> */}
+            {/* <th>Btz</th> */}
+            {/* <th>Min</th> */}
           </tr>
         </thead>
         <tbody>
@@ -69,16 +69,16 @@ const ListaAlumnos = () => {
                 <td>{a.email}</td>
                 <td>{a.telefono}</td>
                 <td>{a.direccion}</td>
-                <td>{a.interesado ? '✓' : ''}</td>
+                {/* <td>{a.interesado ? '✓' : ''}</td>
                 <td>{a.nuevo_creyente ? '✓' : ''}</td>
                 <td>{a.bautizado ? '✓' : ''}</td>
-                <td>{a.tiene_ministerio ? '✓' : ''}</td>
+                <td>{a.tiene_ministerio ? '✓' : ''}</td> */}
               </tr>
             ))
           )}
         </tbody>
       </table>
-      <small>Sim = Simpatizante, NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small>
+      {/* <small>Sim = Simpatizante, NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small> */}
 
       <div className="text-center mt-4 no-print">
         <button className="btn btn-outline-secondary me-3" onClick={() => window.print()}>
