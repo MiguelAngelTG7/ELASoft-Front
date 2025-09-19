@@ -60,29 +60,32 @@ const Alumno = () => {
               </tr>
             </thead>
             <tbody>
-              {data.clases.map((n, i) => (
-                <React.Fragment key={i}>
-                  <tr>
-                    <td>{n.curso_nombre || '-'}</td>
-                    <td>{n.horarios?.join(', ') || 'Sin horario'}</td>
-                    <td>{n.participacion}</td>
-                    <td>{n.tareas}</td>
-                    <td>{n.examen_final}</td>
-                    <td>{n.promedio}</td>
-                    <td>{n.asistencia_pct}%</td>
-                    <td>
-                      <span className={`badge ${n.estado === 'Aprobado' ? 'bg-success' : 'bg-danger'}`}>
-                        {n.estado}
-                      </span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colSpan="8">
-                      <RecursosCurso claseId={n.curso_id} esProfesor={false} />
-                    </td>
-                  </tr>
-                </React.Fragment>
-              ))}
+              {data.clases.map((n, i) => {
+                console.log(n); // <-- Log para ver la estructura de cada curso
+                return (
+                  <React.Fragment key={i}>
+                    <tr>
+                      <td>{n.curso_nombre || '-'}</td>
+                      <td>{n.horarios?.join(', ') || 'Sin horario'}</td>
+                      <td>{n.participacion}</td>
+                      <td>{n.tareas}</td>
+                      <td>{n.examen_final}</td>
+                      <td>{n.promedio}</td>
+                      <td>{n.asistencia_pct}%</td>
+                      <td>
+                        <span className={`badge ${n.estado === 'Aprobado' ? 'bg-success' : 'bg-danger'}`}>
+                          {n.estado}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colSpan="8">
+                        <RecursosCurso claseId={n.id} esProfesor={false} />
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                );
+              })}
             </tbody>
           </table>
           <div className="text-center mt-4">
