@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import RecursosCurso from '../components/RecursosCurso';
 
 const Alumno = () => {
   const [data, setData] = useState(null);
@@ -60,20 +61,27 @@ const Alumno = () => {
             </thead>
             <tbody>
               {data.clases.map((n, i) => (
-                <tr key={i}>
-                  <td>{n.curso_nombre || '-'}</td>
-                  <td>{n.horarios?.join(', ') || 'Sin horario'}</td>
-                  <td>{n.participacion}</td>
-                  <td>{n.tareas}</td>
-                  <td>{n.examen_final}</td>
-                  <td>{n.promedio}</td>
-                  <td>{n.asistencia_pct}%</td>
-                  <td>
-                    <span className={`badge ${n.estado === 'Aprobado' ? 'bg-success' : 'bg-danger'}`}>
-                      {n.estado}
-                    </span>
-                  </td>
-                </tr>
+                <React.Fragment key={i}>
+                  <tr>
+                    <td>{n.curso_nombre || '-'}</td>
+                    <td>{n.horarios?.join(', ') || 'Sin horario'}</td>
+                    <td>{n.participacion}</td>
+                    <td>{n.tareas}</td>
+                    <td>{n.examen_final}</td>
+                    <td>{n.promedio}</td>
+                    <td>{n.asistencia_pct}%</td>
+                    <td>
+                      <span className={`badge ${n.estado === 'Aprobado' ? 'bg-success' : 'bg-danger'}`}>
+                        {n.estado}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan="8">
+                      <RecursosCurso claseId={n.curso_id} esProfesor={false} />
+                    </td>
+                  </tr>
+                </React.Fragment>
               ))}
             </tbody>
           </table>
