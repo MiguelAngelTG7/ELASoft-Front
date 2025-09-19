@@ -63,44 +63,55 @@ const ClasesProfesor = () => {
           {clases.map((clase, i) => (
             <div className="col-md-6" key={i}>
               <div className="card shadow-sm h-100">
-                <div className="card-body">
+                <div className="card-body d-flex flex-column align-items-center justify-content-center">
                   <h5 className="card-title">{clase.nombre}</h5>
-                  <p className="card-text">
+                  <p className="card-text text-center">
                     <strong>Periodo:</strong> {clase.periodo_nombre}<br />
                     <strong>Horario:</strong><br />
                     {clase.horarios.map((h, j) => (
                       <div key={j}>{h}</div>
                     ))}
                   </p>
-                  <div className="d-grid gap-2 mt-3" style={{ gridTemplateColumns: '1fr 1fr' }}>
-                    <button
-                      className="btn btn-outline-primary btn-sm"
-                      style={{ width: '75%' }}
-                      onClick={() => navigate(`/profesor/alumnos/${clase.id}`)}
-                    >
-                      Lista de Alumnos
-                    </button>
-                    <button
-                      className="btn btn-outline-danger btn-sm"
-                      style={{ width: '75%' }}
-                      onClick={() => navigate(`/profesor/asignar-alumnos/${clase.id}`)}
-                    >
-                      Asignar | Remover Alumnos
-                    </button>
-                    <button
-                      className="btn btn-outline-success btn-sm"
-                      style={{ width: '75%' }}
-                      onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
-                    >
-                      Asistencia
-                    </button>
-                    <button
-                      className="btn btn-outline-success btn-sm"
-                      style={{ width: '75%' }}
-                      onClick={() => navigate(`/profesor/notas/${clase.id}`)}
-                    >
-                      Notas
-                    </button>
+                  <div
+                    className="d-grid gap-2 mt-3"
+                    style={{
+                      gridTemplateColumns: '1fr 1fr',
+                      width: '80%',
+                      margin: '0 auto'
+                    }}
+                  >
+                    <div className="d-grid gap-2">
+                      <button
+                        className="btn btn-outline-primary btn-sm"
+                        style={{ width: '100%' }}
+                        onClick={() => navigate(`/profesor/alumnos/${clase.id}`)}
+                      >
+                        Lista de Alumnos
+                      </button>
+                      <button
+                        className="btn btn-outline-danger btn-sm"
+                        style={{ width: '100%' }}
+                        onClick={() => navigate(`/profesor/asignar-alumnos/${clase.id}`)}
+                      >
+                        Asignar | Remover Alumnos
+                      </button>
+                    </div>
+                    <div className="d-grid gap-2">
+                      <button
+                        className="btn btn-outline-success btn-sm"
+                        style={{ width: '100%' }}
+                        onClick={() => navigate(`/profesor/notas/${clase.id}`)}
+                      >
+                        Notas
+                      </button>
+                      <button
+                        className="btn btn-outline-success btn-sm"
+                        style={{ width: '100%' }}
+                        onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
+                      >
+                        Asistencia
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
