@@ -55,14 +55,7 @@ const ClasesProfesor = () => {
         <button onClick={handleLogout} className="btn btn-danger">Salir</button>
       </div>
       {/* Botones debajo del nombre del profesor */}
-      <div className="d-flex gap-2 mb-4">
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => navigate('/profesor/alumnos')}
-        >
-          Lista de Alumnos
-        </button>
-      </div>
+
       {clases.length === 0 ? (
         <p>No tienes clases asignadas.</p>
       ) : (
