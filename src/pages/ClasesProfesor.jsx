@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import RecursosCurso from '../components/RecursosCurso';
 
 const ClasesProfesor = () => {
   const [clases, setClases] = useState([]);
@@ -69,6 +70,7 @@ const ClasesProfesor = () => {
                     <span><strong>Periodo:</strong> {clase.periodo_nombre}</span>
                     <span><strong>Horario:</strong> {clase.horarios.join(', ')}</span>
                   </div>
+                  {/* Botones de acciones */}
                   <div
                     className="d-grid mt-3"
                     style={{
@@ -112,6 +114,8 @@ const ClasesProfesor = () => {
                       </button>
                     </div>
                   </div>
+                  {/* Recursos del curso */}
+                  <RecursosCurso claseId={clase.id} esProfesor={true} />
                 </div>
               </div>
             </div>
