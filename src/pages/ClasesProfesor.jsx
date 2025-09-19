@@ -72,20 +72,26 @@ const ClasesProfesor = () => {
               <div className="card shadow-sm h-100">
                 <div className="card-body">
                   <h5 className="card-title">{clase.nombre}</h5>
-              {/* Nombre del profesor dentro de la tarjeta - eliminado */}
                   <p className="card-text">
                     <strong>Periodo:</strong> {clase.periodo_nombre}<br />
                     <strong>Horario:</strong><br />
                     {clase.horarios.map((h, j) => (
                       <div key={j}>{h}</div>
                     ))}
-                    <td>
-                      <Link to={`/profesor/asignar-alumnos/${clase.id}`} className="btn btn-sm btn-outline-danger">
-                        Asignar | Remover Alumnos
-                      </Link>
-                    </td>
                   </p>
                   <div className="d-flex gap-2 mt-3">
+                    <button
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={() => navigate(`/profesor/alumnos/${clase.id}`)}
+                    >
+                      Lista de Alumnos
+                    </button>
+                    <Link
+                      to={`/profesor/asignar-alumnos/${clase.id}`}
+                      className="btn btn-sm btn-outline-danger"
+                    >
+                      Asignar | Remover Alumnos
+                    </Link>
                     <button
                       className="btn btn-success btn-sm"
                       onClick={() => navigate(`/profesor/asistencia/${clase.id}`)}
