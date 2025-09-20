@@ -45,7 +45,6 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
 
   return (
     <div className="mt-4">
-      <hr style={{ margin: '24px 0 16px 0' }} />
       <h5 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '18px' }}>
         Recursos del Curso
       </h5>
