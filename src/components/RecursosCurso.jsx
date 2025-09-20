@@ -82,7 +82,7 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
             >
               <option value="video">Video</option>
               <option value="archivo">Archivo</option>
-              <option value="otro">Otro</option>
+              <option value="otro">Web</option>
             </select>
           </div>
           <button type="submit" className="btn btn-success btn-sm" style={{ fontSize: '0.8rem', width: '100%' }}>
