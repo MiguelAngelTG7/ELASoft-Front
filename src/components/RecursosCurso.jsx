@@ -95,13 +95,12 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
           <li className="list-group-item text-muted" style={{ fontSize: '0.8rem' }}>No hay recursos aún.</li>
         ) : (
           recursos.map(r => (
-            <li key={r.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ fontSize: '0.85rem' }}>
-              <span>
-                <strong style={{ fontSize: '0.85rem' }}>{r.titulo}</strong> <span className="badge bg-secondary" style={{ fontSize: '0.7rem' }}>{r.tipo}</span>
-                <br />
-                <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem' }}>{r.url}</a>
-              </span>
-              <div className="d-flex align-items-center" style={{ gap: '0.5rem' }}>
+            <li key={r.id} className="list-group-item" style={{ fontSize: '0.85rem' }}>
+              <strong style={{ fontSize: '0.85rem' }}>{r.titulo}</strong>
+              <span className="badge bg-secondary" style={{ fontSize: '0.7rem', marginLeft: 8 }}>{r.tipo}</span>
+              <br />
+              <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem' }}>{r.url}</a>
+              <div className="d-flex flex-column align-items-start mt-1" style={{ gap: '0.3rem' }}>
                 <span className="text-muted" style={{ fontSize: '0.75rem' }}>
                   {r.fecha ? new Date(r.fecha).toLocaleDateString() : ""}
                 </span>
@@ -109,7 +108,7 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
                   <button
                     className="btn btn-outline-danger btn-sm"
                     title="Eliminar recurso"
-                    style={{ fontSize: '0.75rem' }}
+                    style={{ fontSize: '0.75rem', width: '100px' }}
                     onClick={() => handleEliminar(r.id)}
                   >
                     Eliminar
