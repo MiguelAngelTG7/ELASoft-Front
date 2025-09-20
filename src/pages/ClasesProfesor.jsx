@@ -56,7 +56,7 @@ const ClasesProfesor = () => {
         <button onClick={handleLogout} className="btn btn-danger">Salir</button>
       </div>
       {/* Botones debajo del nombre del profesor */}
-
+      <hr style={{ margin: '24px 0 16px 0' }} />
       {clases.length === 0 ? (
         <p>No tienes clases asignadas.</p>
       ) : (
@@ -102,6 +102,9 @@ const ClasesProfesor = () => {
                     </button>
                   </div>
                   {/* Recursos del curso */}
+                  <h5 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '18px' }}>
+                    Recursos del Curso
+                  </h5>
                   <RecursosCurso claseId={clase.id} esProfesor={true} />
                 </div>
               </div>
