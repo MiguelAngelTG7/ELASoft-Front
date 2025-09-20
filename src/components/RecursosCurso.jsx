@@ -46,7 +46,7 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
   return (
     <div className="mt-4">
       <hr style={{ margin: '24px 0 16px 0' }} />
-      <h5 style={{ fontSize: '0.85rem', textAlign: 'center', marginBottom: '18px' }}>Recursos del Curso</h5>
+      <h4 style={{ fontSize: '0.9rem', textAlign: 'center', marginBottom: '18px' }}>Recursos del Curso</h4>
       {esProfesor && (
         <form className="mb-3 d-flex gap-2" onSubmit={handleAgregar}>
           <input
