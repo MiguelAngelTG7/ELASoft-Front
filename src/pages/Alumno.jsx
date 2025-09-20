@@ -82,11 +82,6 @@ const Alumno = () => {
                     <tr>
                       <td colSpan="8">
                         <RecursosCurso claseId={n.clase_id} esProfesor={false} />
-                        {n.clase_id === 23 && n.curso_nombre?.toLowerCase().includes('ética') && (
-                          <div className="alert alert-info mt-2">
-                            Mostrando recursos para Ética Cristiana PM (ID: 23)
-                          </div>
-                        )}
                       </td>
                     </tr>
                   </React.Fragment>
