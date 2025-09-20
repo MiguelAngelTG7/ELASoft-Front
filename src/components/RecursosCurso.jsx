@@ -49,37 +49,45 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
         Recursos del Curso
       </h5>
       {esProfesor && (
-        <form className="mb-3 d-flex gap-2" onSubmit={handleAgregar}>
-          <input
-            type="text"
-            name="titulo"
-            value={nuevoRecurso.titulo}
-            onChange={handleChange}
-            placeholder="Título"
-            className="form-control"
-            style={{ maxWidth: 180, fontSize: '0.8rem' }}
-          />
-          <input
-            type="url"
-            name="url"
-            value={nuevoRecurso.url}
-            onChange={handleChange}
-            placeholder="URL"
-            className="form-control"
-            style={{ maxWidth: 220, fontSize: '0.8rem' }}
-          />
-          <select
-            name="tipo"
-            value={nuevoRecurso.tipo}
-            onChange={handleChange}
-            className="form-select"
-            style={{ maxWidth: 120, fontSize: '0.8rem' }}
-          >
-            <option value="video">Video</option>
-            <option value="archivo">Archivo</option>
-            <option value="otro">Otro</option>
-          </select>
-          <button type="submit" className="btn btn-success btn-sm" style={{ fontSize: '0.8rem' }}>Agregar</button>
+        <form className="mb-3" onSubmit={handleAgregar}>
+          <div className="mb-2">
+            <input
+              type="text"
+              name="titulo"
+              value={nuevoRecurso.titulo}
+              onChange={handleChange}
+              placeholder="Título"
+              className="form-control"
+              style={{ fontSize: '0.8rem' }}
+            />
+          </div>
+          <div className="mb-2">
+            <input
+              type="url"
+              name="url"
+              value={nuevoRecurso.url}
+              onChange={handleChange}
+              placeholder="URL"
+              className="form-control"
+              style={{ fontSize: '0.8rem' }}
+            />
+          </div>
+          <div className="mb-2">
+            <select
+              name="tipo"
+              value={nuevoRecurso.tipo}
+              onChange={handleChange}
+              className="form-select"
+              style={{ fontSize: '0.8rem' }}
+            >
+              <option value="video">Video</option>
+              <option value="archivo">Archivo</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <button type="submit" className="btn btn-success btn-sm" style={{ fontSize: '0.8rem', width: '100%' }}>
+            Agregar
+          </button>
         </form>
       )}
       <ul className="list-group">
