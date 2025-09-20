@@ -44,8 +44,9 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
   };
 
   return (
-    <div className="mt-3">
-      <h5 style={{ fontSize: '1rem' }}>Recursos del Curso</h5>
+    <div className="mt-4">
+      <hr style={{ margin: '24px 0 16px 0' }} />
+      <h5 style={{ fontSize: '0.85rem', textAlign: 'center', marginBottom: '18px' }}>Recursos del Curso</h5>
       {esProfesor && (
         <form className="mb-3 d-flex gap-2" onSubmit={handleAgregar}>
           <input
@@ -55,7 +56,7 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
             onChange={handleChange}
             placeholder="Título"
             className="form-control"
-            style={{ maxWidth: 180, fontSize: '0.9rem' }}
+            style={{ maxWidth: 180, fontSize: '0.8rem' }}
           />
           <input
             type="url"
@@ -64,42 +65,42 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
             onChange={handleChange}
             placeholder="URL"
             className="form-control"
-            style={{ maxWidth: 220, fontSize: '0.9rem' }}
+            style={{ maxWidth: 220, fontSize: '0.8rem' }}
           />
           <select
             name="tipo"
             value={nuevoRecurso.tipo}
             onChange={handleChange}
             className="form-select"
-            style={{ maxWidth: 120, fontSize: '0.9rem' }}
+            style={{ maxWidth: 120, fontSize: '0.8rem' }}
           >
             <option value="video">Video</option>
             <option value="archivo">Archivo</option>
             <option value="otro">Otro</option>
           </select>
-          <button type="submit" className="btn btn-success btn-sm" style={{ fontSize: '0.9rem' }}>Agregar</button>
+          <button type="submit" className="btn btn-success btn-sm" style={{ fontSize: '0.8rem' }}>Agregar</button>
         </form>
       )}
       <ul className="list-group">
         {recursos.length === 0 ? (
-          <li className="list-group-item text-muted" style={{ fontSize: '0.9rem' }}>No hay recursos aún.</li>
+          <li className="list-group-item text-muted" style={{ fontSize: '0.8rem' }}>No hay recursos aún.</li>
         ) : (
           recursos.map(r => (
-            <li key={r.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ fontSize: '0.95rem' }}>
+            <li key={r.id} className="list-group-item d-flex justify-content-between align-items-center" style={{ fontSize: '0.85rem' }}>
               <span>
-                <strong style={{ fontSize: '0.95rem' }}>{r.titulo}</strong> <span className="badge bg-secondary" style={{ fontSize: '0.8rem' }}>{r.tipo}</span>
+                <strong style={{ fontSize: '0.85rem' }}>{r.titulo}</strong> <span className="badge bg-secondary" style={{ fontSize: '0.7rem' }}>{r.tipo}</span>
                 <br />
-                <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.9rem' }}>{r.url}</a>
+                <a href={r.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.8rem' }}>{r.url}</a>
               </span>
               <div className="d-flex align-items-center" style={{ gap: '0.5rem' }}>
-                <span className="text-muted" style={{ fontSize: '0.85rem' }}>
+                <span className="text-muted" style={{ fontSize: '0.75rem' }}>
                   {r.fecha ? new Date(r.fecha).toLocaleDateString() : ""}
                 </span>
                 {esProfesor && (
                   <button
                     className="btn btn-outline-danger btn-sm"
                     title="Eliminar recurso"
-                    style={{ fontSize: '0.85rem' }}
+                    style={{ fontSize: '0.75rem' }}
                     onClick={() => handleEliminar(r.id)}
                   >
                     Eliminar
