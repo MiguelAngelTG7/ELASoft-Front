@@ -102,8 +102,6 @@ const ClasesProfesor = () => {
                     </button>
                   </div>
                   {/* Recursos del curso */}
-                  <h5 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '18px' }}>
-                    Recursos del Curso
                   </h5>
                   <RecursosCurso claseId={clase.id} esProfesor={true} />
                 </div>
