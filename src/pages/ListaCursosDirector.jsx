@@ -270,14 +270,6 @@ const ListaCursosDirector = () => {
                 <h6>% Total Aprobados</h6>
                 <Pie data={aprobadosPieData} />
               </div>
-              <div className="col text-center">
-                <h6>Otro Gráfico 1</h6>
-                <Pie data={otroPieData1} />
-              </div>
-              <div className="col text-center">
-                <h6>Otro Gráfico 2</h6>
-                <Pie data={otroPieData2} />
-              </div>
             </div>
           </>
         );
