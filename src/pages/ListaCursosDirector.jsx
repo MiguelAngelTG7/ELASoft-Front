@@ -92,22 +92,58 @@ const ListaCursosDirector = () => {
             {
               label: 'Alumnos',
               data: cursos.map(c => c.total_alumnos || 0),
-              backgroundColor: 'rgba(54, 162, 235, 0.7)',
+              backgroundColor: cursos.map(c => {
+                const n = c.total_alumnos || 0;
+                return (n < 3 || n > 14) ? 'rgba(220, 53, 69, 0.8)' : 'rgba(40, 167, 69, 0.8)';
+              }),
+              borderRadius: 6,
+              borderSkipped: false,
             },
           ],
         };
 
         const barOptions = {
+          indexAxis: 'y', // barras horizontales
           responsive: true,
           plugins: {
             legend: { display: false },
             title: { display: true, text: 'Alumnos por Curso' },
+            datalabels: {
+              anchor: 'end',
+              align: 'end',
+              color: (ctx) => {
+                const value = ctx.dataset.data[ctx.dataIndex];
+                return (value < 3 || value > 14) ? '#fff' : '#222';
+              },
+              font: {
+                weight: 'bold',
+                size: 14,
+              },
+              formatter: (value) => value,
+            },
           },
           scales: {
-            x: { title: { display: true, text: 'Curso' } },
-            y: { title: { display: true, text: 'Alumnos' }, beginAtZero: true },
+            y: {
+              title: { display: true, text: 'Curso' },
+              ticks: {
+                color: '#222',
+                font: { weight: 'bold', size: 14 },
+              },
+            },
+            x: {
+              title: { display: true, text: 'Alumnos' },
+              beginAtZero: true,
+              ticks: { stepSize: 1 },
+            },
           },
         };
+
+        // Registrar plugin datalabels si está disponible
+        try {
+          // eslint-disable-next-line
+          const ChartDataLabels = require('chartjs-plugin-datalabels');
+          ChartJS.register(ChartDataLabels);
+        } catch (e) {}
 
         return (
           <>
