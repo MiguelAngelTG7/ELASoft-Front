@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../services/api";
 import { useNavigate } from "react-router-dom";
-import { Bar } from 'react-chartjs-2';
+import { Bar, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -145,6 +145,22 @@ const ListaCursosDirector = () => {
           ChartJS.register(ChartDataLabels);
         } catch (e) {}
 
+        const asistenciaPieData = {
+          labels: ['Asistencia', 'Faltas'],
+          datasets: [{
+            data: [asistenciaTotal, 100 - asistenciaTotal],
+            backgroundColor: ['#28a745', '#dc3545'],
+          }],
+        };
+
+        const aprobadosPieData = {
+          labels: ['Aprobados', 'Desaprobados'],
+          datasets: [{
+            data: [aprobadosTotal, 100 - aprobadosTotal],
+            backgroundColor: ['#007bff', '#ffc107'],
+          }],
+        };
+
         return (
           <>
             <table className="table table-bordered">
@@ -238,7 +254,31 @@ const ListaCursosDirector = () => {
             </div>
             {/* Gráfico de barras al final */}
             <div className="mb-4">
-              <Bar data={barData} options={barOptions} />
+              <Bar
+                data={barData}
+                options={barOptions}
+                height={cursos.length * 50} // 50px por curso, ajusta el valor si lo deseas
+              />
+            </div>
+            {/* Gráfico de torta de asistencia */}
+            <div className="mb-4">
+              <h4>Asistencia General</h4>
+              <Pie data={asistenciaPieData} />
+            </div>
+            {/* Gráfico de torta de aprobados */}
+            <div className="mb-4">
+              <h4>Aprobados y Desaprobados</h4>
+              <Pie data={aprobadosPieData} />
+            </div>
+            <div className="row mb-4">
+              <div className="col-md-6 text-center">
+                <h6>% Total Asistencia</h6>
+                <Pie data={asistenciaPieData} />
+              </div>
+              <div className="col-md-6 text-center">
+                <h6>% Total Aprobados</h6>
+                <Pie data={aprobadosPieData} />
+              </div>
             </div>
           </>
         );
