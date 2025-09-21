@@ -257,28 +257,32 @@ const ListaCursosDirector = () => {
               <Bar
                 data={barData}
                 options={barOptions}
-                height={cursos.length * 50} // 50px por curso, ajusta el valor si lo deseas
+                height={cursos.length * 15} // 15px por curso, ajusta el valor si lo deseas
               />
             </div>
-            {/* Gráfico de torta de asistencia */}
-            <div className="mb-4">
+            {/* Gráficos circulares */}
+            <div className="row mb-4">
+              
+              <div className="mb-4">
               <h4>Asistencia General</h4>
               <Pie data={asistenciaPieData} />
-            </div>
-            {/* Gráfico de torta de aprobados */}
-            <div className="mb-4">
-              <h4>Aprobados y Desaprobados</h4>
-              <Pie data={aprobadosPieData} />
-            </div>
-            <div className="row mb-4">
+              </div>
+
               <div className="col-md-6 text-center">
                 <h6>% Total Asistencia</h6>
                 <Pie data={asistenciaPieData} />
               </div>
+
+              <div className="mb-4">
+              <h4>Aprobados y Desaprobados</h4>
+              <Pie data={aprobadosPieData} />
+              </div>
+
               <div className="col-md-6 text-center">
                 <h6>% Total Aprobados</h6>
                 <Pie data={aprobadosPieData} />
               </div>
+
             </div>
           </>
         );
