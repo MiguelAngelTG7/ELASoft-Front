@@ -233,20 +233,20 @@ const ListaCursosDirector = () => {
                     <tr>
                       <td className="text-end">Total de Alumnos:</td>
                       <td>{totalAlumnos}</td>
-                      <td className="text-end">% Total Asistencia:</td>
-                      <td>{asistenciaTotal}%</td>
+                      <td></td>
+                      <td></td>
                     </tr>
                     <tr>
+                      <td className="text-end">% Total Asistencia:</td>
+                      <td>{asistenciaTotal}%</td>
                       <td className="text-end">% Total Aprobados:</td>
                       <td>{aprobadosTotal}%</td>
-                      <td className="text-end">Total de Maestros:</td>
-                      <td>{totalMaestros}</td>
                     </tr>
                     <tr>
                       <td className="text-end">Total de Cursos:</td>
                       <td>{totalCursos}</td>
-                      <td></td>
-                      <td></td>
+                      <td className="text-end">Total de Maestros:</td>
+                      <td>{totalMaestros}</td>
                     </tr>
                   </tbody>
                 </table>
