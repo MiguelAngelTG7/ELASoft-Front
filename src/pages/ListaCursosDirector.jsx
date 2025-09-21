@@ -231,36 +231,26 @@ const ListaCursosDirector = () => {
                 <table className="table table-bordered table-info fw-bold mb-0">
                   <tbody>
                     <tr>
-                      <td className="text-end">Total de Alumnos:</td>
+                      <td className="text-start">Total de Alumnos:</td>
                       <td>{totalAlumnos}</td>
-                      <td></td>
-                      <td></td>
                     </tr>
                     <tr>
-                      <td className="text-end">% Total Asistencia:</td>
+                      <td className="text-start">% Total Asistencia:</td>
                       <td>{asistenciaTotal}%</td>
-                      <td></td>
-                      <td></td>
                     </tr>
                     <tr>
-                      <td className="text-end">% Total Aprobados:</td>
+                      <td className="text-start">% Total Aprobados:</td>
                       <td>{aprobadosTotal}%</td>
-                      <td></td>
-                      <td></td>
                     </tr>
                     <tr>
-                      <td className="text-end">Total de Cursos:</td>
+                      <td className="text-start">Total de Cursos:</td>
                       <td>{totalCursos}</td>
-                      <td></td>
-                      <td></td>
                     </tr>
                     <tr>
-                      <td className="text-end">Total de Maestros:</td>
+                      <td className="text-start">Total de Maestros:</td>
                       <td>{totalMaestros}</td>
-                      <td></td>
-                      <td></td>
                     </tr>
-                  </tbody>                  
+                  </tbody>
                 </table>
               </div>
             </div>
