@@ -262,27 +262,22 @@ const ListaCursosDirector = () => {
             </div>
             {/* Gráficos circulares */}
             <div className="row mb-4">
-              
-              <div className="mb-4">
-              <h4>Asistencia General</h4>
-              <Pie data={asistenciaPieData} />
-              </div>
-
-              <div className="col-md-6 text-center">
+              <div className="col text-center">
                 <h6>% Total Asistencia</h6>
                 <Pie data={asistenciaPieData} />
               </div>
-
-              <div className="mb-4">
-              <h4>Aprobados y Desaprobados</h4>
-              <Pie data={aprobadosPieData} />
-              </div>
-
-              <div className="col-md-6 text-center">
+              <div className="col text-center">
                 <h6>% Total Aprobados</h6>
                 <Pie data={aprobadosPieData} />
               </div>
-
+              <div className="col text-center">
+                <h6>Otro Gráfico 1</h6>
+                <Pie data={otroPieData1} />
+              </div>
+              <div className="col text-center">
+                <h6>Otro Gráfico 2</h6>
+                <Pie data={otroPieData2} />
+              </div>
             </div>
           </>
         );
