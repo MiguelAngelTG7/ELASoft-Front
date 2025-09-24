@@ -42,12 +42,12 @@ const Director = () => {
   }, []);
 
   useEffect(() => {
-    if (mostrarCursosPeriodo) {
+    if (mostrarCursosPeriodo || mostrarBuscadorAlumnos) {
       axios.get('/director/periodos/')
         .then(res => setPeriodos(res.data.periodos))
         .catch(() => setPeriodos([]));
     }
-  }, [mostrarCursosPeriodo]);
+  }, [mostrarCursosPeriodo, mostrarBuscadorAlumnos]);
 
   useEffect(() => {
     if (periodoId) {
@@ -146,6 +146,19 @@ const Director = () => {
         <div className="mt-4">
           <h4>Buscar alumno por nombre o apellido</h4>
           <div className="mb-2">
+            <label htmlFor="periodoBuscador" className="form-label">Periodo Académico</label>
+            <select
+              id="periodoBuscador"
+              className="form-select mb-2"
+              style={{ maxWidth: 400 }}
+              value={periodoId}
+              onChange={e => setPeriodoId(e.target.value)}
+            >
+              <option value="">Seleccione un periodo académico</option>
+              {periodos.map(p => (
+                <option key={p.id} value={p.id}>{p.nombre}</option>
+              ))}
+            </select>
             <label htmlFor="busquedaAlumno" className="form-label">Nombre o Apellido del Alumno</label>
             <input
               id="busquedaAlumno"
