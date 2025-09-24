@@ -15,11 +15,11 @@ const Director = () => {
   const navigate = useNavigate();
 
   // Estados para búsqueda de alumnos
+  const [mostrarBuscadorAlumnos, setMostrarBuscadorAlumnos] = useState(false);
   const [busquedaAlumno, setBusquedaAlumno] = useState("");
   const [resultadosAlumnos, setResultadosAlumnos] = useState([]);
   const [cursosAlumno, setCursosAlumno] = useState([]);
   const [alumnosPeriodo, setAlumnosPeriodo] = useState([]);
-  const [mostrarBuscadorAlumnos, setMostrarBuscadorAlumnos] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('access');
@@ -121,10 +121,18 @@ const Director = () => {
             Ver Lista de Cursos
           </button>
           <br />
+          {/* Nuevo botón Buscar Alumno antes de Crear nuevo Alumno */}
+          <button
+            className="btn btn-outline-info mt-2"
+            onClick={() => setMostrarBuscadorAlumnos(!mostrarBuscadorAlumnos)}
+          >
+            {mostrarBuscadorAlumnos ? "Ocultar Buscador de Alumnos" : "Buscar Alumno"}
+          </button>
+          <br />
           <button
             className="btn btn-outline-danger mt-2"
             onClick={() => navigate('/director/crear-alumno')}
-      >
+          >
             Crear nuevo Alumno
           </button>
           <br />
@@ -133,6 +141,49 @@ const Director = () => {
         </div>
       </div>
 
+      {/* Buscador de alumnos fuera de la sección de cursos por periodo */}
+      {mostrarBuscadorAlumnos && (
+        <div className="mt-4">
+          <h4>Buscar alumno por nombre o apellido</h4>
+          <input
+            type="text"
+            className="form-control mb-2"
+            style={{ maxWidth: 400 }}
+            placeholder="Buscar alumno..."
+            value={busquedaAlumno}
+            onChange={e => setBusquedaAlumno(e.target.value)}
+            disabled={!periodoId}
+          />
+          {resultadosAlumnos.length > 0 && (
+            <table className="table table-bordered table-hover mb-3">
+              <thead className="table-info">
+                <tr>
+                  <th>Nombre del Alumno</th>
+                </tr>
+              </thead>
+              <tbody>
+                {resultadosAlumnos.map(a => (
+                  <tr key={a.id} style={{ cursor: 'pointer' }} onClick={() => handleAlumnoClick(a.id)}>
+                    <td>{a.nombre_completo}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {cursosAlumno.length > 0 && (
+            <div className="mb-3">
+              <h5>Cursos de este alumno en el periodo</h5>
+              <ul className="list-group">
+                {cursosAlumno.map(c => (
+                  <li key={c.id} className="list-group-item">
+                    <strong>{c.nombre}</strong> — Nivel: {c.nivel} — Horario: {c.horarios?.join(", ")}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Cursos por periodo académico */}
       {mostrarCursosPeriodo && (
@@ -149,71 +200,6 @@ const Director = () => {
               <option key={p.id} value={p.id}>{p.nombre}</option>
             ))}
           </select>
-
-          {/* Botón para mostrar/ocultar buscador de alumnos */}
-          <button
-            className="btn btn-outline-info mt-2"
-            onClick={() => setMostrarBuscadorAlumnos(!mostrarBuscadorAlumnos)}
-          >
-            {mostrarBuscadorAlumnos ? "Ocultar Buscador de Alumnos" : "Buscar Alumno"}
-          </button>
-
-          {/* Buscador de alumnos */}
-          {mostrarBuscadorAlumnos && (
-            <div className="mt-4">
-              <h4>Buscar alumno por nombre o apellido</h4>
-              <input
-                type="text"
-                className="form-control mb-2"
-                style={{ maxWidth: 400 }}
-                placeholder="Buscar alumno..."
-                value={busquedaAlumno}
-                onChange={e => setBusquedaAlumno(e.target.value)}
-              />
-              {resultadosAlumnos.length > 0 && (
-                <table className="table table-bordered table-hover mb-3">
-                  <thead className="table-info">
-                    <tr>
-                      <th>Nombre del Alumno</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {resultadosAlumnos.map(a => (
-                      <tr key={a.id} style={{ cursor: 'pointer' }} onClick={() => handleAlumnoClick(a.id)}>
-                        <td>{a.nombre_completo}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
-              {cursosAlumno.length > 0 && (
-                <div className="mb-3">
-                  <h5>Cursos de este alumno en el periodo</h5>
-                  <ul className="list-group">
-                    {cursosAlumno.map(c => (
-                      <li key={c.id} className="list-group-item">
-                        <strong>{c.nombre}</strong> — Nivel: {c.nivel} — Horario: {c.horarios?.join(", ")}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Cursos del alumno seleccionado */}
-          {cursosAlumno.length > 0 && (
-            <div className="mb-3">
-              <h5>Cursos de este alumno en el periodo</h5>
-              <ul className="list-group">
-                {cursosAlumno.map(c => (
-                  <li key={c.id} className="list-group-item">
-                    <strong>{c.nombre_curso}</strong> — Nivel: {c.nivel} — Horario: {c.horario}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
 
           {cargandoPeriodo && <div>Cargando cursos...</div>}
 
