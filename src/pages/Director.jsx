@@ -85,7 +85,7 @@ const Director = () => {
   // Al hacer click en un alumno, buscar sus cursos en el periodo
   const handleAlumnoClick = (alumnoId) => {
     axios.get(`/director/alumno-cursos/?periodo_id=${periodoId}&alumno_id=${alumnoId}`)
-      .then(res => setCursosAlumno(res.data.cursos || []))
+      .then(res => setCursosAlumno(res.data || []))
       .catch(() => setCursosAlumno([]));
   };
 
