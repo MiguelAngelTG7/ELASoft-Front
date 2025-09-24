@@ -178,14 +178,31 @@ const Director = () => {
               <thead className="table-info">
                 <tr>
                   <th>Nombre del Alumno</th>
+                  <th>Cursos en el periodo</th>
                 </tr>
               </thead>
               <tbody>
-                {resultadosAlumnos.map(a => (
-                  <tr key={a.id} style={{ cursor: 'pointer' }} onClick={() => handleAlumnoClick(a.id)}>
-                    <td>{a.nombre_completo}</td>
-                  </tr>
-                ))}
+                {resultadosAlumnos.map(a => {
+                  // Buscar cursos del alumno en el periodo
+                  const cursos = Array.isArray(cursosAlumno) && cursosAlumno.length > 0
+                    ? cursosAlumno.filter(c => c.alumno_id === a.id || c.id_alumno === a.id)
+                    : [];
+                  return (
+                    <tr key={a.id} style={{ cursor: 'pointer' }} onClick={() => handleAlumnoClick(a.id)}>
+                      <td>{a.nombre_completo}</td>
+                      <td>
+                        {cursos.length > 0
+                          ? cursos.map(c => (
+                              <span key={c.id} className="badge bg-primary me-1">
+                                {c.nombre || c.nombre_curso}
+                              </span>
+                            ))
+                          : <span className="text-muted">Sin cursos</span>
+                        }
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           )}
