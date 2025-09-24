@@ -121,19 +121,19 @@ const Director = () => {
             Ver Lista de Cursos
           </button>
           <br />
-          {/* Nuevo botón Buscar Alumno antes de Crear nuevo Alumno */}
-          <button
-            className="btn btn-outline-info mt-2"
-            onClick={() => setMostrarBuscadorAlumnos(!mostrarBuscadorAlumnos)}
-          >
-            {mostrarBuscadorAlumnos ? "Ocultar Buscador de Alumnos" : "Buscar Alumno"}
-          </button>
-          <br />
           <button
             className="btn btn-outline-danger mt-2"
             onClick={() => navigate('/director/crear-alumno')}
           >
             Crear nuevo Alumno
+          </button>
+          <br />
+          {/* Botón Buscar Alumno debajo de Crear nuevo Alumno */}
+          <button
+            className="btn btn-outline-info mt-2"
+            onClick={() => setMostrarBuscadorAlumnos(!mostrarBuscadorAlumnos)}
+          >
+            {mostrarBuscadorAlumnos ? "Ocultar Buscador de Alumnos" : "Buscar Alumno"}
           </button>
           <br />
           <button className="btn btn-danger mt-2" onClick={handleLogout}>Salir</button>
