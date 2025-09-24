@@ -145,15 +145,21 @@ const Director = () => {
       {mostrarBuscadorAlumnos && (
         <div className="mt-4">
           <h4>Buscar alumno por nombre o apellido</h4>
-          <input
-            type="text"
-            className="form-control mb-2"
-            style={{ maxWidth: 400 }}
-            placeholder="Buscar alumno..."
-            value={busquedaAlumno}
-            onChange={e => setBusquedaAlumno(e.target.value)}
-            disabled={!periodoId}
-          />
+          <div className="mb-2">
+            <label htmlFor="busquedaAlumno" className="form-label">Nombre o Apellido del Alumno</label>
+            <input
+              id="busquedaAlumno"
+              name="busquedaAlumno"
+              type="text"
+              className="form-control"
+              style={{ maxWidth: 400 }}
+              placeholder="Buscar alumno..."
+              value={busquedaAlumno}
+              onChange={e => setBusquedaAlumno(e.target.value)}
+              disabled={!periodoId}
+              autoComplete="off"
+            />
+          </div>
           {resultadosAlumnos.length > 0 && (
             <table className="table table-bordered table-hover mb-3">
               <thead className="table-info">
