@@ -14,6 +14,12 @@ const Director = () => {
   const [cargandoPeriodo, setCargandoPeriodo] = useState(false);
   const navigate = useNavigate();
 
+  // Estados para búsqueda de alumnos
+  const [busquedaAlumno, setBusquedaAlumno] = useState("");
+  const [resultadosAlumnos, setResultadosAlumnos] = useState([]);
+  const [cursosAlumno, setCursosAlumno] = useState([]);
+  const [alumnosPeriodo, setAlumnosPeriodo] = useState([]);
+
   const handleLogout = () => {
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
@@ -49,10 +55,38 @@ const Director = () => {
         .then(res => setCursosPorPeriodo(res.data.dashboard))
         .catch(() => setCursosPorPeriodo([]))
         .finally(() => setCargandoPeriodo(false));
+      // Buscar alumnos del periodo
+      axios.get(`/director/alumnos/?periodo_id=${periodoId}`)
+        .then(res => setAlumnosPeriodo(res.data.alumnos || []))
+        .catch(() => setAlumnosPeriodo([]));
     } else {
       setCursosPorPeriodo([]);
+      setAlumnosPeriodo([]);
     }
+    setBusquedaAlumno("");
+    setResultadosAlumnos([]);
+    setCursosAlumno([]);
   }, [periodoId]);
+
+  // Filtrar alumnos en tiempo real
+  useEffect(() => {
+    if (!busquedaAlumno) {
+      setResultadosAlumnos([]);
+      return;
+    }
+    const filtro = busquedaAlumno.toLowerCase();
+    const resultados = alumnosPeriodo.filter(a =>
+      a.nombre_completo.toLowerCase().includes(filtro)
+    );
+    setResultadosAlumnos(resultados);
+  }, [busquedaAlumno, alumnosPeriodo]);
+
+  // Al hacer click en un alumno, buscar sus cursos en el periodo
+  const handleAlumnoClick = (alumnoId) => {
+    axios.get(`/director/alumno-cursos/?periodo_id=${periodoId}&alumno_id=${alumnoId}`)
+      .then(res => setCursosAlumno(res.data.cursos || []))
+      .catch(() => setCursosAlumno([]));
+  };
 
   if (cargando) return <div className="text-center mt-5">Cargando información...</div>;
   if (!data.length) return <div className="text-center mt-5">No hay datos disponibles.</div>;
@@ -114,6 +148,51 @@ const Director = () => {
               <option key={p.id} value={p.id}>{p.nombre}</option>
             ))}
           </select>
+
+          {/* Buscador de alumnos */}
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              style={{ maxWidth: 400 }}
+              placeholder="Buscar alumno por nombre o apellido..."
+              value={busquedaAlumno}
+              onChange={e => setBusquedaAlumno(e.target.value)}
+              disabled={!periodoId}
+            />
+          </div>
+
+          {/* Resultados de alumnos */}
+          {resultadosAlumnos.length > 0 && (
+            <table className="table table-bordered table-hover mb-3">
+              <thead className="table-info">
+                <tr>
+                  <th>Nombre del Alumno</th>
+                </tr>
+              </thead>
+              <tbody>
+                {resultadosAlumnos.map(a => (
+                  <tr key={a.id} style={{ cursor: 'pointer' }} onClick={() => handleAlumnoClick(a.id)}>
+                    <td>{a.nombre_completo}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          {/* Cursos del alumno seleccionado */}
+          {cursosAlumno.length > 0 && (
+            <div className="mb-3">
+              <h5>Cursos de este alumno en el periodo</h5>
+              <ul className="list-group">
+                {cursosAlumno.map(c => (
+                  <li key={c.id} className="list-group-item">
+                    <strong>{c.nombre_curso}</strong> — Nivel: {c.nivel} — Horario: {c.horario}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {cargandoPeriodo && <div>Cargando cursos...</div>}
 
