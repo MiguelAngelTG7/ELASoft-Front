@@ -42,9 +42,9 @@ const Director = () => {
   }, []);
 
   useEffect(() => {
-    if (mostrarCursosPeriodo || mostrarBuscadorAlumnos) {
+    if ((mostrarCursosPeriodo || mostrarBuscadorAlumnos) && periodos.length === 0) {
       axios.get('/director/periodos/')
-        .then(res => setPeriodos(res.data.periodos))
+        .then(res => setPeriodos(res.data.periodos || []))
         .catch(() => setPeriodos([]));
     }
   }, [mostrarCursosPeriodo, mostrarBuscadorAlumnos]);
@@ -155,7 +155,7 @@ const Director = () => {
               onChange={e => setPeriodoId(e.target.value)}
             >
               <option value="">Seleccione un periodo académico</option>
-              {periodos.map(p => (
+              {(Array.isArray(periodos) ? periodos : []).map(p => (
                 <option key={p.id} value={p.id}>{p.nombre}</option>
               ))}
             </select>
