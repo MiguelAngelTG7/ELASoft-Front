@@ -192,13 +192,17 @@ const Director = () => {
           {cursosAlumno.length > 0 && (
             <div className="mb-3">
               <h5>Cursos de este alumno en el periodo</h5>
-              <ul className="list-group">
-                {cursosAlumno.map(c => (
-                  <li key={c.id} className="list-group-item">
-                    <strong>{c.nombre}</strong> — Nivel: {c.nivel} — Horario: {c.horarios?.join(", ")}
-                  </li>
-                ))}
-              </ul>
+              {cursosAlumno.length === 0 ? (
+                <div>No tiene cursos asignados en este periodo.</div>
+              ) : (
+                <ul className="list-group">
+                  {cursosAlumno.map(c => (
+                    <li key={c.id} className="list-group-item">
+                      <strong>{c.nombre || c.nombre_curso}</strong> — Nivel: {c.nivel || c.nivel_nombre} — Horario: {Array.isArray(c.horarios) ? c.horarios.join(", ") : c.horario || ""}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           )}
         </div>
