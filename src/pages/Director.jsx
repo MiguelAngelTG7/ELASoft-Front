@@ -42,7 +42,7 @@ const Director = () => {
   }, []);
 
   useEffect(() => {
-    if ((mostrarCursosPeriodo || mostrarBuscadorAlumnos) && periodos.length === 0) {
+    if (mostrarCursosPeriodo || mostrarBuscadorAlumnos) {
       axios.get('/director/periodos/')
         .then(res => setPeriodos(res.data.periodos || []))
         .catch(() => setPeriodos([]));
