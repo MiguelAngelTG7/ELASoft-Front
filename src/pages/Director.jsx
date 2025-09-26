@@ -109,13 +109,6 @@ const Director = () => {
           <br />
           <button
             className="btn btn-outline-primary mt-2"
-            onClick={() => navigate("/director/profesores")}
-          >
-            Ver Lista de Profesores
-          </button>
-          <br />
-          <button
-            className="btn btn-outline-primary mt-2"
             onClick={() => navigate("/director/clases")}
           >
             Ver Lista de Cursos
