@@ -111,7 +111,7 @@ const Director = () => {
             className="btn btn-outline-primary mt-2"
             onClick={() => navigate("/director/clases")}
           >
-            Ver Lista de Cursos
+            Ver Lista de Cursos & Profesores
           </button>
           <br />
           <button
