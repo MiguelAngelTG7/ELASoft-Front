@@ -69,6 +69,7 @@ const Alumno = () => {
                 </div>
 
                 {/* Tabla solo con datos académicos */}
+                <h5 className="mb-3">Información Académica</h5>
                 <div className="table-responsive">
                   <table className="table table-bordered table-hover align-middle">
                     <thead className="table-primary">
