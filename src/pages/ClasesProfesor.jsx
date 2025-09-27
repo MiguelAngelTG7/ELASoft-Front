@@ -9,7 +9,7 @@ import RecursosCurso from '../components/RecursosCurso';
 const ClasesProfesor = () => {
   const [clases, setClases] = useState([]);
   const [cargando, setCargando] = useState(true);
-  const [profesor, setProfesor] = useState(null); // Nuevo estado para el profesor
+  const [profesor, setProfesor] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +35,15 @@ const ClasesProfesor = () => {
     obtenerPerfil();
   }, []);
   
+  const descargarManual = () => {
+    const link = document.createElement('a');
+    link.href = '/Manual_Maestro_ELASoft.pdf';
+    link.download = 'Manual_Maestro_ELASoft.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  
   const handleLogout = () => {
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
@@ -53,7 +62,12 @@ const ClasesProfesor = () => {
             <h4 className="fw-normal mt-2">{profesor.first_name} {profesor.last_name}</h4>
           )}
         </div>
-        <button onClick={handleLogout} className="btn btn-danger">Salir</button>
+        <div className="d-flex gap-2">
+          <button onClick={descargarManual} className="btn btn-outline-info">
+            Descargar Manual
+          </button>
+          <button onClick={handleLogout} className="btn btn-danger">Salir</button>
+        </div>
       </div>
       {/* Botones debajo del nombre del profesor */}
       <hr style={{ margin: '24px 0 16px 0' }} />
