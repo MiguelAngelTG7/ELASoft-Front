@@ -135,9 +135,15 @@ const Alumno = () => {
                     <div className="d-flex align-items-start justify-content-between mb-2">
                       <div className="flex-grow-1">
                         <h5 className="fw-bold mb-2 text-white">{n.curso_nombre || '-'}</h5>
-                        <div className="d-flex align-items-center text-white-50 small">
-                          <i className="fas fa-clock me-2"></i>
-                          <span>{n.horarios?.join(', ') || 'Sin horario'}</span>
+                        <div className="d-flex flex-column">
+                          <div className="d-flex align-items-center text-white-50 small mb-1">
+                            <i className="fas fa-graduation-cap me-2"></i>
+                            <span>{n.periodo_nombre || 'Sin período académico'}</span>
+                          </div>
+                          <div className="d-flex align-items-center text-white-50 small">
+                            <i className="fas fa-clock me-2"></i>
+                            <span>{n.horarios?.join(', ') || 'Sin horario'}</span>
+                          </div>
                         </div>
                       </div>
                       <div className="bg-white bg-opacity-20 rounded-circle p-2">
