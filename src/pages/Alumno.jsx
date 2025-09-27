@@ -137,7 +137,7 @@ const Alumno = () => {
                         <h5 className="fw-bold mb-2 text-white">{n.curso_nombre || '-'}</h5>
                         <div className="d-flex flex-column">
                           <div className="d-flex align-items-center text-white-50 small mb-1">
-                            <i className="fas fa-graduation-cap text-dark me-2"></i>
+                            <i className="fas fa-graduation-cap me-2"></i>
                             <span>{n.periodo_nombre || 'Sin período académico'}</span>
                           </div>
                           <div className="d-flex align-items-center text-white-50 small">
@@ -147,7 +147,7 @@ const Alumno = () => {
                         </div>
                       </div>
                       <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                        <i className="fas fa-book-reader text-white"></i>
+                        <i className="fas fa-book-reader text-dark"></i>
                       </div>
                     </div>
                   </div>
