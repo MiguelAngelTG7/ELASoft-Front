@@ -186,27 +186,27 @@ const Alumno = () => {
                         <table className="table table-hover align-middle mb-0" style={{ borderRadius: '10px', overflow: 'hidden' }}>
                           <thead style={{ background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)' }}>
                             <tr className="text-white">
-                              <th className="border-0 py-3 text-white">
+                              <th className="border-0 py-3 text-black">
                                 <i className="fas fa-comments me-2"></i>
-                                Participación [40%]
+                                Participaciones [40%]
                               </th>
-                              <th className="border-0 py-3 text-white">
+                              <th className="border-0 py-3 text-black">
                                 <i className="fas fa-tasks me-2"></i>
-                                Tareas [20%]
+                                Promedio Tareas [20%]
                               </th>
-                              <th className="border-0 py-3 text-white">
+                              <th className="border-0 py-3 text-black">
                                 <i className="fas fa-clipboard-check me-2"></i>
-                                Examen Final [40%]
+                                EvaluaciónFinal [40%]
                               </th>
-                              <th className="border-0 py-3 text-white">
+                              <th className="border-0 py-3 text-black">
                                 <i className="fas fa-calculator me-2"></i>
-                                Promedio
+                                Promedio 
                               </th>
-                              <th className="border-0 py-3 text-white">
+                              <th className="border-0 py-3 text-black">
                                 <i className="fas fa-calendar-check me-2"></i>
                                 Asistencia
                               </th>
-                              <th className="border-0 py-3 text-white">
+                              <th className="border-0 py-3 text-black">
                                 <i className="fas fa-award me-2"></i>
                                 Estado
                               </th>
