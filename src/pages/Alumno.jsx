@@ -52,7 +52,7 @@ const Alumno = () => {
                 <th>Curso</th>
                 <th>Horario</th>
                 <th>Profesor</th>
-                <th>Contacto(WhatsApp)</th>
+                <th>Contacto</th>
                 <th>Participación</th>
                 <th>Tareas</th>
                 <th>Examen Final</th> 
