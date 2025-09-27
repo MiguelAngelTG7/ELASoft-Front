@@ -27,6 +27,15 @@ const Director = () => {
     navigate('/');
   };
 
+  const descargarManual = () => {
+    const link = document.createElement('a');
+    link.href = '/Manual_Director_ELASoft.pdf';
+    link.download = 'Manual_Director_ELASoft.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,63 +103,115 @@ const Director = () => {
 
   const volver = () => navigate('/director');
 
-
   return (
     <div className="container py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold text-primary">Dashboard del Director</h2>
-        <div className="mb-3 text-end">
-          <button
-            className="btn btn-outline-primary"
-            onClick={() => navigate("/director/alumnos")}
-          >
-            Ver Lista de Alumnos
+        <div className="d-flex gap-2">
+          <button onClick={descargarManual} className="btn btn-outline-info">
+            Descargar Manual
           </button>
-          <br />
-          <button
-            className="btn btn-outline-primary mt-2"
-            onClick={() => navigate("/director/profesores")}
-          >
-            Ver Lista de Profesores
-          </button>
-          <br />
-          <button
-            className="btn btn-outline-primary mt-2"
-            onClick={() => navigate("/director/clases")}
-          >
-            Ver Lista de Cursos
-          </button>
-          <br />
-          <button
-            className="btn btn-outline-danger mt-2"
-            onClick={() => navigate('/director/crear-alumno')}
-          >
-            Crear nuevo Alumno
-          </button>
-          <br />
-          {/* Botón Buscar Alumno debajo de Crear nuevo Alumno */}
-          <button
-            className="btn btn-outline-info mt-2"
-            onClick={() => setMostrarBuscadorAlumnos(!mostrarBuscadorAlumnos)}
-          >
-            {mostrarBuscadorAlumnos ? "Ocultar Buscador de Alumnos" : "Buscar Alumno"}
-          </button>
-          <br />
-          <a
-            href="/Manual_Director_ELASoft.pdf"
-            download="Manual_Director_ELASoft.pdf"
-            className="btn btn-outline-warning mt-2"
-            style={{ textDecoration: 'none' }}
-          >
-            📥 Descargar Manual de Usuario
-          </a>
-          <br />
-          <button className="btn btn-danger mt-2" onClick={handleLogout}>Salir</button>
-          <br />
+          <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
         </div>
       </div>
 
-      {/* Buscador de alumnos fuera de la sección de cursos por periodo */}
+      {/* Primera fila de tarjetas: Ver listas */}
+      <div className="row g-3 mb-4">
+        <div className="col-md-4">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body d-flex flex-column align-items-center justify-content-center text-center">
+              <div className="mb-3">
+                <i className="fas fa-users fa-3x text-primary"></i>
+              </div>
+              <h5 className="card-title">Lista de Alumnos</h5>
+              <p className="card-text text-muted">Ver todos los estudiantes registrados</p>
+              <button
+                className="btn btn-primary mt-auto"
+                onClick={() => navigate("/director/alumnos")}
+              >
+                Ver Lista
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div className="col-md-4">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body d-flex flex-column align-items-center justify-content-center text-center">
+              <div className="mb-3">
+                <i className="fas fa-chalkboard-teacher fa-3x text-success"></i>
+              </div>
+              <h5 className="card-title">Lista de Profesores</h5>
+              <p className="card-text text-muted">Ver todos los maestros registrados</p>
+              <button
+                className="btn btn-success mt-auto"
+                onClick={() => navigate("/director/profesores")}
+              >
+                Ver Lista
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div className="col-md-4">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body d-flex flex-column align-items-center justify-content-center text-center">
+              <div className="mb-3">
+                <i className="fas fa-book fa-3x text-info"></i>
+              </div>
+              <h5 className="card-title">Lista de Cursos</h5>
+              <p className="card-text text-muted">Ver todos los cursos disponibles</p>
+              <button
+                className="btn btn-info mt-auto"
+                onClick={() => navigate("/director/clases")}
+              >
+                Ver Lista
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Segunda fila de tarjetas: Acciones */}
+      <div className="row g-3 mb-4">
+        <div className="col-md-6">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body d-flex flex-column align-items-center justify-content-center text-center">
+              <div className="mb-3">
+                <i className="fas fa-user-plus fa-3x text-warning"></i>
+              </div>
+              <h5 className="card-title">Crear Nuevo Alumno</h5>
+              <p className="card-text text-muted">Registrar un nuevo estudiante en el sistema</p>
+              <button
+                className="btn btn-warning mt-auto"
+                onClick={() => navigate('/director/crear-alumno')}
+              >
+                Crear Alumno
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div className="col-md-6">
+          <div className="card h-100 shadow-sm">
+            <div className="card-body d-flex flex-column align-items-center justify-content-center text-center">
+              <div className="mb-3">
+                <i className="fas fa-search fa-3x text-secondary"></i>
+              </div>
+              <h5 className="card-title">Buscar Alumno</h5>
+              <p className="card-text text-muted">Buscar y ver información de estudiantes</p>
+              <button
+                className="btn btn-secondary mt-auto"
+                onClick={() => setMostrarBuscadorAlumnos(!mostrarBuscadorAlumnos)}
+              >
+                {mostrarBuscadorAlumnos ? "Ocultar Buscador" : "Buscar Alumno"}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Buscador de alumnos */}
       {mostrarBuscadorAlumnos && (
         <div className="mt-4">
           <h4>Buscar alumno por nombre o apellido</h4>
@@ -253,7 +314,7 @@ const Director = () => {
                 {cursosPorPeriodo.map((clase, i) => (
                   <tr key={i}>
                     <td>{clase.nivel}</td>
-                    <td className="fw-semibold" >{clase.curso}</td>
+                    <td className="fw-semibold">{clase.curso}</td>
                     <td>
                       {clase.horarios?.map((h, i) => <div key={i}>{h}</div>)}
                     </td>
