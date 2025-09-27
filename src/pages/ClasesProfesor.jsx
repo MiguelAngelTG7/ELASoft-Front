@@ -201,15 +201,15 @@ const ClasesProfesor = () => {
                           style={{ 
                             borderRadius: '10px',
                             transition: 'all 0.2s ease',
-                            border: '2px solid #0dcaf0'
+                            border: '2px solid #c0403bff'
                           }}
                           onMouseEnter={(e) => {
-                            e.target.style.backgroundColor = '#0dcaf0';
+                            e.target.style.backgroundColor = '#c0403bff';
                             e.target.style.color = 'white';
                           }}
                           onMouseLeave={(e) => {
                             e.target.style.backgroundColor = 'transparent';
-                            e.target.style.color = '#0dcaf0';
+                            e.target.style.color = '#c0403bff';
                           }}
                         >
                           <i className="fas fa-user-cog me-2"></i>
