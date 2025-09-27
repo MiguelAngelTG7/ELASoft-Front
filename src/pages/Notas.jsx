@@ -52,11 +52,11 @@ const Notas = () => {
   };
 
   const calcularPromedio = (nota) => {
-    const sum = [nota.participacion, nota.tareas, nota.examen_final].reduce(
-      (acc, val) => acc + (parseFloat(val) || 0),
-      0
-    );
-    return +(sum / 3).toFixed(2);
+    // Participación 40%, Tareas 20%, Examen Final 40%
+    const participacion = (parseFloat(nota.participacion) || 0) * 0.4;
+    const tareas = (parseFloat(nota.tareas) || 0) * 0.2;
+    const examenFinal = (parseFloat(nota.examen_final) || 0) * 0.4;
+    return +(participacion + tareas + examenFinal).toFixed(2);
   };
 
   const calcularEstado = (nota) => {
@@ -111,9 +111,9 @@ const Notas = () => {
           <thead>
             <tr>
               <th>Alumno</th>
-              <th>Participación</th>
-              <th>Tareas</th>
-              <th>Examen final</th>
+              <th>Participación [40%]</th>
+              <th>Tareas [20%]</th>
+              <th>Examen final [40%]</th>
               <th>Prom</th>
               <th>Asist (%)</th>
               <th>Estado</th>
