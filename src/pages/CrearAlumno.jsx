@@ -282,7 +282,7 @@ const CrearAlumno = () => {
                         rows="3"
                         value={formData.enfermedades}
                         onChange={handleChange}
-                        placeholder="Descripción de enfermedades o condiciones médicas..."
+                        placeholder="Descripción de enfermedades, condiciones médicas y/o alergias..."
                       />
                     </div>
                   </div>

@@ -91,7 +91,7 @@ const RegistrarAlumno = () => {
           </div>
           <div className="col-md-6">
             <label>Enfermedades y/o Alergias</label>
-            <textarea name="enfermedades" className="form-control" rows="2" value={form.enfermedades} onChange={handleChange} placeholder="Enfermedades o condiciones médicas" />
+            <textarea name="enfermedades" className="form-control" rows="2" value={form.enfermedades} onChange={handleChange} placeholder="Enfermedades, condiciones médicas y/o alergias" />
           </div>
           <div className="col-md-12">
             <label>Medicamentos y Dosis</label>
