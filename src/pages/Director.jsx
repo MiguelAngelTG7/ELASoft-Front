@@ -109,7 +109,7 @@ const Director = () => {
         <h2 className="fw-bold text-primary">Dashboard del Director</h2>
         <div className="d-flex gap-2">
           <button onClick={descargarManual} className="btn btn-outline-info">
-            Descargar Manual
+            Manual
           </button>
           <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
         </div>
