@@ -50,6 +50,8 @@ const Alumno = () => {
             <thead className="table-primary">
               <tr>
                 <th>Curso</th>
+                <th>Profesor</th>
+                <th>Contacto (Teléfono)</th>
                 <th>Horarios</th>
                 <th>Participación</th>
                 <th>Tareas</th>
@@ -67,6 +69,8 @@ const Alumno = () => {
                   <React.Fragment key={i}>
                     <tr>
                       <td>{n.curso_nombre || '-'}</td>
+                      <td>{n.profesor_nombre || '-'}</td>
+                      <td>{n.profesor_telefono || '-'}</td>
                       <td>{n.horarios?.join(', ') || 'Sin horario'}</td>
                       <td>{n.participacion}</td>
                       <td>{n.tareas}</td>
@@ -80,7 +84,7 @@ const Alumno = () => {
                       </td>
                     </tr>
                     <tr>
-                      <td colSpan="8">
+                      <td colSpan="10">
                         <RecursosCurso claseId={n.clase_id} esProfesor={false} />
                       </td>
                     </tr>
