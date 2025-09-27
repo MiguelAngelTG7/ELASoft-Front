@@ -108,7 +108,7 @@ const Director = () => {
       {/* Header limpio y profesional */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h1 className="fw-bold text-dark mb-1">Dashboard del Director</h1>
+          <h1 className="fw-bold text-primary mb-1">Dashboard del Director</h1>
           <div className="d-flex align-items-center text-muted">
             <i className="fas fa-user-tie me-2"></i>
             <span className="fs-5">Administración Académica</span>
@@ -186,10 +186,10 @@ const Director = () => {
                 <div className="d-flex align-items-center justify-content-between">
                   <div>
                     <h5 className="fw-bold mb-1 text-white">Lista de Alumnos</h5>
-                    <small className="text-white-50">Ver todos los estudiantes</small>
+                    <small className="text-white-50">Ver todos los alumnos por curso</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-users text-white fa-lg"></i>
+                    <i className="fas fa-users text-dark fa-lg"></i>
                   </div>
                 </div>
               </div>
@@ -238,11 +238,11 @@ const Director = () => {
               >
                 <div className="d-flex align-items-center justify-content-between">
                   <div>
-                    <h5 className="fw-bold mb-1 text-white">Lista de Profesores</h5>
-                    <small className="text-white-50">Ver todos los maestros</small>
+                    <h5 className="fw-bold mb-1 text-white">Lista de Maestros</h5>
+                    <small className="text-white-50">Ver todos los maestros por ciclo</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-chalkboard-teacher text-white fa-lg"></i>
+                    <i className="fas fa-chalkboard-teacher text-dark fa-lg"></i>
                   </div>
                 </div>
               </div>
@@ -285,19 +285,19 @@ const Director = () => {
               <div 
                 className="text-white position-relative"
                 style={{ 
-                  backgroundColor: '#27531fff',
+                  backgroundColor: '#32502cff',
                   padding: '1.5rem',
                   borderRadius: '16px 16px 0 0'
                 }}
               >
                 <div className="d-flex align-items-center justify-content-between">
                   <div>
-                    <h5 className="fw-bold mb-1 text-dark">Lista de Cursos</h5>
-                    <small className="text-dark" style={{ opacity: 0.7 }}>Ver todos los cursos</small>
+                    <h5 className="fw-bold mb-1 text-white">Lista de Cursos</h5>
+                    <small className="text-white" style={{ opacity: 0.7 }}>Ver todos los cursos por ciclo</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
                     <i className="fas fa-book text-dark fa-lg"></i>
-                  </div>
+                  </div> 
                 </div>
               </div>
               <div className="card-body d-flex flex-column justify-content-between" style={{ minHeight: '120px' }}>
@@ -308,8 +308,8 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #27531fff',
-                    color: '#27531fff'
+                    border: '2px solid #32502cff',
+                    color: '#32502cff'
                   }}
                 >
                   <i className="fas fa-eye me-2"></i>
@@ -359,7 +359,7 @@ const Director = () => {
                     <small className="text-white-50">Registrar estudiante</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-user-plus text-white fa-lg"></i>
+                    <i className="fas fa-user-plus text-dark fa-lg"></i>
                   </div>
                 </div>
               </div>
@@ -413,7 +413,7 @@ const Director = () => {
                     <small className="text-white-50">Consulta avanzada</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-search text-white fa-lg"></i>
+                    <i className="fas fa-search text-dark fa-lg"></i>
                   </div>
                 </div>
               </div>
