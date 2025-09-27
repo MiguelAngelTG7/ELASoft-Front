@@ -201,7 +201,9 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #17a2b8'
+                    border: '2px solid #17a2b8',
+                    color: '#17a2b8',
+                    backgroundColor: 'transparent'
                   }}
                 >
                   <i className="fas fa-eye me-2"></i>
@@ -255,7 +257,8 @@ const Director = () => {
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
                     border: '2px solid #28a745',
-                    color: '#28a745'
+                    color: '#28a745',
+                    backgroundColor: 'transparent'
                   }}
                 >
                   <i className="fas fa-eye me-2"></i>
@@ -309,7 +312,8 @@ const Director = () => {
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
                     border: '2px solid #32502cff',
-                    color: '#32502cff'
+                    color: '#32502cff',
+                    backgroundColor: 'transparent'
                   }}
                 >
                   <i className="fas fa-eye me-2"></i>
@@ -372,7 +376,8 @@ const Director = () => {
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
                     border: '2px solid #f69647ff',
-                    color: '#f69647ff'
+                    color: '#f69647ff',
+                    backgroundColor: 'transparent'
                   }}
                 >
                   <i className="fas fa-plus me-2"></i>
