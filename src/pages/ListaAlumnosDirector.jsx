@@ -12,8 +12,12 @@ const ListaAlumnosDirector = () => {
 
   useEffect(() => {
     const fetchClases = async () => {
-  const res = await axios.get('/director/clases/');
-      setClases(res.data);
+      const res = await axios.get('/director/clases/');
+      // Ordenar clases de A a Z por nombre
+      const clasesOrdenadas = res.data.sort((a, b) => 
+        (a.nombre || '').localeCompare(b.nombre || '', 'es', { sensitivity: 'base' })
+      );
+      setClases(clasesOrdenadas);
     };
     fetchClases();
   }, []);
@@ -21,7 +25,13 @@ const ListaAlumnosDirector = () => {
   const cargarAlumnos = async () => {
     if (!claseId) return;
     const res = await axios.get(`/director/alumnos/?clase_id=${claseId}`);
-    setAlumnos(res.data.alumnos);
+    
+    // Ordenar alumnos de A a Z por nombre completo
+    const alumnosOrdenados = (res.data.alumnos || []).sort((a, b) => 
+      (a.nombre_completo || '').localeCompare(b.nombre_completo || '', 'es', { sensitivity: 'base' })
+    );
+    
+    setAlumnos(alumnosOrdenados);
     setClaseSeleccionada(res.data.clase); // opcional para imprimir
   };
 
