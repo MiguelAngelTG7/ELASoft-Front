@@ -128,7 +128,7 @@ const Alumno = () => {
                   <div 
                     className="text-white position-relative"
                     style={{ 
-                      backgroundColor: '#356e42ff',
+                      backgroundColor: '#32502cff',
                       padding: '1.5rem 1.5rem 1rem 1.5rem'
                     }}
                   >

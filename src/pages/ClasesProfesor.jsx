@@ -136,7 +136,7 @@ const ClasesProfesor = () => {
                 <div 
                   className="text-white position-relative"
                   style={{ 
-                    background: '#6a5283ff',
+                    background: '#32502cff',
                     padding: '1.5rem 1.5rem 1rem 1.5rem'
                   }}
                 >
