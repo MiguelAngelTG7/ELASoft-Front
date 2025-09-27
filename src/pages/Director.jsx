@@ -137,7 +137,7 @@ const Director = () => {
           </button>
           <br />
           <a
-            href="/manual.pdf"
+            href="/Manual_Director_ELASoft.pdf"
             download="Manual_Director_ELASoft.pdf"
             className="btn btn-outline-warning mt-2"
             style={{ textDecoration: 'none' }}
