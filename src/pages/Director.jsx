@@ -254,7 +254,8 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #28a745'
+                    border: '2px solid #28a745',
+                    color: '#28a745'
                   }}
                 >
                   <i className="fas fa-eye me-2"></i>
@@ -284,7 +285,7 @@ const Director = () => {
               <div 
                 className="text-white position-relative"
                 style={{ 
-                  backgroundColor: '#ffc107',
+                  backgroundColor: '#27531fff',
                   padding: '1.5rem',
                   borderRadius: '16px 16px 0 0'
                 }}
@@ -307,8 +308,8 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #ffc107',
-                    color: '#856404'
+                    border: '2px solid #27531fff',
+                    color: '#27531fff'
                   }}
                 >
                   <i className="fas fa-eye me-2"></i>
@@ -347,7 +348,7 @@ const Director = () => {
               <div 
                 className="text-white position-relative"
                 style={{ 
-                  backgroundColor: '#fd7e14',
+                  backgroundColor: '#f69647ff',
                   padding: '1.5rem',
                   borderRadius: '16px 16px 0 0'
                 }}
@@ -370,8 +371,8 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #fd7e14',
-                    color: '#fd7e14'
+                    border: '2px solid #f69647ff',
+                    color: '#f69647ff'
                   }}
                 >
                   <i className="fas fa-plus me-2"></i>
@@ -401,7 +402,7 @@ const Director = () => {
               <div 
                 className="text-white position-relative"
                 style={{ 
-                  backgroundColor: '#6f42c1',
+                  backgroundColor: '#8061baff',
                   padding: '1.5rem',
                   borderRadius: '16px 16px 0 0'
                 }}
@@ -424,8 +425,8 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #6f42c1',
-                    color: '#6f42c1',
+                    border: '2px solid #8061baff',
+                    color: '#8061baff',
                     backgroundColor: 'transparent'
                   }}
                 >
