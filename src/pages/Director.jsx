@@ -178,7 +178,7 @@ const Director = () => {
               <div 
                 className="text-white position-relative"
                 style={{ 
-                  backgroundColor: '#17a2b8',
+                  backgroundColor: '#32502cff',
                   padding: '1.5rem',
                   borderRadius: '16px 16px 0 0'
                 }}
@@ -201,8 +201,8 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #17a2b8',
-                    color: '#17a2b8',
+                    border: '2px solid #32502cff',
+                    color: '#32502cff',
                     backgroundColor: 'transparent'
                   }}
                 >
@@ -233,7 +233,7 @@ const Director = () => {
               <div 
                 className="text-white position-relative"
                 style={{ 
-                  backgroundColor: '#28a745',
+                  backgroundColor: '#32502cff',
                   padding: '1.5rem',
                   borderRadius: '16px 16px 0 0'
                 }}
@@ -256,8 +256,8 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #28a745',
-                    color: '#28a745',
+                    border: '2px solid #32502cff',
+                    color: '#32502cff',
                     backgroundColor: 'transparent'
                   }}
                 >
