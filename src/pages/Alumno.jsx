@@ -184,7 +184,7 @@ const Alumno = () => {
                       
                       <div className="table-responsive">
                         <table className="table table-hover align-middle mb-0" style={{ borderRadius: '10px', overflow: 'hidden' }}>
-                          <thead style={{ background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)' }}>
+                          <thead style={{ backgroundColor: '#4a90e2' }}>
                             <tr className="text-white">
                               <th className="border-0 py-3 text-black">
                                 <i className="fas fa-comments me-2"></i>
