@@ -268,7 +268,7 @@ const ClasesProfesor = () => {
                             }}
                           >
                             <i className="fas fa-star me-2"></i>
-                            Calificar
+                            Notas
                           </button>
                         </div>
                       </div>

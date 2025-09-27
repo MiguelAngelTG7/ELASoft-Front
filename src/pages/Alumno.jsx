@@ -124,11 +124,11 @@ const Alumno = () => {
                     e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
                   }}
                 >
-                  {/* Header del curso con gradiente */}
+                  {/* Header del curso con color sólido */}
                   <div 
                     className="text-white position-relative"
                     style={{ 
-                      background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+                      backgroundColor: '#28a745',
                       padding: '1.5rem 1.5rem 1rem 1.5rem'
                     }}
                   >
