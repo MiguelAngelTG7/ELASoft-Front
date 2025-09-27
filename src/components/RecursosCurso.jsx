@@ -47,8 +47,18 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
     switch (tipo) {
       case 'video':
         return 'fas fa-play-circle text-danger';
-      case 'archivo':
+      case 'audio_podcast':
+        return 'fas fa-podcast text-success';
+      case 'presentacion_ppt':
+        return 'fas fa-file-powerpoint text-warning';
+      case 'documento_pdf_word':
         return 'fas fa-file-alt text-primary';
+      case 'imagen_infografia':
+        return 'fas fa-image text-info';
+      case 'app':
+        return 'fas fa-mobile-alt text-dark';
+      case 'website_red_social':
+        return 'fas fa-globe text-secondary';
       default:
         return 'fas fa-link text-info';
     }
@@ -58,10 +68,41 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
     switch (tipo) {
       case 'video':
         return 'bg-danger';
-      case 'archivo':
+      case 'audio_podcast':
+        return 'bg-success';
+      case 'presentacion_ppt':
+        return 'bg-warning';
+      case 'documento_pdf_word':
         return 'bg-primary';
+      case 'imagen_infografia':
+        return 'bg-info';
+      case 'app':
+        return 'bg-dark';
+      case 'website_red_social':
+        return 'bg-secondary';
       default:
         return 'bg-info';
+    }
+  };
+
+  const getTypeLabel = (tipo) => {
+    switch (tipo) {
+      case 'video':
+        return 'Video';
+      case 'audio_podcast':
+        return 'Audio Podcast';
+      case 'presentacion_ppt':
+        return 'Presentación PPT';
+      case 'documento_pdf_word':
+        return 'Documento PDF/WORD';
+      case 'imagen_infografia':
+        return 'Imagen Infografía';
+      case 'app':
+        return 'App';
+      case 'website_red_social':
+        return 'Website o Red Social';
+      default:
+        return tipo;
     }
   };
 
@@ -134,8 +175,12 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
                     }}
                   >
                     <option value="video">📹 Video</option>
-                    <option value="archivo">📄 Archivo</option>
-                    <option value="otro">🔗 Otro</option>
+                    <option value="audio_podcast">🎧 Audio Podcast</option>
+                    <option value="presentacion_ppt">📊 Presentación PPT</option>
+                    <option value="documento_pdf_word">📄 Documento PDF/WORD</option>
+                    <option value="imagen_infografia">🖼️ Imagen Infografía</option>
+                    <option value="app">📱 App</option>
+                    <option value="website_red_social">🌐 Website o Red Social</option>
                   </select>
                 </div>
                 <div className="col-12">
@@ -215,7 +260,7 @@ const RecursosCurso = ({ claseId, esProfesor }) => {
                           className={`badge ${getTypeColor(r.tipo)} rounded-pill px-2 py-1`}
                           style={{ fontSize: '0.7rem' }}
                         >
-                          {r.tipo}
+                          {getTypeLabel(r.tipo)}
                         </span>
                       </div>
                     </div>
