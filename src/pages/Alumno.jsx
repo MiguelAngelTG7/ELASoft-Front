@@ -14,6 +14,15 @@ const Alumno = () => {
     navigate('/');
   };
 
+  const descargarManual = () => {
+    const link = document.createElement('a');
+    link.href = '/Manual_Alumno_ELASoft.pdf';
+    link.download = 'Manual_Alumno_ELASoft.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
@@ -40,6 +49,12 @@ const Alumno = () => {
     <div className="container mt-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Bienvenido, {data.alumno_nombre}</h2>
+        <div className="d-flex gap-2">
+          <button onClick={descargarManual} className="btn btn-outline-info">
+            Descargar Manual
+          </button>
+          <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
+        </div>
       </div>
 
       {data.clases.length === 0 ? (
@@ -109,7 +124,6 @@ const Alumno = () => {
             <button className="btn btn-outline-secondary me-3" onClick={() => navigate("/alumno/reporte")}>
                 Imprimir / Guardar PDF
             </button>
-            <button className="btn btn-danger" onClick={handleLogout}>Salir</button>
           </div>
         </div>
       )}
