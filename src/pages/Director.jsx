@@ -1,4 +1,4 @@
-// Dahsboard General del Director
+// Dashboard General del Director
 
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
@@ -135,6 +135,15 @@ const Director = () => {
           >
             {mostrarBuscadorAlumnos ? "Ocultar Buscador de Alumnos" : "Buscar Alumno"}
           </button>
+          <br />
+          <a
+            href="/manual.pdf"
+            download="Manual_Director_ELASoft.pdf"
+            className="btn btn-outline-warning mt-2"
+            style={{ textDecoration: 'none' }}
+          >
+            📥 Descargar Manual de Usuario
+          </a>
           <br />
           <button className="btn btn-danger mt-2" onClick={handleLogout}>Salir</button>
           <br />
