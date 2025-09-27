@@ -15,7 +15,11 @@ const Notas = () => {
     const cargarNotas = async () => {
       try {
         const resp = await axios.get(`/clases/${claseId}/notas/`);
-        setNotas(resp.data);
+        // Ordenar notas alfabéticamente por nombre del alumno
+        const notasOrdenadas = resp.data.sort((a, b) => 
+          (a.alumno_nombre || '').localeCompare(b.alumno_nombre || '', 'es', { sensitivity: 'base' })
+        );
+        setNotas(notasOrdenadas);
       } catch (err) {
         console.error("Error al cargar notas:", err);
       } finally {

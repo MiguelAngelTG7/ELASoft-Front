@@ -16,7 +16,12 @@ const ListaAlumnos = () => {
       try {
         if (!claseId) return;
         const res = await axios.get(`/profesor/alumnos/?clase_id=${claseId}`);
-        setAlumnos(Array.isArray(res.data.alumnos) ? res.data.alumnos : []);
+        const alumnosData = Array.isArray(res.data.alumnos) ? res.data.alumnos : [];
+        // Ordenar alfabéticamente por nombre_completo
+        const alumnosOrdenados = alumnosData.sort((a, b) => 
+          (a.nombre_completo || '').localeCompare(b.nombre_completo || '', 'es', { sensitivity: 'base' })
+        );
+        setAlumnos(alumnosOrdenados);
         setClaseInfo(res.data.clase || {});
       } catch (error) {
         console.error("Error al cargar alumnos:", error);

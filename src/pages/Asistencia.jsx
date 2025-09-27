@@ -16,7 +16,11 @@ const Asistencia = () => {
     const cargarAsistencia = async () => {
       try {
         const resp = await axios.get(`/clases/${claseId}/asistencia/`);
-        setAlumnos(resp.data.alumnos);
+        // Ordenar alumnos alfabéticamente por nombre
+        const alumnosOrdenados = resp.data.alumnos.sort((a, b) => 
+          (a.alumno_nombre || '').localeCompare(b.alumno_nombre || '', 'es', { sensitivity: 'base' })
+        );
+        setAlumnos(alumnosOrdenados);
         setFechas(resp.data.fechas);
       } catch (err) {
         console.error("Error al obtener asistencia", err);
@@ -60,7 +64,6 @@ const Asistencia = () => {
     <div className="container py-4">
       <h2 className="mb-3">Registro de Asistencia</h2>
 
-      {/* Mensaje debajo del botón Guardar */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div className="d-flex gap-2">
           <button onClick={guardar} className="btn btn-success">Guardar</button>
