@@ -45,54 +45,65 @@ const Alumno = () => {
       {data.clases.length === 0 ? (
         <div className="alert alert-warning">Aún no estás inscrito en cursos.</div>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-bordered table-hover align-middle">
-            <thead className="table-primary">
-              <tr>
-                <th>Curso</th>
-                <th>Horario</th>
-                <th>Profesor</th>
-                <th>Contacto</th>
-                <th>Participación</th>
-                <th>Tareas</th>
-                <th>Examen Final</th> 
-                <th>Promedio</th>
-                <th>Asistencia (%)</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.clases.map((n, i) => {
-                // Log para ver el ID y nombre del curso
-                console.log(`Curso: ${n.curso_nombre}, clase_id: ${n.clase_id}`);
-                return (
-                  <React.Fragment key={i}>
-                    <tr>
-                      <td>{n.curso_nombre || '-'}</td>
-                      <td>{n.horarios.join(', ') || '-'}</td>
-                      <td>{n.profesor_nombre || '-'}</td>
-                      <td>{n.profesor_telefono || '-'}</td>
-                      <td>{n.participacion}</td>
-                      <td>{n.tareas}</td>
-                      <td>{n.examen_final}</td>
-                      <td>{n.promedio}</td>
-                      <td>{n.asistencia_pct}%</td>
-                      <td>
-                        <span className={`badge ${n.estado === 'Aprobado' ? 'bg-success' : 'bg-danger'}`}>
-                          {n.estado}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colSpan="10">
-                        <RecursosCurso claseId={n.clase_id} esProfesor={false} />
-                      </td>
-                    </tr>
-                  </React.Fragment>
-                );
-              })}
-            </tbody>
-          </table>
+        <div>
+          {data.clases.map((n, i) => {
+            // Log para ver el ID y nombre del curso
+            console.log(`Curso: ${n.curso_nombre}, clase_id: ${n.clase_id}`);
+            return (
+              <div key={i} className="mb-5">
+                {/* Información del curso fuera de la tabla */}
+                <div className="card mb-3">
+                  <div className="card-body">
+                    <h5 className="card-title mb-3">Información del Curso</h5>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <p><strong>Curso:</strong> {n.curso_nombre || '-'}</p>
+                        <p><strong>Horario:</strong> {n.horarios?.join(', ') || 'Sin horario'}</p>
+                      </div>
+                      <div className="col-md-6">
+                        <p><strong>Profesor:</strong> {n.profesor_nombre || '-'}</p>
+                        <p><strong>Contacto:</strong> {n.profesor_telefono || '-'}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tabla solo con datos académicos */}
+                <div className="table-responsive">
+                  <table className="table table-bordered table-hover align-middle">
+                    <thead className="table-primary">
+                      <tr>
+                        <th>Participación [40%]</th>
+                        <th>Tareas [20%]</th>
+                        <th>Examen Final [40%]</th>
+                        <th>Promedio</th>
+                        <th>% Asistencia</th>
+                        <th>Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{n.participacion}</td>
+                        <td>{n.tareas}</td>
+                        <td>{n.examen_final}</td>
+                        <td>{n.promedio}</td>
+                        <td>{n.asistencia_pct}%</td>
+                        <td>
+                          <span className={`badge ${n.estado === 'Aprobado' ? 'bg-success' : 'bg-danger'}`}>
+                            {n.estado}
+                          </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Recursos del curso */}
+                <RecursosCurso claseId={n.clase_id} esProfesor={false} />
+              </div>
+            );
+          })}
+
           <div className="text-center mt-4">
             <button className="btn btn-outline-secondary me-3" onClick={() => navigate("/alumno/reporte")}>
                 Imprimir / Guardar PDF
