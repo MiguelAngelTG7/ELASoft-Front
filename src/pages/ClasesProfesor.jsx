@@ -132,11 +132,11 @@ const ClasesProfesor = () => {
                   e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
                 }}
               >
-                {/* Header del curso con gradiente sutil */}
+                {/* Header del curso con color sólido */}
                 <div 
                   className="text-white position-relative"
                   style={{ 
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    background: '#6a5283ff',
                     padding: '1.5rem 1.5rem 1rem 1.5rem'
                   }}
                 >
@@ -149,7 +149,7 @@ const ClasesProfesor = () => {
                       </div>
                     </div>
                     <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                      <i className="fas fa-book-open text-white"></i>
+                      <i className="fas fa-book-open text-dark"></i>
                     </div>
                   </div>
                 </div>
