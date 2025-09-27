@@ -14,7 +14,11 @@ const ListaProfesoresDirector = () => {
     getPeriodosAcademicos()
       .then(data => {
         console.log("Periodos recibidos:", data); // <-- Agrega este log
-        setPeriodos(Array.isArray(data) ? data : []);
+        // Ordenar periodos de A a Z por nombre
+        const periodosOrdenados = Array.isArray(data) ? 
+          data.sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', 'es', { sensitivity: 'base' })) : 
+          [];
+        setPeriodos(periodosOrdenados);
       })
       .catch(() => setPeriodos([]));
   }, []);
@@ -25,13 +29,19 @@ const ListaProfesoresDirector = () => {
       getProfesoresPorPeriodo(periodoId)
         .then((data) => {
           // Si la respuesta es un objeto con array, tomar el array
+          let profesoresList = [];
           if (Array.isArray(data)) {
-            setProfesores(data);
+            profesoresList = data;
           } else if (Array.isArray(data?.profesores)) {
-            setProfesores(data.profesores);
-          } else {
-            setProfesores([]);
+            profesoresList = data.profesores;
           }
+          
+          // Ordenar profesores de A a Z por nombre completo
+          const profesoresOrdenados = profesoresList.sort((a, b) => 
+            (a.nombre_completo || '').localeCompare(b.nombre_completo || '', 'es', { sensitivity: 'base' })
+          );
+          
+          setProfesores(profesoresOrdenados);
         })
         .catch(() => setProfesores([]))
         .finally(() => setLoading(false));
@@ -66,7 +76,7 @@ const ListaProfesoresDirector = () => {
 
       {loading && <div>Cargando...</div>}
 
-  {!loading && Array.isArray(profesores) && profesores.length > 0 && (
+      {!loading && Array.isArray(profesores) && profesores.length > 0 && (
         <table className="table table-bordered">
           <thead className="table-light">
             <tr>
@@ -95,7 +105,7 @@ const ListaProfesoresDirector = () => {
         </table>
       )}
 
-  {!loading && Array.isArray(profesores) && profesores.length === 0 && periodoId && (
+      {!loading && Array.isArray(profesores) && profesores.length === 0 && periodoId && (
         <div>No hay profesores para este periodo.</div>
       )}
 
