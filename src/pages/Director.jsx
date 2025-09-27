@@ -176,9 +176,115 @@ const Director = () => {
               }}
             >
               <div 
-                className="text-dark position-relative"
+                className="text-white position-relative"
                 style={{ 
-                  backgroundColor: '#fff3cd',
+                  backgroundColor: '#17a2b8',
+                  padding: '1.5rem',
+                  borderRadius: '16px 16px 0 0'
+                }}
+              >
+                <div className="d-flex align-items-center justify-content-between">
+                  <div>
+                    <h5 className="fw-bold mb-1 text-white">Lista de Alumnos</h5>
+                    <small className="text-white-50">Ver todos los estudiantes</small>
+                  </div>
+                  <div className="bg-white bg-opacity-20 rounded-circle p-2">
+                    <i className="fas fa-users text-white fa-lg"></i>
+                  </div>
+                </div>
+              </div>
+              <div className="card-body d-flex flex-column justify-content-between" style={{ minHeight: '120px' }}>
+                <p className="text-muted mb-3">Consultar información completa de estudiantes registrados</p>
+                <button
+                  className="btn btn-outline-info w-100"
+                  onClick={() => navigate("/director/alumnos")}
+                  style={{ 
+                    borderRadius: '10px',
+                    transition: 'all 0.2s ease',
+                    border: '2px solid #17a2b8'
+                  }}
+                >
+                  <i className="fas fa-eye me-2"></i>
+                  Ver Lista
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="col-lg-4">
+            <div 
+              className="card border-0 h-100"
+              style={{ 
+                borderRadius: '16px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-6px)';
+                e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+              }}
+            >
+              <div 
+                className="text-white position-relative"
+                style={{ 
+                  backgroundColor: '#28a745',
+                  padding: '1.5rem',
+                  borderRadius: '16px 16px 0 0'
+                }}
+              >
+                <div className="d-flex align-items-center justify-content-between">
+                  <div>
+                    <h5 className="fw-bold mb-1 text-white">Lista de Profesores</h5>
+                    <small className="text-white-50">Ver todos los maestros</small>
+                  </div>
+                  <div className="bg-white bg-opacity-20 rounded-circle p-2">
+                    <i className="fas fa-chalkboard-teacher text-white fa-lg"></i>
+                  </div>
+                </div>
+              </div>
+              <div className="card-body d-flex flex-column justify-content-between" style={{ minHeight: '120px' }}>
+                <p className="text-muted mb-3">Consultar información de profesores registrados</p>
+                <button
+                  className="btn btn-outline-success w-100"
+                  onClick={() => navigate("/director/profesores")}
+                  style={{ 
+                    borderRadius: '10px',
+                    transition: 'all 0.2s ease',
+                    border: '2px solid #28a745'
+                  }}
+                >
+                  <i className="fas fa-eye me-2"></i>
+                  Ver Lista
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div className="col-lg-4">
+            <div 
+              className="card border-0 h-100"
+              style={{ 
+                borderRadius: '16px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-6px)';
+                e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+              }}
+            >
+              <div 
+                className="text-white position-relative"
+                style={{ 
+                  backgroundColor: '#ffc107',
                   padding: '1.5rem',
                   borderRadius: '16px 16px 0 0'
                 }}
@@ -186,10 +292,10 @@ const Director = () => {
                 <div className="d-flex align-items-center justify-content-between">
                   <div>
                     <h5 className="fw-bold mb-1 text-dark">Lista de Cursos</h5>
-                    <small className="text-muted">Ver todos los cursos</small>
+                    <small className="text-dark" style={{ opacity: 0.7 }}>Ver todos los cursos</small>
                   </div>
-                  <div className="bg-warning bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-book text-warning fa-lg"></i>
+                  <div className="bg-white bg-opacity-20 rounded-circle p-2">
+                    <i className="fas fa-book text-dark fa-lg"></i>
                   </div>
                 </div>
               </div>
@@ -201,8 +307,8 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #6c757d',
-                    color: '#6c757d'
+                    border: '2px solid #ffc107',
+                    color: '#856404'
                   }}
                 >
                   <i className="fas fa-eye me-2"></i>
@@ -239,20 +345,20 @@ const Director = () => {
               }}
             >
               <div 
-                className="text-dark position-relative"
+                className="text-white position-relative"
                 style={{ 
-                  backgroundColor: '#f8e6d8',
+                  backgroundColor: '#fd7e14',
                   padding: '1.5rem',
                   borderRadius: '16px 16px 0 0'
                 }}
               >
                 <div className="d-flex align-items-center justify-content-between">
                   <div>
-                    <h5 className="fw-bold mb-1 text-dark">Crear Nuevo Alumno</h5>
-                    <small className="text-muted">Registrar estudiante</small>
+                    <h5 className="fw-bold mb-1 text-white">Crear Nuevo Alumno</h5>
+                    <small className="text-white-50">Registrar estudiante</small>
                   </div>
-                  <div className="bg-info bg-opacity-10 rounded-circle p-2">
-                    <i className="fas fa-user-plus text-info fa-lg"></i>
+                  <div className="bg-white bg-opacity-20 rounded-circle p-2">
+                    <i className="fas fa-user-plus text-white fa-lg"></i>
                   </div>
                 </div>
               </div>
@@ -318,8 +424,8 @@ const Director = () => {
                   style={{ 
                     borderRadius: '10px',
                     transition: 'all 0.2s ease',
-                    border: '2px solid #6c757d',
-                    color: '#6c757d',
+                    border: '2px solid #6f42c1',
+                    color: '#6f42c1',
                     backgroundColor: 'transparent'
                   }}
                 >
@@ -343,7 +449,7 @@ const Director = () => {
           }}
         >
           <div className="card-body p-4">
-            <h6 className="text-secondary fw-bold mb-4 d-flex align-items-center" style={{ color: '#6c757d' }}>
+            <h6 className="text-purple fw-bold mb-4 d-flex align-items-center" style={{ color: '#6f42c1' }}>
               <i className="fas fa-user-search me-2"></i>
               Búsqueda Avanzada de Estudiantes
             </h6>
@@ -397,7 +503,7 @@ const Director = () => {
                 <h6 className="text-dark fw-bold mb-3">Resultados de la Búsqueda</h6>
                 <div className="table-responsive">
                   <table className="table table-hover align-middle mb-0" style={{ borderRadius: '10px', overflow: 'hidden' }}>
-                    <thead style={{ backgroundColor: '#6c757d' }}>
+                    <thead style={{ backgroundColor: '#6f42c1' }}>
                       <tr className="text-white">
                         <th className="border-0 py-3 text-white">
                           <i className="fas fa-user-graduate me-2"></i>
@@ -533,7 +639,7 @@ const Director = () => {
             {!cargandoPeriodo && cursosPorPeriodo.length > 0 && (
               <div className="table-responsive">
                 <table className="table table-hover align-middle mb-0" style={{ borderRadius: '10px', overflow: 'hidden' }}>
-                  <thead style={{ backgroundColor: '#6c757d' }}>
+                  <thead style={{ backgroundColor: '#0d6efd' }}>
                     <tr className="text-white">
                       <th className="border-0 py-3 text-white">
                         <i className="fas fa-layer-group me-2"></i>Nivel
