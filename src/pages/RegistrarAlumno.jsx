@@ -16,6 +16,8 @@ const RegistrarAlumno = () => {
     fecha_nacimiento: '',
     direccion: '',
     telefono: '',
+    enfermedades: '',
+    medicamentos_y_dosis: '',
     interesado: false,
     nuevo_creyente: false,
     bautizado: false,
@@ -86,6 +88,14 @@ const RegistrarAlumno = () => {
           <div className="col-md-6">
             <label>Teléfono</label>
             <input name="telefono" className="form-control" value={form.telefono} onChange={handleChange} />
+          </div>
+          <div className="col-md-6">
+            <label>Enfermedades y/o Alergias</label>
+            <textarea name="enfermedades" className="form-control" rows="2" value={form.enfermedades} onChange={handleChange} placeholder="Enfermedades o condiciones médicas" />
+          </div>
+          <div className="col-md-12">
+            <label>Medicamentos y Dosis</label>
+            <textarea name="medicamentos_y_dosis" className="form-control" rows="2" value={form.medicamentos_y_dosis} onChange={handleChange} placeholder="Medicamentos que toma y sus dosis" />
           </div>
           <div className="col-md-3">
             <label><input type="checkbox" name="interesado" checked={form.interesado} onChange={handleChange} /> Interesado</label>

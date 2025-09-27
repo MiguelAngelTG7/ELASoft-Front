@@ -15,6 +15,8 @@ const CrearAlumno = () => {
     fecha_nacimiento: '',
     direccion: '',
     telefono: '',
+    enfermedades: '',
+    medicamentos_y_dosis: '',
     interesado: false,
     nuevo_creyente: false,
     bautizado: false,
@@ -108,6 +110,8 @@ const CrearAlumno = () => {
         fecha_nacimiento: '',
         direccion: '',
         telefono: '',
+        enfermedades: '',
+        medicamentos_y_dosis: '',
         interesado: false,
         nuevo_creyente: false,
         bautizado: false,
@@ -262,6 +266,37 @@ const CrearAlumno = () => {
                         name="direccion"
                         value={formData.direccion}
                         onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label htmlFor="enfermedades" className="form-label">Enfermedades y/o Alergias</label>
+                      <textarea
+                        className="form-control"
+                        id="enfermedades"
+                        name="enfermedades"
+                        rows="3"
+                        value={formData.enfermedades}
+                        onChange={handleChange}
+                        placeholder="Descripción de enfermedades o condiciones médicas..."
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="mb-3">
+                      <label htmlFor="medicamentos_y_dosis" className="form-label">Medicamentos y Dosis</label>
+                      <textarea
+                        className="form-control"
+                        id="medicamentos_y_dosis"
+                        name="medicamentos_y_dosis"
+                        rows="3"
+                        value={formData.medicamentos_y_dosis}
+                        onChange={handleChange}
+                        placeholder="Medicamentos que toma y sus dosis..."
                       />
                     </div>
                   </div>
