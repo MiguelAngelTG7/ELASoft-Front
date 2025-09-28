@@ -159,7 +159,7 @@ const ClasesProfesor = () => {
                   <div className="px-4 py-3 bg-light border-bottom">
                     <div className="d-flex align-items-center justify-content-center">
                       <div className="bg-white rounded-pill px-3 py-2 shadow-sm">
-                        <i className="fas fa-clock text-primary me-2"></i>
+                        <i className="fas fa-clock text-success me-2"></i>
                         <span className="fw-medium text-dark">{clase.horarios.join(', ')}</span>
                       </div>
                     </div>

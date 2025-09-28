@@ -261,8 +261,8 @@ const Alumno = () => {
                     {/* Recursos del curso */}
                     <div className="px-4 pb-4">
                       <div className="border-top pt-4">
-                        <h6 className="text-primary fw-bold mb-3 d-flex align-items-center">
-                          <i className="fas fa-folder-open me-2"></i>
+                        <h6 className="text-success fw-bold mb-3 d-flex align-items-center">
+                          <i className="fas fa-folder-open text-success me-2"></i>
                           Recursos del Curso
                         </h6>
                         <div className="bg-light rounded p-3" style={{ borderRadius: '12px' }}>
