@@ -139,11 +139,11 @@ const Director = () => {
         <div className="row align-items-center">
           <div className="col">
             <div className="d-flex align-items-center">
-              <div className="bg-primary rounded-circle p-2 me-3">
-                <i className="fas fa-users-cog text-success"></i>
+              <div className="bg-success rounded-circle p-2 me-3">
+                <i className="fas fa-users-cog text-white"></i>
               </div>
               <div>
-                <h4 className="mb-0 text-dark">Panel Administrativo</h4>
+                <h4 className="mb-0 text-success">Panel Administrativo</h4>
                 <small className="text-muted">Gestión completa del sistema académico</small>
               </div>
             </div>
