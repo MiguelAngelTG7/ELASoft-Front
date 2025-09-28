@@ -140,7 +140,7 @@ const Director = () => {
           <div className="col">
             <div className="d-flex align-items-center">
               <div className="bg-primary rounded-circle p-2 me-3">
-                <i className="fas fa-users-cog text-white"></i>
+                <i className="fas fa-users-cog text-success"></i>
               </div>
               <div>
                 <h4 className="mb-0 text-dark">Panel Administrativo</h4>
@@ -153,8 +153,8 @@ const Director = () => {
 
       {/* Sección de Consultas */}
       <div className="mb-5">
-        <h6 className="text-primary fw-bold mb-3 d-flex align-items-center">
-          <i className="fas fa-search me-2"></i>
+        <h6 className="text-success fw-bold mb-3 d-flex align-items-center">
+          <i className="fas fa-search text-success me-2"></i>
           Consultas y Reportes
         </h6>
         <div className="row g-4">

@@ -94,7 +94,7 @@ const ClasesProfesor = () => {
                 <i className="fas fa-chalkboard-teacher text-white"></i>
               </div>
               <div>
-                <h4 className="mb-0 text-dark">Mis Cursos</h4>
+                <h4 className="mb-0 text-success">Mis Cursos</h4>
                 <small className="text-muted">{clases.length} {clases.length === 1 ? 'curso asignado' : 'cursos asignados'}</small>
               </div>
             </div>
