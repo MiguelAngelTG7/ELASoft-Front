@@ -316,7 +316,7 @@ const ClasesProfesor = () => {
                     <i className="fas fa-play text-white"></i>
                   </div>
                   <div>
-                    <h5 className="modal-title mb-0 fw-bold">Video Tutorial para Profesores</h5>
+                    <h5 className="modal-title mb-0 fw-bold">Video Tutorial para Maestros</h5>
                     <small className="text-muted">Aprende a usar todas las funcionalidades del sistema</small>
                   </div>
                 </div>
