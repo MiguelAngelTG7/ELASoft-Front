@@ -11,6 +11,20 @@ const Notas = () => {
   const [guardado, setGuardado] = useState(false);
   const [cargando, setCargando] = useState(true);
 
+  // Función para obtener el color del estado
+  const getEstadoColor = (estado) => {
+    switch (estado) {
+      case 'Aprobado':
+        return 'success';
+      case 'Desaprobado':
+        return 'danger';
+      case 'Pendiente':
+        return 'warning';
+      default:
+        return 'secondary';
+    }
+  };
+
   useEffect(() => {
     const cargarNotas = async () => {
       try {
@@ -64,9 +78,14 @@ const Notas = () => {
   };
 
   const calcularEstado = (nota) => {
+    // Verificar si todas las notas están completas (mayor que 0)
+    if (nota.participacion == 0 || nota.tareas == 0 || nota.examen_final == 0) {
+      return 'Pendiente';
+    }
+    
     const promedio = calcularPromedio(nota);
-    // Asistencia mínima 70% y promedio mínimo 14
-    return promedio >= 14 && (nota.asistencia_pct || 0) >= 70 ? 'Aprobado' : 'Desaprobado';
+    // Asistencia mínima 75% y promedio mínimo 14
+    return promedio >= 14 && (nota.asistencia_pct || 0) >= 75 ? 'Aprobado' : 'Desaprobado';
   };
 
   const guardar = async () => {
@@ -161,7 +180,7 @@ const Notas = () => {
                 <td>{n.asistencia_pct}%</td>
                 <td>
                   <span
-                    className={`badge bg-${n.estado === 'Aprobado' ? 'success' : 'danger'}`}
+                    className={`badge bg-${getEstadoColor(n.estado)}`}
                   >
                     {n.estado}
                   </span>

@@ -12,6 +12,20 @@ const ReporteNotas = () => {
   const [curso, setCurso] = useState({});
   const [cargando, setCargando] = useState(true);
 
+  // Función para obtener el color del estado
+  const getEstadoColor = (estado) => {
+    switch (estado) {
+      case 'Aprobado':
+        return 'success';
+      case 'Desaprobado':
+        return 'danger';
+      case 'Pendiente':
+        return 'warning';
+      default:
+        return 'secondary';
+    }
+  };
+
   useEffect(() => {
     const cargarNotas = async () => {
       try {
@@ -75,7 +89,7 @@ const ReporteNotas = () => {
               <td>{n.promedio?.toFixed ? n.promedio.toFixed(2) : n.promedio}</td>
               <td>{n.asistencia_pct}%</td>
               <td>
-                <span className={`badge bg-${n.estado === 'Aprobado' ? 'success' : 'danger'}`}>
+                <span className={`badge bg-${getEstadoColor(n.estado)}`}>
                   {n.estado}
                 </span>
               </td>

@@ -23,6 +23,34 @@ const Alumno = () => {
     document.body.removeChild(link);
   };
 
+  // Función para obtener el color del estado
+  const getEstadoColor = (estado) => {
+    switch (estado) {
+      case 'Aprobado':
+        return 'bg-success';
+      case 'Desaprobado':
+        return 'bg-danger';
+      case 'Pendiente':
+        return 'bg-warning';
+      default:
+        return 'bg-secondary';
+    }
+  };
+
+  // Función para obtener el ícono del estado
+  const getEstadoIcon = (estado) => {
+    switch (estado) {
+      case 'Aprobado':
+        return 'fa-check-circle';
+      case 'Desaprobado':
+        return 'fa-times-circle';
+      case 'Pendiente':
+        return 'fa-clock';
+      default:
+        return 'fa-question-circle';
+    }
+  };
+
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
@@ -85,7 +113,7 @@ const Alumno = () => {
                 <i className="fas fa-graduation-cap text-white"></i>
               </div>
               <div>
-                <h4 className="mb-0 text-dark">Mis Cursos</h4>
+                <h4 className="mb-0 text-success">Mis Cursos</h4>
                 <small className="text-muted">{data.clases.length} {data.clases.length === 1 ? 'curso inscrito' : 'cursos inscritos'}</small>
               </div>
             </div>
@@ -245,10 +273,10 @@ const Alumno = () => {
                               </td>
                               <td className="border-0 py-3">
                                 <span 
-                                  className={`badge fs-6 px-3 py-2 ${n.estado === 'Aprobado' ? 'bg-success' : 'bg-danger'}`}
+                                  className={`badge fs-6 px-3 py-2 ${getEstadoColor(n.estado)}`}
                                   style={{ borderRadius: '20px' }}
                                 >
-                                  <i className={`fas ${n.estado === 'Aprobado' ? 'fa-check-circle' : 'fa-times-circle'} me-1`}></i>
+                                  <i className={`fas ${getEstadoIcon(n.estado)} me-1`}></i>
                                   {n.estado}
                                 </span>
                               </td>
