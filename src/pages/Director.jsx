@@ -189,7 +189,7 @@ const Director = () => {
                     <small className="text-white-50">Ver todos los alumnos por curso</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-users text-dark fa-lg"></i>
+                    <i className="fas fa-users text-success fa-lg"></i>
                   </div>
                 </div>
               </div>
@@ -244,7 +244,7 @@ const Director = () => {
                     <small className="text-white-50">Ver todos los maestros por ciclo</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-chalkboard-teacher text-dark fa-lg"></i>
+                    <i className="fas fa-chalkboard-teacher text-success fa-lg"></i>
                   </div>
                 </div>
               </div>
@@ -299,7 +299,7 @@ const Director = () => {
                     <small className="text-white" style={{ opacity: 0.7 }}>Ver todos los cursos por ciclo</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-book text-dark fa-lg"></i>
+                    <i className="fas fa-book text-success fa-lg"></i>
                   </div> 
                 </div>
               </div>
@@ -363,7 +363,7 @@ const Director = () => {
                     <small className="text-white-50">Registrar estudiante</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-user-plus text-dark fa-lg"></i>
+                    <i className="fas fa-user-plus text-success fa-lg"></i>
                   </div>
                 </div>
               </div>
@@ -418,7 +418,7 @@ const Director = () => {
                     <small className="text-white-50">Consulta avanzada</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
-                    <i className="fas fa-search text-dark fa-lg"></i>
+                    <i className="fas fa-search text-success fa-lg"></i>
                   </div>
                 </div>
               </div>

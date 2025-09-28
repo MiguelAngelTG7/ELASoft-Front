@@ -61,7 +61,7 @@ const ClasesProfesor = () => {
           {profesor && (
             <div className="d-flex align-items-center text-muted">
               <i className="fas fa-user-circle me-2"></i>
-              <span className="fs-5">Bienvenido {profesor.first_name} {profesor.last_name}</span>
+              <span className="fs-5">Bienvenido, {profesor.first_name} {profesor.last_name}</span>
             </div>
           )}
         </div>
