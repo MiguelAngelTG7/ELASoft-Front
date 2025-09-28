@@ -90,7 +90,7 @@ const ClasesProfesor = () => {
         <div className="row align-items-center">
           <div className="col">
             <div className="d-flex align-items-center">
-              <div className="bg-primary rounded-circle p-2 me-3">
+              <div className="bg-success rounded-circle p-2 me-3">
                 <i className="fas fa-chalkboard-teacher text-white"></i>
               </div>
               <div>
@@ -169,8 +169,8 @@ const ClasesProfesor = () => {
                   <div className="p-4">
                     {/* Gestión de Alumnos - Colores Azules */}
                     <div className="mb-4">
-                      <h6 className="text-primary fw-bold mb-3 d-flex align-items-center">
-                        <i className="fas fa-users me-2"></i>
+                      <h6 className="text-success fw-bold mb-3 d-flex align-items-center">
+                        <i className="fas fa-users text-success me-2"></i>
                         Gestión de Estudiantes
                       </h6>
                       <div className="d-grid gap-2">
