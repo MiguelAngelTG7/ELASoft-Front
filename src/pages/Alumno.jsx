@@ -194,23 +194,23 @@ const Alumno = () => {
                             <tr className="text-white">
                               <th className="border-0 py-3 text-black">
                                 <i className="fas fa-comments me-2"></i>
-                                Participaciones [40%]
+                                Participac [40%]
                               </th>
                               <th className="border-0 py-3 text-black">
                                 <i className="fas fa-tasks me-2"></i>
-                                Promedio Tareas [20%]
+                                PromTareas [20%]
                               </th>
                               <th className="border-0 py-3 text-black">
                                 <i className="fas fa-clipboard-check me-2"></i>
-                                EvaluaciónFinal [40%]
+                                Eval Final [40%]
                               </th>
                               <th className="border-0 py-3 text-black">
                                 <i className="fas fa-calculator me-2"></i>
-                                Promedio 
+                                Promedio Notas
                               </th>
                               <th className="border-0 py-3 text-black">
                                 <i className="fas fa-calendar-check me-2"></i>
-                                Asistencia
+                                % Asistencia
                               </th>
                               <th className="border-0 py-3 text-black">
                                 <i className="fas fa-award me-2"></i>
