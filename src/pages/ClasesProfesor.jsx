@@ -57,7 +57,7 @@ const ClasesProfesor = () => {
       {/* Header limpio y profesional */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h1 className="fw-bold text-primary mb-1">Dashboard del Maestro</h1>
+          <h1 className="fw-bold text-success mb-1">Dashboard del Maestro</h1>
           {profesor && (
             <div className="d-flex align-items-center text-muted">
               <i className="fas fa-user-circle me-2"></i>

@@ -50,7 +50,7 @@ const Alumno = () => {
       {/* Header limpio y profesional */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h1 className="fw-bold text-primary mb-1">Dashboard del Estudiante</h1>
+          <h1 className="fw-bold text-success mb-1">Dashboard del Estudiante</h1>
           <div className="d-flex align-items-center text-muted">
             <i className="fas fa-user-graduate me-2"></i>
             <span className="fs-5">{data.alumno_nombre}</span>
@@ -128,7 +128,7 @@ const Alumno = () => {
                   <div 
                     className="text-white position-relative"
                     style={{ 
-                      backgroundColor: '#32502cff',
+                      backgroundColor: '#1a8754',
                       padding: '1.5rem 1.5rem 1rem 1.5rem'
                     }}
                   >
