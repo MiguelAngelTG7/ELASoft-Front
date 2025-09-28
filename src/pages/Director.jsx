@@ -111,7 +111,7 @@ const Director = () => {
           <h1 className="fw-bold text-success mb-1">Dashboard del Director</h1>
           <div className="d-flex align-items-center text-muted">
             <i className="fas fa-user-tie me-2"></i>
-            <span className="fs-5">Administración Académica</span>
+            <span className="fs-5">Bienvenido</span>
           </div>
         </div>
         <div className="d-flex gap-2">
