@@ -335,7 +335,7 @@ const ClasesProfesor = () => {
                     style={{ borderRadius: '12px' }}
                     poster="/favicon.png"
                   >
-                    <source src="/Video_Tutorial_Maestro.webm" type="video/webm" />
+                    <source src="/Video_Tutorial_Maestro.mp4" type="video/mp4" />
                     Tu navegador no soporta el elemento de video.
                   </video>
                 </div>
