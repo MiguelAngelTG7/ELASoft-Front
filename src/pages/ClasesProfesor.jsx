@@ -101,6 +101,85 @@ const ClasesProfesor = () => {
           </div>
         </div>
       </div>
+
+      {/* Video Tutorial */}
+      <div className="mb-4">
+        <div 
+          className="card border-0"
+          style={{ 
+            borderRadius: '16px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+            background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
+          }}
+        >
+          <div className="card-body p-4">
+            <div className="d-flex align-items-center mb-3">
+              <div className="bg-primary rounded-circle p-2 me-3">
+                <i className="fas fa-play text-white"></i>
+              </div>
+              <div>
+                <h6 className="mb-0 text-dark fw-bold">Video Tutorial para Profesores</h6>
+                <small className="text-muted">Aprende a usar todas las funcionalidades del sistema</small>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-8">
+                <div className="ratio ratio-16x9" style={{ borderRadius: '12px', overflow: 'hidden' }}>
+                  <video
+                    controls
+                    className="w-100 h-100"
+                    style={{ borderRadius: '12px' }}
+                    poster="/favicon.png"
+                  >
+                    <source src="/Video_Tutorial_Maestro.webm" type="video/webm" />
+                    Tu navegador no soporta el elemento de video.
+                  </video>
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="h-100 d-flex flex-column justify-content-center">
+                  <h6 className="text-dark mb-3">🎯 En este tutorial aprenderás:</h6>
+                  <ul className="list-unstyled text-muted small">
+                    <li className="mb-2">
+                      <i className="fas fa-check text-success me-2"></i>
+                      Gestión de estudiantes
+                    </li>
+                    <li className="mb-2">
+                      <i className="fas fa-check text-success me-2"></i>
+                      Control de asistencia
+                    </li>
+                    <li className="mb-2">
+                      <i className="fas fa-check text-success me-2"></i>
+                      Sistema de calificaciones
+                    </li>
+                    <li className="mb-2">
+                      <i className="fas fa-check text-success me-2"></i>
+                      Recursos del curso
+                    </li>
+                  </ul>
+                  <div className="mt-3">
+                    <button 
+                      className="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center w-100"
+                      onClick={() => {
+                        const video = document.querySelector('video');
+                        if (video.paused) {
+                          video.play();
+                        } else {
+                          video.pause();
+                        }
+                      }}
+                      style={{ borderRadius: '8px' }}
+                    >
+                      <i className="fas fa-play me-2"></i>
+                      Reproducir Tutorial
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
       {clases.length === 0 ? (
         <div className="text-center py-5">
