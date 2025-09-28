@@ -10,6 +10,7 @@ const ClasesProfesor = () => {
   const [clases, setClases] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [profesor, setProfesor] = useState(null);
+  const [mostrarModal, setMostrarModal] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,6 +68,14 @@ const ClasesProfesor = () => {
         </div>
         <div className="d-flex gap-2">
           <button 
+            onClick={() => setMostrarModal(true)} 
+            className="btn btn-outline-primary border-0 shadow-sm px-3 py-2"
+            style={{ borderRadius: '12px', transition: 'all 0.2s ease' }}
+          >
+            <i className="fas fa-play text-primary me-2"></i>
+            Ver Tutorial
+          </button>
+          <button 
             onClick={descargarManual} 
             className="btn btn-light border-0 shadow-sm px-3 py-2"
             style={{ borderRadius: '12px', transition: 'all 0.2s ease' }}
@@ -102,85 +111,6 @@ const ClasesProfesor = () => {
         </div>
       </div>
 
-      {/* Video Tutorial */}
-      <div className="mb-4">
-        <div 
-          className="card border-0"
-          style={{ 
-            borderRadius: '16px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-            background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
-          }}
-        >
-          <div className="card-body p-4">
-            <div className="d-flex align-items-center mb-3">
-              <div className="bg-primary rounded-circle p-2 me-3">
-                <i className="fas fa-play text-white"></i>
-              </div>
-              <div>
-                <h6 className="mb-0 text-dark fw-bold">Video Tutorial para Profesores</h6>
-                <small className="text-muted">Aprende a usar todas las funcionalidades del sistema</small>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-8">
-                <div className="ratio ratio-16x9" style={{ borderRadius: '12px', overflow: 'hidden' }}>
-                  <video
-                    controls
-                    className="w-100 h-100"
-                    style={{ borderRadius: '12px' }}
-                    poster="/favicon.png"
-                  >
-                    <source src="/Video_Tutorial_Maestro.webm" type="video/webm" />
-                    Tu navegador no soporta el elemento de video.
-                  </video>
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="h-100 d-flex flex-column justify-content-center">
-                  <h6 className="text-dark mb-3">🎯 En este tutorial aprenderás:</h6>
-                  <ul className="list-unstyled text-muted small">
-                    <li className="mb-2">
-                      <i className="fas fa-check text-success me-2"></i>
-                      Gestión de estudiantes
-                    </li>
-                    <li className="mb-2">
-                      <i className="fas fa-check text-success me-2"></i>
-                      Control de asistencia
-                    </li>
-                    <li className="mb-2">
-                      <i className="fas fa-check text-success me-2"></i>
-                      Sistema de calificaciones
-                    </li>
-                    <li className="mb-2">
-                      <i className="fas fa-check text-success me-2"></i>
-                      Recursos del curso
-                    </li>
-                  </ul>
-                  <div className="mt-3">
-                    <button 
-                      className="btn btn-outline-primary btn-sm d-flex align-items-center justify-content-center w-100"
-                      onClick={() => {
-                        const video = document.querySelector('video');
-                        if (video.paused) {
-                          video.play();
-                        } else {
-                          video.pause();
-                        }
-                      }}
-                      style={{ borderRadius: '8px' }}
-                    >
-                      <i className="fas fa-play me-2"></i>
-                      Reproducir Tutorial
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
       {clases.length === 0 ? (
         <div className="text-center py-5">
           <div className="bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" 
@@ -364,6 +294,83 @@ const ClasesProfesor = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Modal del Video Tutorial */}
+      {mostrarModal && (
+        <div 
+          className="modal fade show d-block" 
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setMostrarModal(false);
+            }
+          }}
+        >
+          <div className="modal-dialog modal-lg modal-dialog-centered">
+            <div className="modal-content" style={{ borderRadius: '16px', border: 'none' }}>
+              <div className="modal-header border-0 pb-0">
+                <div className="d-flex align-items-center">
+                  <div className="bg-primary rounded-circle p-2 me-3">
+                    <i className="fas fa-play text-white"></i>
+                  </div>
+                  <div>
+                    <h5 className="modal-title mb-0 fw-bold">Video Tutorial para Profesores</h5>
+                    <small className="text-muted">Aprende a usar todas las funcionalidades del sistema</small>
+                  </div>
+                </div>
+                <button 
+                  type="button" 
+                  className="btn-close" 
+                  onClick={() => setMostrarModal(false)}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="ratio ratio-16x9" style={{ borderRadius: '12px', overflow: 'hidden' }}>
+                  <video
+                    controls
+                    autoPlay
+                    className="w-100 h-100"
+                    style={{ borderRadius: '12px' }}
+                    poster="/favicon.png"
+                  >
+                    <source src="/Video_Tutorial_Maestro.webm" type="video/webm" />
+                    Tu navegador no soporta el elemento de video.
+                  </video>
+                </div>
+                <div className="mt-4">
+                  <h6 className="text-dark mb-3">🎯 En este tutorial aprenderás:</h6>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <ul className="list-unstyled text-muted small">
+                        <li className="mb-2">
+                          <i className="fas fa-check text-success me-2"></i>
+                          Gestión de estudiantes
+                        </li>
+                        <li className="mb-2">
+                          <i className="fas fa-check text-success me-2"></i>
+                          Control de asistencia
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="col-md-6">
+                      <ul className="list-unstyled text-muted small">
+                        <li className="mb-2">
+                          <i className="fas fa-check text-success me-2"></i>
+                          Sistema de calificaciones
+                        </li>
+                        <li className="mb-2">
+                          <i className="fas fa-check text-success me-2"></i>
+                          Recursos del curso
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
