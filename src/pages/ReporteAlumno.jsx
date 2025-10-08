@@ -35,7 +35,9 @@ const ReporteAlumno = () => {
             <th>Curso</th>
             <th>Horarios</th>
             <th>Nivel</th>
-            <th>Participación</th>
+            <th>Part1</th>
+            <th>Part2</th>
+            <th>Part3</th>
             <th>Tareas</th>
             <th>Examen final</th>
             <th>Promedio</th>
@@ -49,7 +51,9 @@ const ReporteAlumno = () => {
               <td>{c.curso_nombre}</td>
               <td>{c.horarios.join(', ')}</td>
               <td>{c.nivel_nombre}</td>
-              <td>{c.participacion}</td>
+              <td>{c.participacion_1 || '-'}</td>
+              <td>{c.participacion_2 || '-'}</td>
+              <td>{c.participacion_3 || '-'}</td>
               <td>{c.tareas}</td>
               <td>{c.examen_final}</td>
               <td>{c.promedio}</td>

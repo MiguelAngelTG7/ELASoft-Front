@@ -64,9 +64,10 @@ const Alumno = () => {
   };
 
   // Función para obtener el color de la asistencia
-  const getAsistenciaColor = (asistencia, participacion, tareas, examenFinal) => {
+  const getAsistenciaColor = (asistencia, participacion_1, participacion_2, participacion_3, tareas, examenFinal) => {
     // Si no todas las notas están completas, usar ámbar
-    if (!participacion || participacion === 0 || !tareas || tareas === 0 || !examenFinal || examenFinal === 0) {
+    if (!participacion_1 || participacion_1 === 0 || !participacion_2 || participacion_2 === 0 || 
+        !participacion_3 || participacion_3 === 0 || !tareas || tareas === 0 || !examenFinal || examenFinal === 0) {
       return 'warning'; // ámbar
     }
     // Si todas las notas están completas, aplicar criterio de 75%
@@ -74,13 +75,22 @@ const Alumno = () => {
   };
 
   // Función para obtener el color del texto de asistencia
-  const getAsistenciaTextColor = (asistencia, participacion, tareas, examenFinal) => {
+  const getAsistenciaTextColor = (asistencia, participacion_1, participacion_2, participacion_3, tareas, examenFinal) => {
     // Si no todas las notas están completas, usar ámbar
-    if (!participacion || participacion === 0 || !tareas || tareas === 0 || !examenFinal || examenFinal === 0) {
+    if (!participacion_1 || participacion_1 === 0 || !participacion_2 || participacion_2 === 0 || 
+        !participacion_3 || participacion_3 === 0 || !tareas || tareas === 0 || !examenFinal || examenFinal === 0) {
       return 'text-warning'; // ámbar
     }
     // Si todas las notas están completas, aplicar criterio de 75%
     return (asistencia || 0) >= 75 ? 'text-primary' : 'text-danger'; // azul o rojo
+  };
+
+  // Función para calcular promedio de participación
+  const calcularPromedioParticipacion = (p1, p2, p3) => {
+    const part1 = (parseFloat(p1) || 0) * 0.1333;
+    const part2 = (parseFloat(p2) || 0) * 0.1333;
+    const part3 = (parseFloat(p3) || 0) * 0.1334;
+    return +(part1 + part2 + part3).toFixed(2);
   };
 
   useEffect(() => {
@@ -258,11 +268,11 @@ const Alumno = () => {
                               </th>
                               <th className="border-0 py-3 text-success">
                                 <i className="fas fa-tasks me-2"></i>
-                                PromTareas [20%]
+                                Tareas [40%]
                               </th>
                               <th className="border-0 py-3 text-success">
                                 <i className="fas fa-clipboard-check me-2"></i>
-                                Eval Final [40%]
+                                Eval Final [20%]
                               </th>
                               <th className="border-0 py-3 text-success">
                                 <i className="fas fa-calculator me-2"></i>
@@ -281,7 +291,14 @@ const Alumno = () => {
                           <tbody>
                             <tr style={{ backgroundColor: '#f8f9fa' }}>
                               <td className="border-0 py-3">
-                                <span className={`fw-bold fs-5 ${getNotaColor(n.participacion)}`}>{n.participacion || '-'}</span>
+                                <div className="d-flex flex-column">
+                                  <small className="text-muted">Part1: {n.participacion_1 || '-'}</small>
+                                  <small className="text-muted">Part2: {n.participacion_2 || '-'}</small>
+                                  <small className="text-muted">Part3: {n.participacion_3 || '-'}</small>
+                                  <span className={`fw-bold fs-6 ${getNotaColor(calcularPromedioParticipacion(n.participacion_1, n.participacion_2, n.participacion_3))}`}>
+                                    Prom: {calcularPromedioParticipacion(n.participacion_1, n.participacion_2, n.participacion_3) || '-'}
+                                  </span>
+                                </div>
                               </td>
                               <td className="border-0 py-3">
                                 <span className={`fw-bold fs-5 ${getNotaColor(n.tareas)}`}>{n.tareas || '-'}</span>
@@ -296,11 +313,11 @@ const Alumno = () => {
                                 <div className="d-flex align-items-center">
                                   <div className="progress flex-grow-1 me-2" style={{ height: '8px' }}>
                                     <div 
-                                      className={`progress-bar bg-${getAsistenciaColor(n.asistencia_pct, n.participacion, n.tareas, n.examen_final)}`} 
+                                      className={`progress-bar bg-${getAsistenciaColor(n.asistencia_pct, n.participacion_1, n.participacion_2, n.participacion_3, n.tareas, n.examen_final)}`} 
                                       style={{ width: `${n.asistencia_pct || 0}%` }}
                                     ></div>
                                   </div>
-                                  <span className={`fw-medium ${getAsistenciaTextColor(n.asistencia_pct, n.participacion, n.tareas, n.examen_final)}`}>{n.asistencia_pct || 0}%</span>
+                                  <span className={`fw-medium ${getAsistenciaTextColor(n.asistencia_pct, n.participacion_1, n.participacion_2, n.participacion_3, n.tareas, n.examen_final)}`}>{n.asistencia_pct || 0}%</span>
                                 </div>
                               </td>
                               <td className="border-0 py-3">

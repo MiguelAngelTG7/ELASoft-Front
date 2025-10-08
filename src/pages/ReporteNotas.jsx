@@ -70,7 +70,9 @@ const ReporteNotas = () => {
           <tr>
             <th>#</th>
             <th>Alumno</th>
-            <th>Participación</th>
+            <th>Part1</th>
+            <th>Part2</th>
+            <th>Part3</th>
             <th>Tareas</th>
             <th>Examen final</th>
             <th>Promedio</th>
@@ -83,7 +85,9 @@ const ReporteNotas = () => {
             <tr key={n.id || n.alumno_id || i}>
               <td>{i + 1}</td>
               <td>{n.alumno_nombre}</td>
-              <td>{n.participacion}</td>
+              <td>{n.participacion_1 || '-'}</td>
+              <td>{n.participacion_2 || '-'}</td>
+              <td>{n.participacion_3 || '-'}</td>
               <td>{n.tareas}</td>
               <td>{n.examen_final}</td>
               <td>{n.promedio?.toFixed ? n.promedio.toFixed(2) : n.promedio}</td>

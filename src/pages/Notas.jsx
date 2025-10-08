@@ -69,17 +69,26 @@ const Notas = () => {
     );
   };
 
+  const calcularPromedioParticipacion = (nota) => {
+    // Part1[13.33%], Part2[13.33%], Part3[13.34%]
+    const part1 = (parseFloat(nota.participacion_1) || 0) * 0.1333;
+    const part2 = (parseFloat(nota.participacion_2) || 0) * 0.1333;
+    const part3 = (parseFloat(nota.participacion_3) || 0) * 0.1334;
+    return +(part1 + part2 + part3).toFixed(2);
+  };
+
   const calcularPromedio = (nota) => {
-    // Participación 40%, Tareas 20%, Examen Final 40%
-    const participacion = (parseFloat(nota.participacion) || 0) * 0.4;
-    const tareas = (parseFloat(nota.tareas) || 0) * 0.2;
-    const examenFinal = (parseFloat(nota.examen_final) || 0) * 0.4;
-    return +(participacion + tareas + examenFinal).toFixed(2);
+    // Participación total 40%, Tareas 40%, Examen Final 20%
+    const participacionTotal = calcularPromedioParticipacion(nota);
+    const tareas = (parseFloat(nota.tareas) || 0) * 0.40;
+    const examenFinal = (parseFloat(nota.examen_final) || 0) * 0.20;
+    return +(participacionTotal + tareas + examenFinal).toFixed(2);
   };
 
   const calcularEstado = (nota) => {
     // Verificar si todas las notas están completas (mayor que 0)
-    if (nota.participacion == 0 || nota.tareas == 0 || nota.examen_final == 0) {
+    if ((nota.participacion_1 == 0 || nota.participacion_2 == 0 || nota.participacion_3 == 0) || 
+        nota.tareas == 0 || nota.examen_final == 0) {
       return 'Pendiente';
     }
     
@@ -93,7 +102,9 @@ const Notas = () => {
       const payload = {
         notas: notas.map(n => ({
           alumno_id: n.alumno_id,
-          participacion: parseFloat(n.participacion) || 0,
+          participacion_1: parseFloat(n.participacion_1) || 0,
+          participacion_2: parseFloat(n.participacion_2) || 0,
+          participacion_3: parseFloat(n.participacion_3) || 0,
           tareas: parseFloat(n.tareas) || 0,
           examen_final: parseFloat(n.examen_final) || 0,
         }))
@@ -134,9 +145,11 @@ const Notas = () => {
           <thead>
             <tr>
               <th>Alumno</th>
-              <th>Participación [40%]</th>
-              <th>Tareas [20%]</th>
-              <th>Examen Final [40%]</th>
+              <th>Part1 [13.33%]</th>
+              <th>Part2 [13.33%]</th>
+              <th>Part3 [13.34%]</th>
+              <th>Tareas [40%]</th>
+              <th>Examen Final [20%]</th>
               <th>Promedio Notas</th>
               <th>Asistencia (%)</th>
               <th>Condición</th>
@@ -152,8 +165,9 @@ const Notas = () => {
                     className="form-control"
                     min="0"
                     max="20"
-                    value={n.participacion}
-                    onChange={(e) => cambiarNota(n.alumno_id, 'participacion', e.target.value)}
+                    step="0.01"
+                    value={n.participacion_1}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'participacion_1', e.target.value)}
                   />
                 </td>
                 <td>
@@ -162,6 +176,29 @@ const Notas = () => {
                     className="form-control"
                     min="0"
                     max="20"
+                    step="0.01"
+                    value={n.participacion_2}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'participacion_2', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    min="0"
+                    max="20"
+                    step="0.01"
+                    value={n.participacion_3}
+                    onChange={(e) => cambiarNota(n.alumno_id, 'participacion_3', e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    min="0"
+                    max="20"
+                    step="0.01"
                     value={n.tareas}
                     onChange={(e) => cambiarNota(n.alumno_id, 'tareas', e.target.value)}
                   />
@@ -172,6 +209,7 @@ const Notas = () => {
                     className="form-control"
                     min="0"
                     max="20"
+                    step="0.01"
                     value={n.examen_final}
                     onChange={(e) => cambiarNota(n.alumno_id, 'examen_final', e.target.value)}
                   />
