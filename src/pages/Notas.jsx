@@ -33,7 +33,21 @@ const Notas = () => {
         const notasOrdenadas = resp.data.sort((a, b) => 
           (a.alumno_nombre || '').localeCompare(b.alumno_nombre || '', 'es', { sensitivity: 'base' })
         );
-        setNotas(notasOrdenadas);
+        
+        // Asegurar que todas las notas tengan los campos necesarios con valores por defecto
+        const notasConDefaults = notasOrdenadas.map(nota => ({
+          ...nota,
+          participacion_1: nota.participacion_1 || 0,
+          participacion_2: nota.participacion_2 || 0,
+          participacion_3: nota.participacion_3 || 0,
+          tareas: nota.tareas || 0,
+          examen_final: nota.examen_final || 0,
+          promedio: nota.promedio || 0,
+          asistencia_pct: nota.asistencia_pct || 0,
+          estado: nota.estado || 'Pendiente'
+        }));
+        
+        setNotas(notasConDefaults);
       } catch (err) {
         console.error("Error al cargar notas:", err);
       } finally {
@@ -45,7 +59,7 @@ const Notas = () => {
 
   const cambiarNota = (alumno_id, campo, valor) => {
     let nuevaNota = parseFloat(valor);
-    if (isNaN(nuevaNota)) nuevaNota = 0;
+    if (isNaN(nuevaNota) || valor === '') nuevaNota = 0;
     if (nuevaNota < 0) nuevaNota = 0;
     if (nuevaNota > 20) nuevaNota = 20;
 
@@ -166,7 +180,7 @@ const Notas = () => {
                     min="0"
                     max="20"
                     step="0.01"
-                    value={n.participacion_1}
+                    value={n.participacion_1 || ''}
                     onChange={(e) => cambiarNota(n.alumno_id, 'participacion_1', e.target.value)}
                   />
                 </td>
@@ -177,7 +191,7 @@ const Notas = () => {
                     min="0"
                     max="20"
                     step="0.01"
-                    value={n.participacion_2}
+                    value={n.participacion_2 || ''}
                     onChange={(e) => cambiarNota(n.alumno_id, 'participacion_2', e.target.value)}
                   />
                 </td>
@@ -188,7 +202,7 @@ const Notas = () => {
                     min="0"
                     max="20"
                     step="0.01"
-                    value={n.participacion_3}
+                    value={n.participacion_3 || ''}
                     onChange={(e) => cambiarNota(n.alumno_id, 'participacion_3', e.target.value)}
                   />
                 </td>
@@ -199,7 +213,7 @@ const Notas = () => {
                     min="0"
                     max="20"
                     step="0.01"
-                    value={n.tareas}
+                    value={n.tareas || ''}
                     onChange={(e) => cambiarNota(n.alumno_id, 'tareas', e.target.value)}
                   />
                 </td>
@@ -210,7 +224,7 @@ const Notas = () => {
                     min="0"
                     max="20"
                     step="0.01"
-                    value={n.examen_final}
+                    value={n.examen_final || ''}
                     onChange={(e) => cambiarNota(n.alumno_id, 'examen_final', e.target.value)}
                   />
                 </td>

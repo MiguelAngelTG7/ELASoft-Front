@@ -30,7 +30,21 @@ const ReporteNotas = () => {
     const cargarNotas = async () => {
       try {
         const resp = await axios.get(`/clases/${claseId}/notas/`);
-        setNotas(resp.data);
+        
+        // Asegurar que todas las notas tengan los campos necesarios con valores por defecto
+        const notasConDefaults = resp.data.map(nota => ({
+          ...nota,
+          participacion_1: nota.participacion_1 || 0,
+          participacion_2: nota.participacion_2 || 0,
+          participacion_3: nota.participacion_3 || 0,
+          tareas: nota.tareas || 0,
+          examen_final: nota.examen_final || 0,
+          promedio: nota.promedio || 0,
+          asistencia_pct: nota.asistencia_pct || 0,
+          estado: nota.estado || 'Pendiente'
+        }));
+        
+        setNotas(notasConDefaults);
 
         if (resp.data.length > 0) {
           const clase = resp.data[0];
