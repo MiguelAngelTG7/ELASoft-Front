@@ -162,7 +162,7 @@ const Notas = () => {
               <th>Particip 1 [13.33%]</th>
               <th>Particip 2 [13.33%]</th>
               <th>Particip 3 [13.34%]</th>
-              <th>Prom.Tareas [40%]</th>
+              <th>PromTareas [40%]</th>
               <th>Examen Final [20%]</th>
               <th>Promedio Notas</th>
               <th>Asistencia (%)</th>
