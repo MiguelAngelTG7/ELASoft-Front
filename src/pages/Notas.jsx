@@ -159,9 +159,9 @@ const Notas = () => {
           <thead>
             <tr>
               <th>Alumno</th>
-              <th>Part1 [13.33%]</th>
-              <th>Part2 [13.33%]</th>
-              <th>Part3 [13.34%]</th>
+              <th>Participación1 [13.33%]</th>
+              <th>Participación2 [13.33%]</th>
+              <th>Participación3 [13.34%]</th>
               <th>Tareas [40%]</th>
               <th>Examen Final [20%]</th>
               <th>Promedio Notas</th>
