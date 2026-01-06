@@ -106,7 +106,7 @@ const Director = () => {
   const handleAlumnoClick = (alumnoId) => {
     if (periodoId === "todos") {
       // Obtener todos los cursos del alumno en todos los períodos
-      axios.get(`/director/alumno-cursos-todos/?alumno_id=${alumnoId}`)
+      axios.get(`/director/alumno-cursos-todos-periodos/?alumno_id=${alumnoId}`)
         .then(res => setCursosAlumno(res.data || []))
         .catch(() => setCursosAlumno([]));
     } else {
