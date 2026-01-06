@@ -21,6 +21,7 @@ const Director = () => {
   const [resultadosAlumnos, setResultadosAlumnos] = useState([]);
   const [cursosAlumno, setCursosAlumno] = useState([]);
   const [alumnosPeriodo, setAlumnosPeriodo] = useState([]);
+  const [alumnoSeleccionado, setAlumnoSeleccionado] = useState({ id: null, nombre: '' });
 
   const handleLogout = () => {
     localStorage.removeItem('access');
@@ -104,6 +105,13 @@ const Director = () => {
 
   // Al hacer click en un alumno, buscar sus cursos en el periodo
   const handleAlumnoClick = (alumnoId) => {
+    // Encontrar el nombre del alumno seleccionado
+    const alumno = resultadosAlumnos.find(a => a.id === alumnoId);
+    const nombreAlumno = alumno ? alumno.nombre_completo : 'Estudiante';
+    
+    // Guardar el alumno seleccionado
+    setAlumnoSeleccionado({ id: alumnoId, nombre: nombreAlumno });
+    
     if (periodoId === "todos") {
       // Obtener todos los cursos del alumno en todos los períodos
       axios.get(`/director/alumno-cursos-todos-periodos/?alumno_id=${alumnoId}`)
@@ -124,10 +132,8 @@ const Director = () => {
       return;
     }
 
-    // Obtener el nombre del alumno buscado
-    const alumnoNombre = resultadosAlumnos.length > 0 
-      ? resultadosAlumnos[0].nombre_completo 
-      : 'Estudiante';
+    // Obtener el nombre del alumno seleccionado
+    const alumnoNombre = alumnoSeleccionado.nombre || 'Estudiante';
 
     // Crear contenido HTML para impresión
     const printContent = `
