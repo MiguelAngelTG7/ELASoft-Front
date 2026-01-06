@@ -819,7 +819,7 @@ const Director = () => {
                     }}
                   >
                     <i className="fas fa-print me-2"></i>
-                    Imprimir Reporte
+                    Imprimir
                   </button>
                 </div>
                 <div className="row g-3">
