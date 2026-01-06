@@ -117,6 +117,195 @@ const Director = () => {
     }
   };
 
+  // Función para imprimir reporte de cursos
+  const handleImprimirReporte = () => {
+    if (cursosAlumno.length === 0) {
+      alert('No hay cursos para imprimir');
+      return;
+    }
+
+    // Obtener el nombre del alumno buscado
+    const alumnoNombre = resultadosAlumnos.length > 0 
+      ? resultadosAlumnos[0].nombre_completo 
+      : 'Estudiante';
+
+    // Crear contenido HTML para impresión
+    const printContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Reporte de Cursos - ${alumnoNombre}</title>
+          <style>
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              line-height: 1.6;
+              color: #333;
+              background: white;
+              padding: 20px;
+            }
+            .container {
+              max-width: 900px;
+              margin: 0 auto;
+              background: white;
+            }
+            .header {
+              text-align: center;
+              border-bottom: 3px solid #1a8754;
+              padding-bottom: 20px;
+              margin-bottom: 30px;
+            }
+            .header h1 {
+              color: #1a8754;
+              font-size: 28px;
+              margin-bottom: 10px;
+            }
+            .header p {
+              color: #666;
+              font-size: 16px;
+              margin: 5px 0;
+            }
+            .student-info {
+              background: #f8f9fa;
+              border-left: 4px solid #1a8754;
+              padding: 15px;
+              margin-bottom: 30px;
+              border-radius: 4px;
+            }
+            .student-info h3 {
+              color: #1a8754;
+              margin-bottom: 10px;
+              font-size: 16px;
+            }
+            .student-info p {
+              margin: 5px 0;
+              font-size: 14px;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-bottom: 20px;
+            }
+            table thead {
+              background-color: #1a8754;
+              color: white;
+            }
+            table th {
+              padding: 12px;
+              text-align: left;
+              font-weight: 600;
+              border: 1px solid #1a8754;
+            }
+            table td {
+              padding: 10px 12px;
+              border: 1px solid #ddd;
+              font-size: 13px;
+            }
+            table tbody tr:nth-child(even) {
+              background-color: #f9f9f9;
+            }
+            table tbody tr:hover {
+              background-color: #f0f0f0;
+            }
+            .footer {
+              margin-top: 40px;
+              padding-top: 20px;
+              border-top: 1px solid #ddd;
+              text-align: center;
+              color: #999;
+              font-size: 12px;
+            }
+            .fecha {
+              color: #666;
+              font-size: 12px;
+              margin-top: 10px;
+            }
+            @media print {
+              body {
+                margin: 0;
+                padding: 10px;
+              }
+              .no-print {
+                display: none;
+              }
+              table {
+                page-break-inside: avoid;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>📚 Reporte de Cursos Académicos</h1>
+              <p>ELASoft - Sistema de Gestión Académica</p>
+            </div>
+            
+            <div class="student-info">
+              <h3>Información del Estudiante</h3>
+              <p><strong>Nombre:</strong> ${alumnoNombre}</p>
+              <p><strong>Reporte:</strong> Todos los períodos académicos</p>
+              <p><strong>Total de Cursos:</strong> ${cursosAlumno.length}</p>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nombre del Curso</th>
+                  <th>Nivel</th>
+                  <th>Período Académico</th>
+                  <th>Horarios</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${cursosAlumno.map((curso, index) => `
+                  <tr>
+                    <td>${index + 1}</td>
+                    <td>${curso.nombre || 'N/A'}</td>
+                    <td>${curso.nivel || 'N/A'}</td>
+                    <td>${curso.periodo || 'N/A'}</td>
+                    <td>${Array.isArray(curso.horarios) ? curso.horarios.join(', ') : 'N/A'}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+
+            <div class="footer">
+              <div class="fecha">
+                Generado: ${new Date().toLocaleDateString('es-ES', { 
+                  weekday: 'long', 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </div>
+              <p>Este documento fue generado automáticamente por el sistema ELASoft</p>
+            </div>
+          </div>
+        </body>
+      </html>
+    `;
+
+    // Crear ventana de impresión
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    
+    // Esperar a que cargue y luego imprimir
+    printWindow.onload = () => {
+      printWindow.print();
+    };
+  };
+
   if (cargando) return <div className="text-center mt-5">Cargando información administrativa...</div>;
   if (!data.length) return <div className="text-center mt-5 text-danger">No hay datos disponibles.</div>;
 
@@ -578,10 +767,23 @@ const Director = () => {
             
             {cursosAlumno.length > 0 && (
               <div className="mt-4">
-                <h6 className="text-success fw-bold mb-3 d-flex align-items-center">
-                  <i className="fas fa-book-open me-2"></i>
-                  {mostrandoTodosPeriodos ? "Cursos del Estudiante en Todos los Períodos" : "Cursos del Estudiante en el Periodo"}
-                </h6>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h6 className="text-success fw-bold mb-0 d-flex align-items-center">
+                    <i className="fas fa-book-open me-2"></i>
+                    {mostrandoTodosPeriodos ? "Cursos del Estudiante en Todos los Períodos" : "Cursos del Estudiante en el Periodo"}
+                  </h6>
+                  <button
+                    onClick={handleImprimirReporte}
+                    className="btn btn-sm btn-success"
+                    style={{ 
+                      borderRadius: '8px',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <i className="fas fa-print me-2"></i>
+                    Imprimir Reporte
+                  </button>
+                </div>
                 <div className="row g-3">
                   {cursosAlumno.map(c => (
                     <div className="col-md-6" key={c.id}>
