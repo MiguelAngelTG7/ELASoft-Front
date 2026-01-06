@@ -12,6 +12,7 @@ const Director = () => {
   const [periodoId, setPeriodoId] = useState("");
   const [cursosPorPeriodo, setCursosPorPeriodo] = useState([]);
   const [cargandoPeriodo, setCargandoPeriodo] = useState(false);
+  const [mostrandoTodosPeriodos, setMostrandoTodosPeriodos] = useState(false);
   const navigate = useNavigate();
 
   // Estados para búsqueda de alumnos
@@ -61,17 +62,27 @@ const Director = () => {
   useEffect(() => {
     if (periodoId) {
       setCargandoPeriodo(true);
-      axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
-        .then(res => setCursosPorPeriodo(res.data.dashboard))
-        .catch(() => setCursosPorPeriodo([]))
-        .finally(() => setCargandoPeriodo(false));
-      // Buscar alumnos del periodo
-      axios.get(`/director/alumnos/?periodo_id=${periodoId}`)
-        .then(res => setAlumnosPeriodo(res.data.alumnos || []))
-        .catch(() => setAlumnosPeriodo([]));
+      
+      // Si periodoId es "todos", obtener todos los cursos
+      if (periodoId === "todos") {
+        setMostrandoTodosPeriodos(true);
+        // No cargar datos del dashboard normal
+        setCursosPorPeriodo([]);
+      } else {
+        setMostrandoTodosPeriodos(false);
+        axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
+          .then(res => setCursosPorPeriodo(res.data.dashboard))
+          .catch(() => setCursosPorPeriodo([]))
+          .finally(() => setCargandoPeriodo(false));
+        // Buscar alumnos del periodo
+        axios.get(`/director/alumnos/?periodo_id=${periodoId}`)
+          .then(res => setAlumnosPeriodo(res.data.alumnos || []))
+          .catch(() => setAlumnosPeriodo([]));
+      }
     } else {
       setCursosPorPeriodo([]);
       setAlumnosPeriodo([]);
+      setMostrandoTodosPeriodos(false);
     }
     setBusquedaAlumno("");
     setResultadosAlumnos([]);
@@ -93,9 +104,17 @@ const Director = () => {
 
   // Al hacer click en un alumno, buscar sus cursos en el periodo
   const handleAlumnoClick = (alumnoId) => {
-    axios.get(`/director/alumno-cursos/?periodo_id=${periodoId}&alumno_id=${alumnoId}`)
-      .then(res => setCursosAlumno(res.data || []))
-      .catch(() => setCursosAlumno([]));
+    if (periodoId === "todos") {
+      // Obtener todos los cursos del alumno en todos los períodos
+      axios.get(`/director/alumno-cursos-todos/?alumno_id=${alumnoId}`)
+        .then(res => setCursosAlumno(res.data || []))
+        .catch(() => setCursosAlumno([]));
+    } else {
+      // Obtener cursos del alumno solo en el período específico
+      axios.get(`/director/alumno-cursos/?periodo_id=${periodoId}&alumno_id=${alumnoId}`)
+        .then(res => setCursosAlumno(res.data || []))
+        .catch(() => setCursosAlumno([]));
+    }
   };
 
   if (cargando) return <div className="text-center mt-5">Cargando información administrativa...</div>;
@@ -474,7 +493,8 @@ const Director = () => {
                     onChange={e => setPeriodoId(e.target.value)}
                     style={{ borderRadius: '0 8px 8px 0' }}
                   >
-                    <option value="">Seleccione un periodo académico</option>
+                    <option value="">Seleccione un período académico</option>
+                    <option value="todos">📚 Todos los Períodos</option>
                     {(Array.isArray(periodos) ? periodos : []).map(p => (
                       <option key={p.id} value={p.id}>{p.nombre}</option>
                     ))}
@@ -560,7 +580,7 @@ const Director = () => {
               <div className="mt-4">
                 <h6 className="text-success fw-bold mb-3 d-flex align-items-center">
                   <i className="fas fa-book-open me-2"></i>
-                  Cursos del Estudiante en el Periodo
+                  {mostrandoTodosPeriodos ? "Cursos del Estudiante en Todos los Períodos" : "Cursos del Estudiante en el Periodo"}
                 </h6>
                 <div className="row g-3">
                   {cursosAlumno.map(c => (
@@ -579,6 +599,12 @@ const Director = () => {
                             <i className="fas fa-layer-group text-info me-2"></i>
                             <small className="text-muted">Nivel: {c.nivel || c.nivel_nombre}</small>
                           </div>
+                          {mostrandoTodosPeriodos && c.periodo && (
+                            <div className="d-flex align-items-center mb-2">
+                              <i className="fas fa-calendar text-warning me-2"></i>
+                              <small className="text-muted">Período: {c.periodo}</small>
+                            </div>
+                          )}
                           <div className="d-flex align-items-center">
                             <i className="fas fa-clock text-warning me-2"></i>
                             <small className="text-muted">
@@ -625,7 +651,8 @@ const Director = () => {
                   onChange={(e) => setPeriodoId(e.target.value)}
                   style={{ borderRadius: '0 8px 8px 0' }}
                 >
-                  <option value="">Seleccione un periodo académico</option>
+                  <option value="">Seleccione un período académico</option>
+                  <option value="todos">📚 Todos los Períodos</option>
                   {periodos.map(p => (
                     <option key={p.id} value={p.id}>{p.nombre}</option>
                   ))}
