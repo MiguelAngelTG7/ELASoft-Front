@@ -64,11 +64,43 @@ const Director = () => {
     if (periodoId) {
       setCargandoPeriodo(true);
       
-      // Si periodoId es "todos", obtener todos los cursos
+      // Si periodoId es "todos", obtener todos los alumnos de todos los períodos
       if (periodoId === "todos") {
         setMostrandoTodosPeriodos(true);
-        // No cargar datos del dashboard normal
         setCursosPorPeriodo([]);
+        
+        // Obtener alumnos de todos los períodos
+        // Obtenemos todos los períodos disponibles y luego todos los alumnos
+        axios.get('/director/periodos/')
+          .then(res => {
+            const todosLosPeriodos = res.data || [];
+            const alumnosSet = new Set();
+            const alumnosArray = [];
+            
+            // Hacer peticiones para cada período y recolectar alumnos únicos
+            Promise.all(
+              todosLosPeriodos.map(periodo =>
+                axios.get(`/director/alumnos/?periodo_id=${periodo.id}`)
+                  .then(res => {
+                    const alumnos = res.data.alumnos || [];
+                    alumnos.forEach(alumno => {
+                      if (!alumnosSet.has(alumno.id)) {
+                        alumnosSet.add(alumno.id);
+                        alumnosArray.push(alumno);
+                      }
+                    });
+                  })
+                  .catch(() => {})
+              )
+            ).then(() => {
+              setAlumnosPeriodo(alumnosArray);
+              setCargandoPeriodo(false);
+            });
+          })
+          .catch(() => {
+            setAlumnosPeriodo([]);
+            setCargandoPeriodo(false);
+          });
       } else {
         setMostrandoTodosPeriodos(false);
         axios.get(`/director/dashboard/?periodo_id=${periodoId}`)
