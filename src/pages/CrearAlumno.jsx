@@ -413,7 +413,8 @@ const CrearAlumno = () => {
                                 <strong>{curso.nombre}</strong><br />
                                 <small className="text-muted">
                                   {curso.nivel} • {curso.horarios.join(', ')}<br />
-                                  {curso.total_alumnos} alumnos
+                                  {curso.total_alumnos} alumnos<br />
+                                  Profesor: {curso.profesor_titular || 'Sin asignar'}
                                 </small>
                               </label>
                             </div>
