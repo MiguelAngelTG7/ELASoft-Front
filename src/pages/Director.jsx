@@ -812,14 +812,14 @@ const Director = () => {
                   </h6>
                   <button
                     onClick={handleImprimirReporte}
-                    className="btn btn-sm btn-success"
+                    className="btn btn-sm btn-success d-flex align-items-center justify-content-center"
                     style={{ 
                       borderRadius: '8px',
                       transition: 'all 0.2s ease'
                     }}
                   >
                     <i className="fas fa-print me-2"></i>
-                    Imprimir
+                    Imprimir Reporte
                   </button>
                 </div>
                 <div className="row g-3">
