@@ -148,24 +148,26 @@ const ClasesProfesor = () => {
                     className="text-white position-relative"
                     style={{ 
                       background: '#1a8754',
-                      padding: '1.5rem 1.5rem 1rem 1.5rem'
+                      padding: '1.5rem'
                     }}
                   >
-                    <div className="d-flex align-items-start justify-content-between mb-2">
+                    <div className="d-flex align-items-start justify-content-between">
                       <div className="flex-grow-1">
-                        <h5 className="fw-bold mb-1 text-white">{clase.nombre}</h5>
-                        <div className="d-flex align-items-center text-white-50 small mb-2">
-                          <i className="fas fa-calendar-alt me-2"></i>
+                        <h5 className="fw-bold mb-3 text-white">{clase.nombre}</h5>
+                        <div className="d-flex align-items-center mb-3">
+                          <i className="fas fa-calendar-alt me-2" style={{ fontSize: '0.9rem', width: '20px' }}></i>
                           <span className="fw-bold" style={{ fontSize: '0.95rem' }}>
                             {clase.nombre_completo?.split('—')[1]?.trim().split('(')[0].trim() || 'Sin período'}
                           </span>
                         </div>
-                        <div className="d-flex align-items-center text-white-50 small">
-                          <i className="fas fa-clock me-2"></i>
-                          <span>{clase.horarios.join(', ')}</span>
+                        <div className="d-flex align-items-center">
+                          <i className="fas fa-clock me-2" style={{ fontSize: '0.9rem', width: '20px' }}></i>
+                          <span className="text-white-50" style={{ fontSize: '0.9rem' }}>
+                            {clase.horarios.join(', ')}
+                          </span>
                         </div>
                       </div>
-                      <div className="bg-white bg-opacity-20 rounded-circle p-2">
+                      <div className="bg-white bg-opacity-20 rounded-circle p-2" style={{ minWidth: '48px', minHeight: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <i className="fas fa-book-open text-dark"></i>
                       </div>
                     </div>
