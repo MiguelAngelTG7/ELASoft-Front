@@ -87,10 +87,10 @@ const Alumno = () => {
 
   // Función para calcular promedio de participación
   const calcularPromedioParticipacion = (p1, p2, p3) => {
-    const part1 = (parseFloat(p1) || 0) * 0.1333;
-    const part2 = (parseFloat(p2) || 0) * 0.1333;
-    const part3 = (parseFloat(p3) || 0) * 0.1334;
-    return +(part1 + part2 + part3).toFixed(2);
+    const part1 = parseFloat(p1) || 0;
+    const part2 = parseFloat(p2) || 0;
+    const part3 = parseFloat(p3) || 0;
+    return +(((part1 + part2 + part3) / 3).toFixed(2));
   };
 
   useEffect(() => {
