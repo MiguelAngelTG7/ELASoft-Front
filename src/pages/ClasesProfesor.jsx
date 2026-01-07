@@ -154,7 +154,7 @@ const ClasesProfesor = () => {
                     <div className="d-flex align-items-start justify-content-between">
                       <div className="flex-grow-1">
                         <h5 className="fw-bold mb-3 text-white">{clase.nombre}</h5>
-                        <div className="d-flex align-items-center mb-3">
+                        <div className="d-flex align-items-center mb-2">
                           <i className="fas fa-calendar-alt me-2" style={{ fontSize: '0.9rem', width: '20px' }}></i>
                           <span className="fw-bold" style={{ fontSize: '0.95rem' }}>
                             {clase.nombre_completo?.split('—')[1]?.trim().split('(')[0].trim() || 'Sin período'}
