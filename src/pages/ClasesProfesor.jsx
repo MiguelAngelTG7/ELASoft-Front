@@ -156,7 +156,7 @@ const ClasesProfesor = () => {
                         <h5 className="fw-bold mb-1 text-white">{clase.nombre}</h5>
                         <div className="d-flex align-items-center text-white-50 small mb-2">
                           <i className="fas fa-calendar-alt me-2"></i>
-                          <span>
+                          <span className="fw-bold" style={{ fontSize: '0.95rem' }}>
                             {clase.nombre_completo?.split('—')[1]?.trim().split('(')[0].trim() || 'Sin período'}
                           </span>
                         </div>
