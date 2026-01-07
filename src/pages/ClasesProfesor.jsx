@@ -151,10 +151,14 @@ const ClasesProfesor = () => {
                 >
                   <div className="d-flex align-items-start justify-content-between mb-2">
                     <div className="flex-grow-1">
-                      <h5 className="fw-bold mb-2 text-white">{clase.nombre}</h5>
-                      <div className="d-flex align-items-center text-white-50 small">
+                      <h5 className="fw-bold mb-1 text-white">{clase.nombre}</h5>
+                      <div className="d-flex align-items-center text-white-50 small mb-2">
                         <i className="fas fa-calendar-alt me-2"></i>
                         <span>{clase.periodo_nombre}</span>
+                      </div>
+                      <div className="d-flex align-items-center text-white-50 small">
+                        <i className="fas fa-clock me-2"></i>
+                        <span>{clase.horarios.join(', ')}</span>
                       </div>
                     </div>
                     <div className="bg-white bg-opacity-20 rounded-circle p-2">
