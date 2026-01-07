@@ -157,10 +157,7 @@ const ClasesProfesor = () => {
                         <div className="d-flex align-items-center text-white-50 small mb-2">
                           <i className="fas fa-calendar-alt me-2"></i>
                           <span>
-                            {clase.nombre_completo 
-                              ? clase.nombre_completo.match(/\(([^)]+)\)/)?.[1]?.split(' - ')[0] || 'Sin período'
-                              : 'Sin período'
-                            }
+                            {clase.nombre_completo?.split('—')[1]?.trim().split('(')[0].trim() || 'Sin período'}
                           </span>
                         </div>
                         <div className="d-flex align-items-center text-white-50 small">
