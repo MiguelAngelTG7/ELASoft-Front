@@ -144,54 +144,16 @@ const Director = () => {
     
     if (periodoId === "todos") {
       axios.get(`/director/alumno-cursos-todos-periodos/?alumno_id=${alumnoId}`)
-        .then(res => {
-          console.log('Datos crudos del API:', res.data); // DEBUGG
-          
-          const cursosConEstado = (res.data || []).map(curso => {
-            // Buscar el promedio en diferentes campos posibles
-            const promedio = parseFloat(
-              curso.promedio || 
-              curso.nota || 
-              curso.calificacion || 
-              curso.average ||
-              0
-            ) || 0;
-            
-            console.log('Curso:', curso.nombre, 'Promedio encontrado:', promedio); // DEBUGG
-            
-            const aprobado = promedio >= 14;
-            return { ...curso, promedio, aprobado };
-          });
-          setCursosAlumno(cursosConEstado);
-        })
+        .then(res => setCursosAlumno(res.data || []))
         .catch((err) => {
-          console.error('Error en alumno-cursos-todos-periodos:', err);
+          console.error('Error:', err);
           setCursosAlumno([]);
         });
     } else {
       axios.get(`/director/alumno-cursos/?periodo_id=${periodoId}&alumno_id=${alumnoId}`)
-        .then(res => {
-          console.log('Datos crudos del API:', res.data); // DEBUGG
-          
-          const cursosConEstado = (res.data || []).map(curso => {
-            // Buscar el promedio en diferentes campos posibles
-            const promedio = parseFloat(
-              curso.promedio || 
-              curso.nota || 
-              curso.calificacion || 
-              curso.average ||
-              0
-            ) || 0;
-            
-            console.log('Curso:', curso.nombre, 'Promedio encontrado:', promedio); // DEBUGG
-            
-            const aprobado = promedio >= 14;
-            return { ...curso, promedio, aprobado };
-          });
-          setCursosAlumno(cursosConEstado);
-        })
+        .then(res => setCursosAlumno(res.data || []))
         .catch((err) => {
-          console.error('Error en alumno-cursos:', err);
+          console.error('Error:', err);
           setCursosAlumno([]);
         });
     }
@@ -357,14 +319,13 @@ const Director = () => {
               </thead>
               <tbody>
                 ${cursosAlumno.map((curso, index) => {
-                  // Asegurar que aprobado se calcula basado en promedio
                   const promedio = parseFloat(curso.promedio) || 0;
-                  const aprobado = promedio >= 14;
+                  const aprobado = curso.aprobado ?? (promedio >= 14);
                   return `
                     <tr>
                       <td>${index + 1}</td>
-                      <td>${curso.nombre || 'N/A'}</td>
-                      <td>${curso.nivel || 'N/A'}</td>
+                      <td>${curso.nombre}</td>
+                      <td>${curso.nivel}</td>
                       <td>${curso.periodo || 'N/A'}</td>
                       <td>${promedio.toFixed(2)}</td>
                       <td>${Array.isArray(curso.horarios) ? curso.horarios.join(', ') : 'N/A'}</td>
@@ -888,9 +849,9 @@ const Director = () => {
                 </div>
                 <div className="row g-3">
                   {cursosAlumno.map(c => {
-                    // Forzar cálculo del estado aquí también
+                    // Usar promedio y aprobado que vienen del servidor
                     const promedio = parseFloat(c.promedio) || 0;
-                    const aprobado = promedio >= 14;
+                    const aprobado = c.aprobado ?? (promedio >= 14);
                     
                     return (
                       <div className="col-md-6" key={c.id}>
@@ -904,14 +865,14 @@ const Director = () => {
                         >
                           <div className="card-body p-3">
                             <div className="d-flex justify-content-between align-items-start mb-2">
-                              <h6 className="fw-bold text-dark mb-0">{c.nombre || c.nombre_curso}</h6>
+                              <h6 className="fw-bold text-dark mb-0">{c.nombre}</h6>
                               <span className={`badge ${aprobado ? 'bg-success' : 'bg-danger'} ms-2`} style={{ whiteSpace: 'nowrap' }}>
                                 {aprobado ? '✓ Aprobado' : '✗ Desaprobado'}
                               </span>
                             </div>
                             <div className="d-flex align-items-center mb-2">
                               <i className="fas fa-layer-group text-info me-2"></i>
-                              <small className="text-muted">Nivel: {c.nivel || c.nivel_nombre}</small>
+                              <small className="text-muted">Nivel: {c.nivel}</small>
                             </div>
                             <div className="d-flex align-items-center mb-2">
                               <i className="fas fa-star text-warning me-2"></i>
@@ -926,7 +887,7 @@ const Director = () => {
                             <div className="d-flex align-items-center">
                               <i className="fas fa-clock text-warning me-2"></i>
                               <small className="text-muted">
-                                {Array.isArray(c.horarios) ? c.horarios.join(", ") : c.horario || "Sin horario"}
+                                {Array.isArray(c.horarios) ? c.horarios.join(", ") : "Sin horario"}
                               </small>
                             </div>
                           </div>
