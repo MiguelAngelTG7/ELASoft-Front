@@ -137,22 +137,30 @@ const Director = () => {
 
   // Al hacer click en un alumno, buscar sus cursos en el periodo
   const handleAlumnoClick = (alumnoId) => {
-    // Encontrar el nombre del alumno seleccionado
     const alumno = resultadosAlumnos.find(a => a.id === alumnoId);
     const nombreAlumno = alumno ? alumno.nombre_completo : 'Estudiante';
     
-    // Guardar el alumno seleccionado
     setAlumnoSeleccionado({ id: alumnoId, nombre: nombreAlumno });
     
     if (periodoId === "todos") {
-      // Obtener todos los cursos del alumno en todos los períodos
       axios.get(`/director/alumno-cursos-todos-periodos/?alumno_id=${alumnoId}`)
-        .then(res => setCursosAlumno(res.data || []))
+        .then(res => {
+          const cursosConEstado = (res.data || []).map(curso => ({
+            ...curso,
+            aprobado: curso.aprobado !== undefined ? curso.aprobado : (curso.promedio >= 14)
+          }));
+          setCursosAlumno(cursosConEstado);
+        })
         .catch(() => setCursosAlumno([]));
     } else {
-      // Obtener cursos del alumno solo en el período específico
       axios.get(`/director/alumno-cursos/?periodo_id=${periodoId}&alumno_id=${alumnoId}`)
-        .then(res => setCursosAlumno(res.data || []))
+        .then(res => {
+          const cursosConEstado = (res.data || []).map(curso => ({
+            ...curso,
+            aprobado: curso.aprobado !== undefined ? curso.aprobado : (curso.promedio >= 14)
+          }));
+          setCursosAlumno(cursosConEstado);
+        })
         .catch(() => setCursosAlumno([]));
     }
   };
@@ -164,7 +172,6 @@ const Director = () => {
       return;
     }
 
-    // Obtener el nombre del alumno seleccionado
     const alumnoNombre = alumnoSeleccionado.nombre || 'Estudiante';
 
     // Crear contenido HTML para impresión
@@ -311,21 +318,26 @@ const Director = () => {
                   <th>Nombre del Curso</th>
                   <th>Nivel</th>
                   <th>Período Académico</th>
+                  <th>Promedio</th>
                   <th>Horarios</th>
                   <th>Estado</th>
                 </tr>
               </thead>
               <tbody>
-                ${cursosAlumno.map((curso, index) => `
-                  <tr>
-                    <td>${index + 1}</td>
-                    <td>${curso.nombre || 'N/A'}</td>
-                    <td>${curso.nivel || 'N/A'}</td>
-                    <td>${curso.periodo || 'N/A'}</td>
-                    <td>${Array.isArray(curso.horarios) ? curso.horarios.join(', ') : 'N/A'}</td>
-                    <td><strong class="${curso.aprobado ? 'aprobado' : 'desaprobado'}">${curso.aprobado ? '✓ APROBADO' : '✗ DESAPROBADO'}</strong></td>
-                  </tr>
-                `).join('')}
+                ${cursosAlumno.map((curso, index) => {
+                  const aprobado = curso.aprobado !== undefined ? curso.aprobado : (curso.promedio >= 14);
+                  return `
+                    <tr>
+                      <td>${index + 1}</td>
+                      <td>${curso.nombre || 'N/A'}</td>
+                      <td>${curso.nivel || 'N/A'}</td>
+                      <td>${curso.periodo || 'N/A'}</td>
+                      <td>${curso.promedio || 'N/A'}</td>
+                      <td>${Array.isArray(curso.horarios) ? curso.horarios.join(', ') : 'N/A'}</td>
+                      <td><strong class="${aprobado ? 'aprobado' : 'desaprobado'}">${aprobado ? '✓ APROBADO' : '✗ DESAPROBADO'}</strong></td>
+                    </tr>
+                  `;
+                }).join('')}
               </tbody>
             </table>
 
