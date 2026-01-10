@@ -145,20 +145,24 @@ const Director = () => {
     if (periodoId === "todos") {
       axios.get(`/director/alumno-cursos-todos-periodos/?alumno_id=${alumnoId}`)
         .then(res => {
-          const cursosConEstado = (res.data || []).map(curso => ({
-            ...curso,
-            aprobado: curso.aprobado !== undefined ? curso.aprobado : (curso.promedio >= 14)
-          }));
+          const cursosConEstado = (res.data || []).map(curso => {
+            // Calcular aprobado basado en promedio (>= 14)
+            const promedio = parseFloat(curso.promedio) || 0;
+            const aprobado = promedio >= 14;
+            return { ...curso, aprobado };
+          });
           setCursosAlumno(cursosConEstado);
         })
         .catch(() => setCursosAlumno([]));
     } else {
       axios.get(`/director/alumno-cursos/?periodo_id=${periodoId}&alumno_id=${alumnoId}`)
         .then(res => {
-          const cursosConEstado = (res.data || []).map(curso => ({
-            ...curso,
-            aprobado: curso.aprobado !== undefined ? curso.aprobado : (curso.promedio >= 14)
-          }));
+          const cursosConEstado = (res.data || []).map(curso => {
+            // Calcular aprobado basado en promedio (>= 14)
+            const promedio = parseFloat(curso.promedio) || 0;
+            const aprobado = promedio >= 14;
+            return { ...curso, aprobado };
+          });
           setCursosAlumno(cursosConEstado);
         })
         .catch(() => setCursosAlumno([]));
@@ -325,14 +329,16 @@ const Director = () => {
               </thead>
               <tbody>
                 ${cursosAlumno.map((curso, index) => {
-                  const aprobado = curso.aprobado !== undefined ? curso.aprobado : (curso.promedio >= 14);
+                  // Asegurar que aprobado se calcula basado en promedio
+                  const promedio = parseFloat(curso.promedio) || 0;
+                  const aprobado = promedio >= 14;
                   return `
                     <tr>
                       <td>${index + 1}</td>
                       <td>${curso.nombre || 'N/A'}</td>
                       <td>${curso.nivel || 'N/A'}</td>
                       <td>${curso.periodo || 'N/A'}</td>
-                      <td>${curso.promedio || 'N/A'}</td>
+                      <td>${promedio.toFixed(2)}</td>
                       <td>${Array.isArray(curso.horarios) ? curso.horarios.join(', ') : 'N/A'}</td>
                       <td><strong class="${aprobado ? 'aprobado' : 'desaprobado'}">${aprobado ? '✓ APROBADO' : '✗ DESAPROBADO'}</strong></td>
                     </tr>
