@@ -859,43 +859,53 @@ const Director = () => {
                   </button>
                 </div>
                 <div className="row g-3">
-                  {cursosAlumno.map(c => (
-                    <div className="col-md-6" key={c.id}>
-                      <div 
-                        className="card border-0"
-                        style={{ 
-                          borderRadius: '12px',
-                          boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
-                          backgroundColor: '#fff'
-                        }}
-                      >
-                        <div className="card-body p-3">
-                          <div className="d-flex justify-content-between align-items-start mb-2">
-                            <h6 className="fw-bold text-dark mb-0">{c.nombre || c.nombre_curso}</h6>
-                            <span className={`badge ${c.aprobado ? 'bg-success' : 'bg-danger'} ms-2`} style={{ whiteSpace: 'nowrap' }}>
-                              {c.aprobado ? '✓ Aprobado' : '✗ Desaprobado'}
-                            </span>
-                          </div>
-                          <div className="d-flex align-items-center mb-2">
-                            <i className="fas fa-layer-group text-info me-2"></i>
-                            <small className="text-muted">Nivel: {c.nivel || c.nivel_nombre}</small>
-                          </div>
-                          {mostrandoTodosPeriodos && c.periodo && (
-                            <div className="d-flex align-items-center mb-2">
-                              <i className="fas fa-calendar text-warning me-2"></i>
-                              <small className="text-muted">Período: {c.periodo}</small>
+                  {cursosAlumno.map(c => {
+                    // Forzar cálculo del estado aquí también
+                    const promedio = parseFloat(c.promedio) || 0;
+                    const aprobado = promedio >= 14;
+                    
+                    return (
+                      <div className="col-md-6" key={c.id}>
+                        <div 
+                          className="card border-0"
+                          style={{ 
+                            borderRadius: '12px',
+                            boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+                            backgroundColor: '#fff'
+                          }}
+                        >
+                          <div className="card-body p-3">
+                            <div className="d-flex justify-content-between align-items-start mb-2">
+                              <h6 className="fw-bold text-dark mb-0">{c.nombre || c.nombre_curso}</h6>
+                              <span className={`badge ${aprobado ? 'bg-success' : 'bg-danger'} ms-2`} style={{ whiteSpace: 'nowrap' }}>
+                                {aprobado ? '✓ Aprobado' : '✗ Desaprobado'}
+                              </span>
                             </div>
-                          )}
-                          <div className="d-flex align-items-center">
-                            <i className="fas fa-clock text-warning me-2"></i>
-                            <small className="text-muted">
-                              {Array.isArray(c.horarios) ? c.horarios.join(", ") : c.horario || "Sin horario"}
-                            </small>
+                            <div className="d-flex align-items-center mb-2">
+                              <i className="fas fa-layer-group text-info me-2"></i>
+                              <small className="text-muted">Nivel: {c.nivel || c.nivel_nombre}</small>
+                            </div>
+                            <div className="d-flex align-items-center mb-2">
+                              <i className="fas fa-star text-warning me-2"></i>
+                              <small className="text-muted fw-bold">Promedio: {promedio.toFixed(2)}</small>
+                            </div>
+                            {mostrandoTodosPeriodos && c.periodo && (
+                              <div className="d-flex align-items-center mb-2">
+                                <i className="fas fa-calendar text-warning me-2"></i>
+                                <small className="text-muted">Período: {c.periodo}</small>
+                              </div>
+                            )}
+                            <div className="d-flex align-items-center">
+                              <i className="fas fa-clock text-warning me-2"></i>
+                              <small className="text-muted">
+                                {Array.isArray(c.horarios) ? c.horarios.join(", ") : c.horario || "Sin horario"}
+                              </small>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
