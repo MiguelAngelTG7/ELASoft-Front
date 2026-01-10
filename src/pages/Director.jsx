@@ -264,6 +264,18 @@ const Director = () => {
               font-size: 12px;
               margin-top: 10px;
             }
+            .aprobado {
+              color: #155724;
+              background-color: #d4edda;
+              padding: 3px 6px;
+              border-radius: 3px;
+            }
+            .desaprobado {
+              color: #721c24;
+              background-color: #f8d7da;
+              padding: 3px 6px;
+              border-radius: 3px;
+            }
             @media print {
               body {
                 margin: 0;
@@ -300,6 +312,7 @@ const Director = () => {
                   <th>Nivel</th>
                   <th>Período Académico</th>
                   <th>Horarios</th>
+                  <th>Estado</th>
                 </tr>
               </thead>
               <tbody>
@@ -310,6 +323,7 @@ const Director = () => {
                     <td>${curso.nivel || 'N/A'}</td>
                     <td>${curso.periodo || 'N/A'}</td>
                     <td>${Array.isArray(curso.horarios) ? curso.horarios.join(', ') : 'N/A'}</td>
+                    <td><strong class="${curso.aprobado ? 'aprobado' : 'desaprobado'}">${curso.aprobado ? '✓ APROBADO' : '✗ DESAPROBADO'}</strong></td>
                   </tr>
                 `).join('')}
               </tbody>
@@ -838,7 +852,12 @@ const Director = () => {
                         }}
                       >
                         <div className="card-body p-3">
-                          <h6 className="fw-bold text-dark mb-2">{c.nombre || c.nombre_curso}</h6>
+                          <div className="d-flex justify-content-between align-items-start mb-2">
+                            <h6 className="fw-bold text-dark mb-0">{c.nombre || c.nombre_curso}</h6>
+                            <span className={`badge ${c.aprobado ? 'bg-success' : 'bg-danger'} ms-2`} style={{ whiteSpace: 'nowrap' }}>
+                              {c.aprobado ? '✓ Aprobado' : '✗ Desaprobado'}
+                            </span>
+                          </div>
                           <div className="d-flex align-items-center mb-2">
                             <i className="fas fa-layer-group text-info me-2"></i>
                             <small className="text-muted">Nivel: {c.nivel || c.nivel_nombre}</small>
