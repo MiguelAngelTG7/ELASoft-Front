@@ -145,27 +145,55 @@ const Director = () => {
     if (periodoId === "todos") {
       axios.get(`/director/alumno-cursos-todos-periodos/?alumno_id=${alumnoId}`)
         .then(res => {
+          console.log('Datos crudos del API:', res.data); // DEBUGG
+          
           const cursosConEstado = (res.data || []).map(curso => {
-            // Calcular aprobado basado en promedio (>= 14)
-            const promedio = parseFloat(curso.promedio) || 0;
+            // Buscar el promedio en diferentes campos posibles
+            const promedio = parseFloat(
+              curso.promedio || 
+              curso.nota || 
+              curso.calificacion || 
+              curso.average ||
+              0
+            ) || 0;
+            
+            console.log('Curso:', curso.nombre, 'Promedio encontrado:', promedio); // DEBUGG
+            
             const aprobado = promedio >= 14;
-            return { ...curso, aprobado };
+            return { ...curso, promedio, aprobado };
           });
           setCursosAlumno(cursosConEstado);
         })
-        .catch(() => setCursosAlumno([]));
+        .catch((err) => {
+          console.error('Error en alumno-cursos-todos-periodos:', err);
+          setCursosAlumno([]);
+        });
     } else {
       axios.get(`/director/alumno-cursos/?periodo_id=${periodoId}&alumno_id=${alumnoId}`)
         .then(res => {
+          console.log('Datos crudos del API:', res.data); // DEBUGG
+          
           const cursosConEstado = (res.data || []).map(curso => {
-            // Calcular aprobado basado en promedio (>= 14)
-            const promedio = parseFloat(curso.promedio) || 0;
+            // Buscar el promedio en diferentes campos posibles
+            const promedio = parseFloat(
+              curso.promedio || 
+              curso.nota || 
+              curso.calificacion || 
+              curso.average ||
+              0
+            ) || 0;
+            
+            console.log('Curso:', curso.nombre, 'Promedio encontrado:', promedio); // DEBUGG
+            
             const aprobado = promedio >= 14;
-            return { ...curso, aprobado };
+            return { ...curso, promedio, aprobado };
           });
           setCursosAlumno(cursosConEstado);
         })
-        .catch(() => setCursosAlumno([]));
+        .catch((err) => {
+          console.error('Error en alumno-cursos:', err);
+          setCursosAlumno([]);
+        });
     }
   };
 
