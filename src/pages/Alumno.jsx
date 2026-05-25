@@ -7,6 +7,10 @@ import RecursosCurso from '../components/RecursosCurso';
 const Alumno = () => {
   const [data, setData] = useState(null);
   const [cargando, setCargando] = useState(true);
+  const [cursosDisponibles, setCursosDisponibles] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [cargandoModal, setCargandoModal] = useState(false);
+  const [cursoMatriculado, setCursoMatriculado] = useState(null);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -51,13 +55,13 @@ const Alumno = () => {
     }
   };
 
-  // Función para obtener el color de las notas (menor de 14 = rojo, 14 o más = azul)
+  // Función para obtener el color de las notas
   const getNotaColor = (nota) => {
     if (!nota || nota === 0) return 'text-muted';
     return parseFloat(nota) < 14 ? 'text-danger' : 'text-primary';
   };
 
-  // Función para obtener el color del promedio (menor de 14 = rojo, 14 o más = azul)
+  // Función para obtener el color del promedio
   const getPromedioColor = (promedio) => {
     if (!promedio || promedio === 0) return 'text-muted';
     return parseFloat(promedio) < 14 ? 'text-danger' : 'text-primary';
@@ -65,24 +69,20 @@ const Alumno = () => {
 
   // Función para obtener el color de la asistencia
   const getAsistenciaColor = (asistencia, participacion_1, participacion_2, participacion_3, tareas, examenFinal) => {
-    // Si no todas las notas están completas, usar ámbar
     if (!participacion_1 || participacion_1 === 0 || !participacion_2 || participacion_2 === 0 || 
         !participacion_3 || participacion_3 === 0 || !tareas || tareas === 0 || !examenFinal || examenFinal === 0) {
-      return 'warning'; // ámbar
+      return 'warning';
     }
-    // Si todas las notas están completas, aplicar criterio de 75%
-    return (asistencia || 0) >= 75 ? 'primary' : 'danger'; // azul o rojo
+    return (asistencia || 0) >= 75 ? 'primary' : 'danger';
   };
 
   // Función para obtener el color del texto de asistencia
   const getAsistenciaTextColor = (asistencia, participacion_1, participacion_2, participacion_3, tareas, examenFinal) => {
-    // Si no todas las notas están completas, usar ámbar
     if (!participacion_1 || participacion_1 === 0 || !participacion_2 || participacion_2 === 0 || 
         !participacion_3 || participacion_3 === 0 || !tareas || tareas === 0 || !examenFinal || examenFinal === 0) {
-      return 'text-warning'; // ámbar
+      return 'text-warning';
     }
-    // Si todas las notas están completas, aplicar criterio de 75%
-    return (asistencia || 0) >= 75 ? 'text-primary' : 'text-danger'; // azul o rojo
+    return (asistencia || 0) >= 75 ? 'text-primary' : 'text-danger';
   };
 
   // Función para calcular promedio de participación
@@ -93,6 +93,7 @@ const Alumno = () => {
     return +(((part1 + part2 + part3) / 3).toFixed(2));
   };
 
+  // Cargar datos del dashboard
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
@@ -103,6 +104,12 @@ const Alumno = () => {
         }); 
         const result = await response.json();
         setData(result);
+        
+        // Cargar datos de matriculación desde localStorage
+        const matriculadoData = localStorage.getItem('cursoMatriculado');
+        if (matriculadoData) {
+          setCursoMatriculado(JSON.parse(matriculadoData));
+        }
       } catch (error) {
         setData(null);
       } finally {
@@ -111,6 +118,70 @@ const Alumno = () => {
     };
     fetchDashboard();
   }, []);
+
+  // Cargar cursos disponibles cuando se abre el modal
+  const handleAbrirModal = async () => {
+    setMostrarModal(true);
+    setCargandoModal(true);
+    try {
+      const response = await fetch('https://elasoft-back.onrender.com/api/cursos-disponibles/', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access')}`
+        }
+      });
+      const result = await response.json();
+      setCursosDisponibles(result.cursos || []);
+    } catch (error) {
+      console.error('Error cargando cursos:', error);
+      setCursosDisponibles([]);
+    } finally {
+      setCargandoModal(false);
+    }
+  };
+
+  // Matricular en curso
+  const handleMatricular = async (claseId) => {
+    try {
+      const response = await fetch('https://elasoft-back.onrender.com/api/matricular-curso/', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access')}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ clase_id: claseId })
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+        // Guardar en localStorage
+        const datosMatricula = {
+          clase_id: result.curso.clase_id,
+          curso_nombre: result.curso.curso_nombre,
+          horarios: result.curso.horarios,
+          profesor_nombre: result.curso.profesor_nombre,
+          profesor_telefono: result.curso.profesor_telefono
+        };
+        localStorage.setItem('cursoMatriculado', JSON.stringify(datosMatricula));
+        setCursoMatriculado(datosMatricula);
+        setMostrarModal(false);
+        
+        // Recargar dashboard
+        const response2 = await fetch('https://elasoft-back.onrender.com/api/alumno/dashboard/', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access')}`
+          }
+        });
+        const newData = await response2.json();
+        setData(newData);
+      } else {
+        alert('Error: ' + (result.error || 'No se pudo matricular'));
+      }
+    } catch (error) {
+      console.error('Error matriculando:', error);
+      alert('Error al matricular');
+    }
+  };
 
   if (cargando) return <div className="text-center mt-5">Cargando datos académicos...</div>;
   if (!data) return <div className="text-center mt-5 text-danger">No hay datos disponibles.</div>;
@@ -146,7 +217,38 @@ const Alumno = () => {
         </div>
       </div>
       
-      {/* Separador sutil */}
+      {/* Botón de Matriculación o Mensaje de Matriculado */}
+      <div className="mb-4">
+        {!cursoMatriculado ? (
+          <button
+            onClick={handleAbrirModal}
+            className="btn btn-primary btn-lg px-4 py-2 shadow-sm"
+            style={{ borderRadius: '12px', transition: 'all 0.2s ease' }}
+          >
+            <i className="fas fa-plus-circle me-2"></i>
+            Matricularme en un Curso
+          </button>
+        ) : (
+          <div 
+            className="alert alert-success border-0 shadow-sm"
+            style={{ borderRadius: '12px', backgroundColor: '#d4edda' }}
+          >
+            <div className="d-flex align-items-center">
+              <i className="fas fa-check-circle me-3" style={{ fontSize: '1.5rem', color: '#28a745' }}></i>
+              <div className="flex-grow-1">
+                <h5 className="mb-1 text-success fw-bold">¡Matriculación Exitosa!</h5>
+                <div className="text-dark">
+                  <p className="mb-1"><strong>Curso:</strong> {cursoMatriculado.curso_nombre}</p>
+                  <p className="mb-1"><strong>Horarios:</strong> {cursoMatriculado.horarios}</p>
+                  <p className="mb-0"><strong>Profesor:</strong> {cursoMatriculado.profesor_nombre}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Separator */}
       <div className="border-bottom mb-4 pb-2">
         <div className="row align-items-center">
           <div className="col">
@@ -170,7 +272,7 @@ const Alumno = () => {
             <i className="fas fa-book-open fa-2x text-muted"></i>
           </div>
           <h5 className="text-muted mb-2">Aún no estás inscrito en cursos</h5>
-          <p className="text-secondary small">Contacta a la administración para inscribirte en cursos disponibles</p>
+          <p className="text-secondary small">Usa el botón anterior para matricularte en un curso disponible</p>
         </div>
       ) : (
         <div className="row g-4">
@@ -194,7 +296,7 @@ const Alumno = () => {
                     e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
                   }}
                 >
-                  {/* Header del curso con color sólido */}
+                  {/* Header del curso */}
                   <div 
                     className="text-white position-relative"
                     style={{ 
@@ -353,7 +455,7 @@ const Alumno = () => {
             );
           })}
 
-          {/* Botón de reporte con diseño mejorado */}
+          {/* Botón de reporte */}
           <div className="col-12">
             <div className="text-center py-4">
               <button 
@@ -377,6 +479,115 @@ const Alumno = () => {
                 <i className="fas fa-file-pdf me-2"></i>
                 Generar Reporte PDF
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL */}
+      {mostrarModal && (
+        <div 
+          className="modal d-block"
+          style={{ 
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            zIndex: 1050
+          }}
+          onClick={() => setMostrarModal(false)}
+        >
+          <div 
+            className="modal-dialog modal-lg"
+            onClick={(e) => e.stopPropagation()}
+            style={{ marginTop: '2rem' }}
+          >
+            <div className="modal-content border-0" style={{ borderRadius: '16px' }}>
+              <div 
+                className="modal-header bg-primary text-white border-0"
+                style={{ borderRadius: '16px 16px 0 0' }}
+              >
+                <h5 className="modal-title fw-bold">
+                  <i className="fas fa-graduation-cap me-2"></i>
+                  Cursos Disponibles
+                </h5>
+                <button 
+                  type="button" 
+                  className="btn-close btn-close-white"
+                  onClick={() => setMostrarModal(false)}
+                ></button>
+              </div>
+              
+              <div className="modal-body p-4">
+                {cargandoModal ? (
+                  <div className="text-center py-5">
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="visually-hidden">Cargando...</span>
+                    </div>
+                    <p className="mt-3 text-muted">Cargando cursos disponibles...</p>
+                  </div>
+                ) : cursosDisponibles.length === 0 ? (
+                  <div className="text-center py-5">
+                    <i className="fas fa-inbox fa-3x text-muted mb-3 d-block"></i>
+                    <p className="text-muted">No hay cursos disponibles en este momento</p>
+                  </div>
+                ) : (
+                  <div className="list-group">
+                    {cursosDisponibles.map((curso, idx) => (
+                      <div 
+                        key={idx}
+                        className="list-group-item list-group-item-action p-3 mb-2"
+                        style={{ 
+                          borderRadius: '12px',
+                          border: '1px solid #dee2e6',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#f8f9fa';
+                          e.currentTarget.style.borderColor = '#0d6efd';
+                          e.currentTarget.style.boxShadow = '0 2px 8px rgba(13,110,253,0.15)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'white';
+                          e.currentTarget.style.borderColor = '#dee2e6';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      >
+                        <div className="d-flex justify-content-between align-items-start">
+                          <div className="flex-grow-1">
+                            <h6 className="mb-2 fw-bold text-success">{curso.curso_nombre}</h6>
+                            <div className="row g-2">
+                              <div className="col-12">
+                                <small className="text-muted d-block">
+                                  <i className="fas fa-clock me-2"></i>
+                                  <strong>Horarios:</strong> {curso.horarios}
+                                </small>
+                              </div>
+                              <div className="col-12">
+                                <small className="text-muted d-block">
+                                  <i className="fas fa-chalkboard-teacher me-2"></i>
+                                  <strong>Profesor:</strong> {curso.profesor_nombre}
+                                </small>
+                              </div>
+                              <div className="col-12">
+                                <small className="text-muted d-block">
+                                  <i className="fas fa-phone me-2"></i>
+                                  <strong>Teléfono:</strong> {curso.profesor_telefono}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => handleMatricular(curso.clase_id)}
+                            className="btn btn-sm btn-success ms-2"
+                            style={{ borderRadius: '8px', whiteSpace: 'nowrap' }}
+                          >
+                            <i className="fas fa-check me-1"></i>
+                            Seleccionar
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
