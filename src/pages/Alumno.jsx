@@ -97,6 +97,7 @@ const Alumno = () => {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
+        // Cargar dashboard
         const response = await fetch('https://elasoft-back.onrender.com/api/alumno/dashboard/', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('access')}`
@@ -105,10 +106,22 @@ const Alumno = () => {
         const result = await response.json();
         setData(result);
         
-        // Cargar datos de matriculación desde localStorage
-        const matriculadoData = localStorage.getItem('cursoMatriculado');
-        if (matriculadoData) {
-          setCursoMatriculado(JSON.parse(matriculadoData));
+        // Cargar curso matriculado desde la BD
+        const cursoResponse = await fetch('https://elasoft-back.onrender.com/api/alumno/curso-matriculado/', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('access')}`
+          }
+        });
+        const cursoResult = await cursoResponse.json();
+        
+        if (cursoResult.curso) {
+          setCursoMatriculado(cursoResult.curso);
+          // Guardar en localStorage como backup
+          localStorage.setItem('cursoMatriculado', JSON.stringify(cursoResult.curso));
+        } else {
+          // Si no hay curso en la BD, limpiar localStorage
+          localStorage.removeItem('cursoMatriculado');
+          setCursoMatriculado(null);
         }
       } catch (error) {
         setData(null);
