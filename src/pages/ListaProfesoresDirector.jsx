@@ -93,7 +93,7 @@ const ListaProfesoresDirector = () => {
                 <td>{profesor.nombre_completo}</td>
                 <td>
                   {profesor.cursos && profesor.cursos.length > 0
-                    ? profesor.cursos[profesor.cursos.length - 1]
+                    ? profesor.cursos.join(", ")
                     : "Sin clases"}
                 </td>
                 <td>{profesor.email}</td>
