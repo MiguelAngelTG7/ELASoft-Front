@@ -93,6 +93,31 @@ const Alumno = () => {
     return +(((part1 + part2 + part3) / 3).toFixed(2));
   };
 
+  // Función para ordenar clases por período académico (más reciente al antiguo)
+  const ordenarClasesPorPeriodo = (clasesArray) => {
+    const extraerPeriodo = (clase) => {
+      // Extrae el período de periodo_nombre (ej: "2021 - II")
+      const periodoStr = clase.periodo_nombre || '';
+      const partes = periodoStr.split('-');
+      const año = parseInt(partes[0]?.trim()) || 0;
+      const semestre = partes[1]?.trim() || 'I';
+      return { año, semestre };
+    };
+
+    return [...clasesArray].sort((a, b) => {
+      const periodoA = extraerPeriodo(a);
+      const periodoB = extraerPeriodo(b);
+      
+      // Ordenar por año descendente (más reciente primero)
+      if (periodoA.año !== periodoB.año) {
+        return periodoB.año - periodoA.año;
+      }
+      
+      // Si es el mismo año, ordenar por semestre descendente (II antes que I)
+      return periodoB.semestre.localeCompare(periodoA.semestre);
+    });
+  };
+
   // Cargar datos del dashboard
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -199,6 +224,8 @@ const Alumno = () => {
   if (cargando) return <div className="text-center mt-5">Cargando datos académicos...</div>;
   if (!data) return <div className="text-center mt-5 text-danger">No hay datos disponibles.</div>;
 
+  const clasesOrdenadas = ordenarClasesPorPeriodo(data.clases);
+
   return (
     <div className="container py-4">
       {/* Header limpio y profesional */}
@@ -289,7 +316,7 @@ const Alumno = () => {
         </div>
       ) : (
         <div className="row g-4">
-          {data.clases.map((n, i) => {
+          {clasesOrdenadas.map((n, i) => {
             console.log(`Curso: ${n.curso_nombre}, clase_id: ${n.clase_id}`);
             return (
               <div className="col-12" key={i}>
