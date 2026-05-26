@@ -574,7 +574,7 @@ const Alumno = () => {
                               <div className="col-12">
                                 <small className="text-muted d-block">
                                   <i className="fas fa-clock me-2"></i>
-                                  <strong>Horarios:</strong> {curso.horarios}
+                                  <strong>Horario:</strong> {curso.horarios}
                                 </small>
                               </div>
                               <div className="col-12">
