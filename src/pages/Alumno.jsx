@@ -566,6 +566,10 @@ const Alumno = () => {
                         <div className="d-flex justify-content-between align-items-start">
                           <div className="flex-grow-1">
                             <h6 className="mb-2 fw-bold text-success">{curso.curso_nombre}</h6>
+                            <p className="mb-2 text-muted small">
+                              <i className="fas fa-calendar me-2"></i>
+                              <strong>Período:</strong> {curso.periodo_nombre}
+                            </p>
                             <div className="row g-2">
                               <div className="col-12">
                                 <small className="text-muted d-block">
@@ -577,12 +581,6 @@ const Alumno = () => {
                                 <small className="text-muted d-block">
                                   <i className="fas fa-chalkboard-teacher me-2"></i>
                                   <strong>Profesor:</strong> {curso.profesor_nombre}
-                                </small>
-                              </div>
-                              <div className="col-12">
-                                <small className="text-muted d-block">
-                                  <i className="fas fa-phone me-2"></i>
-                                  <strong>Teléfono:</strong> {curso.profesor_telefono}
                                 </small>
                               </div>
                             </div>
