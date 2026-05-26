@@ -51,7 +51,34 @@ const ClasesProfesor = () => {
     navigate('/');
   };
 
+  // Función para ordenar clases por período académico (más reciente al antiguo)
+  const ordenarClasesPorPeriodo = (clasesArray) => {
+    const extraerPeriodo = (clase) => {
+      // Extrae el período del nombre_completo (ej: "2021 - II")
+      const periodoStr = clase.nombre_completo?.split('—')[1]?.trim().split('(')[0].trim() || '';
+      const partes = periodoStr.split('-');
+      const año = parseInt(partes[0]?.trim()) || 0;
+      const semestre = partes[1]?.trim() || 'I';
+      return { año, semestre };
+    };
+
+    return [...clasesArray].sort((a, b) => {
+      const periodoA = extraerPeriodo(a);
+      const periodoB = extraerPeriodo(b);
+      
+      // Ordenar por año descendente (más reciente primero)
+      if (periodoA.año !== periodoB.año) {
+        return periodoB.año - periodoA.año;
+      }
+      
+      // Si es el mismo año, ordenar por semestre descendente (II antes que I)
+      return periodoB.semestre.localeCompare(periodoA.semestre);
+    });
+  };
+
   if (cargando) return <div className="text-center mt-5">Cargando clases...</div>;
+  
+  const clasesOrdenadas = ordenarClasesPorPeriodo(clases);
 
   return (
     <div className="container py-4">
@@ -122,7 +149,7 @@ const ClasesProfesor = () => {
         </div>
       ) : (
         <div className="row g-4">
-          {clases.map((clase, i) => {
+          {clasesOrdenadas.map((clase, i) => {
             console.log('Clase:', clase);
             return (
               <div className="col-lg-6" key={i}>
