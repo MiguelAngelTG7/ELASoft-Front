@@ -18,6 +18,7 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
   const laneH = MIN_LANE_H;
   const svgW = 1100;
   const svgH = paddingTop + lanes * laneH + paddingBottom;
+  const finishX = svgW - 124; // x coordinate of finish line
 
   return (
     <div className="race-wrap" style={{ width: '100%' }}>
@@ -29,6 +30,7 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
         aria-label="Carrera de cursos"
         style={{ width: '100%', height: svgH }}
       >
+        {/* lanes background and finish line */}
         {Array.from({ length: lanes }).map((_, i) => {
           const y = paddingTop + i * laneH;
           return (
@@ -43,8 +45,8 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
                 stroke="#e6ece6"
               />
               <line
-                x1={svgW - 124}
-                x2={svgW - 124}
+                x1={finishX}
+                x2={finishX}
                 y1={y + 8}
                 y2={y + laneH - 20}
                 stroke="#222"
@@ -55,6 +57,7 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
           );
         })}
 
+        {/* runners (avatar + medal) */}
         {list.map((c, idx) => {
           const y = paddingTop + idx * laneH + laneH / 2;
           const pad = 56;
@@ -85,24 +88,17 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
                 {initials}
               </text>
 
-              {/* small medal as SVG (positioned relative to avatar) */}
+              {/* medal positioned top-right of avatar */}
               {idx < 3 && (
-                <g transform="translate(-34,-12)">
+                <g transform="translate(28,-20)">
                   <circle r="12" fill={idx === 0 ? '#ffd700' : idx === 1 ? '#c0c0c0' : '#cd7f32'} stroke="#333" strokeWidth="1" />
                   <text x="0" y="5" fontSize="11" fontWeight="700" textAnchor="middle" fill="#111">{idx + 1}</text>
                 </g>
               )}
 
-              {/* course + teachers using foreignObject for wrapping */}
-              <foreignObject x={46} y={-Math.floor(laneH / 2) + 8} width={svgW - x - 140} height={laneH - 12}>
-                <div className="race-item" xmlns="http://www.w3.org/1999/xhtml">
-                  <div className="course-name" title={c.courseName}>{c.courseName}</div>
-                  <div className="teachers-label" title={teachersLabel}>{teachersLabel}</div>
-                </div>
-              </foreignObject>
-
+              {/* hover tooltip near runner (keeps previous behavior) */}
               {hoverId === (c.id ?? `${idx}`) && (
-                <g transform="translate(46,-54)">
+                <g transform="translate(36,-54)">
                   <rect x="-8" y="-8" rx="8" width="360" height="72" fill="#fff" stroke="#ddd" />
                   <text x="6" y="8" fontSize="13" fill="#222" fontWeight="700">{c.courseName}</text>
                   <text x="6" y="26" fontSize="12" fill="#444">{teachersLabel}</text>
@@ -112,6 +108,31 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
                 </g>
               )}
             </g>
+          );
+        })}
+
+        {/* fixed column to the right of the finish line with course + teachers */}
+        {list.map((c, idx) => {
+          const yTop = paddingTop + idx * laneH + 8;
+          const labelX = finishX + 14;
+          const teachersLabel = c.teachersLabel || ([
+            c.maestro_titular?.nombre_completo,
+            c.maestro_asistente?.nombre_completo
+          ].filter(Boolean).join(' / ')) || '—';
+
+          return (
+            <foreignObject
+              key={`label-${idx}`}
+              x={labelX}
+              y={yTop}
+              width={svgW - labelX - 12}
+              height={laneH - 12}
+            >
+              <div className="race-item" xmlns="http://www.w3.org/1999/xhtml">
+                <div className="course-name" title={c.courseName}>{c.courseName}</div>
+                <div className="teachers-label" title={teachersLabel}>{teachersLabel}</div>
+              </div>
+            </foreignObject>
           );
         })}
       </svg>
