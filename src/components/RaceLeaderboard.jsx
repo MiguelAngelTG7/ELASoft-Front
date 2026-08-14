@@ -8,7 +8,7 @@ function Medal({ pos }) {
   return null;
 }
 
-export default function RaceLeaderboard({ data = [], height = 320 }) {
+export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
   const [hoverId, setHoverId] = useState(null);
   const [open, setOpen] = useState(null);
 
@@ -18,25 +18,20 @@ export default function RaceLeaderboard({ data = [], height = 320 }) {
     return { list: sorted, max: maxScore || 100 };
   }, [data]);
 
-  // show ALL courses: lanes = number of courses (min 3)
   const lanes = Math.max(3, list.length);
-
-  // desired vertical spacing per lane (increase this for larger rows)
-  const MIN_LANE_H = 64; // increased row height
+  const MIN_LANE_H = Math.max(48, minHeight); // ensure reasonable minimum
   const paddingTop = 12;
   const paddingBottom = 20;
-
-  // compute lane height and svg height so component grows with items
-  const laneH = Math.max(MIN_LANE_H, Math.floor((height - paddingTop - paddingBottom) / lanes));
-  const svgW = 1000;
-  const svgH = Math.max(height, paddingTop + lanes * laneH + paddingBottom);
+  const laneH = MIN_LANE_H;
+  const svgW = 1100;
+  const svgH = paddingTop + lanes * laneH + paddingBottom;
 
   return (
     <div className="race-wrap" style={{ width: '100%' }}>
       <svg
         viewBox={`0 0 ${svgW} ${svgH}`}
         className="race-svg"
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="xMinYMin meet"
         role="img"
         aria-label="Carrera de cursos"
         style={{ width: '100%', height: svgH }}
@@ -50,7 +45,7 @@ export default function RaceLeaderboard({ data = [], height = 320 }) {
                 x="16"
                 y={y}
                 rx="12"
-                width={svgW - 180}
+                width={svgW - 220}
                 height={laneH - 12}
                 fill={i % 2 ? '#fff' : '#f6faf6'}
                 stroke="#e6ece6"
@@ -71,13 +66,18 @@ export default function RaceLeaderboard({ data = [], height = 320 }) {
         {/* runners */}
         {list.map((c, idx) => {
           const y = paddingTop + idx * laneH + laneH / 2;
-          const pad = 44;
+          const pad = 56;
           const normalizedScore = Math.max(0, Math.min(1, (c.score || 0) / Math.max(max || 1, 1)));
-          const x = pad + normalizedScore * (svgW - pad - 260);
+          const x = pad + normalizedScore * (svgW - pad - 360);
           const initials = (c.initials || '')
             ? String(c.initials).toUpperCase().slice(0, 2)
             : (c.courseName ? c.courseName.split(' ').map(s => s[0]).slice(0,2).join('').toUpperCase() : 'C');
           const color = idx === 0 ? '#ffd700' : idx === 1 ? '#c0c0c0' : idx === 2 ? '#cd7f32' : '#4a90e2';
+
+          const teachersLabel = c.teachersLabel || ([
+            c.maestro_titular?.nombre_completo,
+            c.maestro_asistente?.nombre_completo
+          ].filter(Boolean).join(' / ')) || '—';
 
           return (
             <g
@@ -93,19 +93,19 @@ export default function RaceLeaderboard({ data = [], height = 320 }) {
                 {initials}
               </text>
 
-              <text x="56" y="-2" fontSize="15" fill="#111" fontWeight="700" style={{ pointerEvents: 'none' }}>
-                {c.courseName}
-              </text>
-              <text x="56" y="18" fontSize="13" fill="#666" style={{ pointerEvents: 'none' }}>
-                {c.teachersLabel}
-              </text>
+              <foreignObject x={46} y={-Math.floor(laneH / 2) + 8} width={svgW - x - 140} height={laneH - 12}>
+                <div className="race-item" xmlns="http://www.w3.org/1999/xhtml">
+                  <div className="course-name" title={c.courseName}>{c.courseName}</div>
+                  <div className="teachers-label" title={teachersLabel}>{teachersLabel}</div>
+                </div>
+              </foreignObject>
 
               {hoverId === (c.id ?? `${idx}`) && (
-                <g transform="translate(56,-44)">
-                  <rect x="-8" y="-8" rx="8" width="320" height="64" fill="#fff" stroke="#ddd" />
+                <g transform="translate(46,-54)">
+                  <rect x="-8" y="-8" rx="8" width="360" height="72" fill="#fff" stroke="#ddd" />
                   <text x="6" y="8" fontSize="13" fill="#222" fontWeight="700">{c.courseName}</text>
-                  <text x="6" y="26" fontSize="12" fill="#444">{c.teachersLabel}</text>
-                  <text x="6" y="42" fontSize="12" fill="#666">
+                  <text x="6" y="26" fontSize="12" fill="#444">{teachersLabel}</text>
+                  <text x="6" y="44" fontSize="12" fill="#666">
                     Score: {Math.round(c.score ?? 0)} · Asist: {c.attendance_pct ?? 0}% · Aprob: {c.grades_pct ?? 0}%
                   </text>
                 </g>
