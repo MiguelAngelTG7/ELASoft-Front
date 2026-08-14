@@ -62,15 +62,6 @@ const Director = () => {
     }
   }, [mostrarCursosPeriodo, mostrarBuscadorAlumnos]);
 
-  // Cargar periodos al montar la vista (asegura que el selector tenga datos)
-  useEffect(() => {
-    if (!Array.isArray(periodos) || periodos.length === 0) {
-      axios.get('/director/periodos/')
-        .then(res => setPeriodos(res.data || []))
-        .catch(() => setPeriodos([]));
-    }
-  }, []);
-
   useEffect(() => {
     if (periodoId) {
       setCargandoPeriodo(true);
@@ -474,25 +465,8 @@ const Director = () => {
           Consultas y Reportes
         </h6>
         
-      <div className="mb-3 d-flex align-items-center gap-3">
-        <div style={{ minWidth: 220 }}>
-          <label className="form-label small mb-1">Periodo</label>
-          <select
-            className="form-select form-select-sm"
-            value={periodoId}
-            onChange={(e) => setPeriodoId(e.target.value)}
-          >
-            <option value="">Seleccione un período</option>
-            <option value="todos">📚 Todos los Períodos</option>
-            {(Array.isArray(periodos) ? periodos : []).map(p => (
-              <option key={p.id} value={p.id}>{p.nombre}</option>
-            ))}
-          </select>
-        </div>
-
-        <div style={{ flex: 1 }}>
-          <RaceLeaderboard data={raceCourses} height={260} />
-        </div>
+      <div className="mb-3">
+        <RaceLeaderboard data={raceCourses} height={260} />
       </div>
         
         <div className="row g-4">
