@@ -767,7 +767,7 @@ const Director = () => {
         <h6 className="text-success fw-bold mb-3 d-flex align-items-center justify-content-between">
           <span>
             <i className="fas fa-trophy me-2"></i>
-            Carrera de Cursos
+            ✓ Ranking de Cumplimiento: Asistencia y Notas - ELASoft
           </span>
 
           {/* Selector de periodo pequeño colocado a la derecha del título */}
