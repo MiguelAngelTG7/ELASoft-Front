@@ -1,13 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import './RaceLeaderboard.css';
 
-function Medal({ pos }) {
-  if (pos === 1) return <span className="medal gold">1</span>;
-  if (pos === 2) return <span className="medal silver">2</span>;
-  if (pos === 3) return <span className="medal bronze">3</span>;
-  return null;
-}
-
 export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
   const [hoverId, setHoverId] = useState(null);
   const [open, setOpen] = useState(null);
@@ -19,7 +12,7 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
   }, [data]);
 
   const lanes = Math.max(3, list.length);
-  const MIN_LANE_H = Math.max(48, minHeight); // ensure reasonable minimum
+  const MIN_LANE_H = Math.max(48, minHeight);
   const paddingTop = 12;
   const paddingBottom = 20;
   const laneH = MIN_LANE_H;
@@ -36,7 +29,6 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
         aria-label="Carrera de cursos"
         style={{ width: '100%', height: svgH }}
       >
-        {/* lanes background and finish line */}
         {Array.from({ length: lanes }).map((_, i) => {
           const y = paddingTop + i * laneH;
           return (
@@ -63,7 +55,6 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
           );
         })}
 
-        {/* runners */}
         {list.map((c, idx) => {
           const y = paddingTop + idx * laneH + laneH / 2;
           const pad = 56;
@@ -88,11 +79,21 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
               onClick={() => setOpen(c)}
               style={{ cursor: 'pointer' }}
             >
+              {/* main avatar circle */}
               <circle r="22" fill={color} stroke="#333" strokeWidth="1" />
               <text x="0" y="8" fontSize="13" fontWeight="700" textAnchor="middle" fill="#111">
                 {initials}
               </text>
 
+              {/* small medal as SVG (positioned relative to avatar) */}
+              {idx < 3 && (
+                <g transform="translate(-34,-12)">
+                  <circle r="12" fill={idx === 0 ? '#ffd700' : idx === 1 ? '#c0c0c0' : '#cd7f32'} stroke="#333" strokeWidth="1" />
+                  <text x="0" y="5" fontSize="11" fontWeight="700" textAnchor="middle" fill="#111">{idx + 1}</text>
+                </g>
+              )}
+
+              {/* course + teachers using foreignObject for wrapping */}
               <foreignObject x={46} y={-Math.floor(laneH / 2) + 8} width={svgW - x - 140} height={laneH - 12}>
                 <div className="race-item" xmlns="http://www.w3.org/1999/xhtml">
                   <div className="course-name" title={c.courseName}>{c.courseName}</div>
@@ -110,12 +111,6 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
                   </text>
                 </g>
               )}
-
-              <foreignObject x={-18} y={-70} width="44" height="44">
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Medal pos={idx + 1} />
-                </div>
-              </foreignObject>
             </g>
           );
         })}
