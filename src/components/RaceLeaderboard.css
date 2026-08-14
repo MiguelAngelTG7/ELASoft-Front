@@ -23,35 +23,28 @@
   overflow: hidden;
 }
 
-/* Course name: up to 2 lines, bold and slightly larger */
+/* Ajustes para que los textos ocupen hasta 2 líneas y sean legibles */
 .race-item .course-name {
   font-size: 15px;
   font-weight: 700;
   color: #111;
   line-height: 1.15;
   display: -webkit-box;
-  display: -ms-flexbox;
-  /* Standard line-clamp (when supported) */
-  line-clamp: 2;
-  /* WebKit line clamp fallback */
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-word;
 }
 
-/* Teachers label: up to 2 lines, lighter color */
 .race-item .teachers-label {
   font-size: 14px;
   color: #556;
   margin-top: 4px;
   display: -webkit-box;
-  display: -ms-flexbox;
-  /* Standard line-clamp (when supported) */
-  line-clamp: 2;
-  /* WebKit line clamp fallback */
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
