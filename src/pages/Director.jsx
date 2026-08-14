@@ -81,7 +81,6 @@ const Director = () => {
         setCursosPorPeriodo([]);
         
         // Obtener alumnos de todos los períodos
-        // Obtenemos todos los períodos disponibles y luego todos los alumnos
         axios.get('/director/periodos/')
           .then(res => {
             const todosLosPeriodos = res.data || [];
@@ -413,6 +412,8 @@ const Director = () => {
     setRaceCourses(arr);
   }, [cursosPorPeriodo]);
 
+  // altura dinámica para evitar solapamiento: mínimo 320, máximo 1200
+  const leaderboardHeight = Math.max(320, Math.min(1200, (raceCourses.length || 6) * 56 + 80));
 
   if (cargando) return <div className="text-center mt-5">Cargando información administrativa...</div>;
   if (!data.length) return <div className="text-center mt-5 text-danger">No hay datos disponibles.</div>;
@@ -474,26 +475,26 @@ const Director = () => {
           Consultas y Reportes
         </h6>
         
-      <div className="mb-3 d-flex align-items-center gap-3">
-        <div style={{ minWidth: 220 }}>
-          <label className="form-label small mb-1">Periodo</label>
-          <select
-            className="form-select form-select-sm"
-            value={periodoId}
-            onChange={(e) => setPeriodoId(e.target.value)}
-          >
-            <option value="">Seleccione un período</option>
-            <option value="todos">📚 Todos los Períodos</option>
-            {(Array.isArray(periodos) ? periodos : []).map(p => (
-              <option key={p.id} value={p.id}>{p.nombre}</option>
-            ))}
-          </select>
-        </div>
+        <div className="mb-3 d-flex align-items-center gap-3">
+          <div style={{ minWidth: 220 }}>
+            <label className="form-label small mb-1">Periodo</label>
+            <select
+              className="form-select form-select-sm"
+              value={periodoId}
+              onChange={(e) => setPeriodoId(e.target.value)}
+            >
+              <option value="">Seleccione un período</option>
+              <option value="todos">📚 Todos los Períodos</option>
+              {(Array.isArray(periodos) ? periodos : []).map(p => (
+                <option key={p.id} value={p.id}>{p.nombre}</option>
+              ))}
+            </select>
+          </div>
 
-        <div style={{ flex: 1 }}>
-          <RaceLeaderboard data={raceCourses} height={260} />
+          <div style={{ flex: 1 }}>
+            <div className="small text-muted">Selecciona un periodo para ver el ranking de cursos al final de la página.</div>
+          </div>
         </div>
-      </div>
         
         <div className="row g-4">
           <div className="col-lg-4">
@@ -782,6 +783,22 @@ const Director = () => {
         </div>
       </div>
 
+      {/* Leaderboard FINAL (después de Herramientas Administrativas) */}
+      <div className="mb-5">
+        <h6 className="text-success fw-bold mb-3 d-flex align-items-center">
+          <i className="fas fa-trophy me-2"></i>
+          Carrera de Cursos
+        </h6>
+
+        <div style={{ width: '100%', height: leaderboardHeight, transition: 'height 300ms ease' }}>
+          <RaceLeaderboard data={raceCourses} height={leaderboardHeight} />
+        </div>
+
+        <div className="race-legend small text-muted mt-2">
+          <strong>Meta:</strong> Completar registros de asistencia y notas por curso. Score = 50% notas + 50% asistencia.
+        </div>
+      </div>
+
       {/* Buscador de alumnos */}
       {mostrarBuscadorAlumnos && (
         <div 
@@ -920,20 +937,12 @@ const Director = () => {
                 </div>
                 <div className="row g-3">
                   {cursosAlumno.map(c => {
-                    // Usar promedio y aprobado que vienen del servidor
                     const promedio = parseFloat(c.promedio) || 0;
                     const aprobado = c.aprobado ?? (promedio >= 14);
                     
                     return (
                       <div className="col-md-6" key={c.id}>
-                        <div 
-                          className="card border-0"
-                          style={{ 
-                            borderRadius: '12px',
-                            boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
-                            backgroundColor: '#fff'
-                          }}
-                        >
+                        <div className="card border-0" style={{ borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.08)', backgroundColor: '#fff' }}>
                           <div className="card-body p-3">
                             <div className="d-flex justify-content-between align-items-start mb-2">
                               <h6 className="fw-bold text-dark mb-0">{c.nombre}</h6>
@@ -975,14 +984,7 @@ const Director = () => {
 
       {/* Cursos por periodo académico */}
       {mostrarCursosPeriodo && (
-        <div 
-          className="card border-0"
-          style={{ 
-            borderRadius: '16px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-            background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
-          }}
-        >
+        <div className="card border-0" style={{ borderRadius: '16px', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)' }}>
           <div className="card-body p-4">
             <h6 className="text-primary fw-bold mb-4 d-flex align-items-center">
               <i className="fas fa-chart-line me-2"></i>
@@ -1025,58 +1027,30 @@ const Director = () => {
                 <table className="table table-hover align-middle mb-0" style={{ borderRadius: '10px', overflow: 'hidden' }}>
                   <thead style={{ backgroundColor: '#0d6efd' }}>
                     <tr className="text-white">
-                      <th className="border-0 py-3 text-white">
-                        <i className="fas fa-layer-group me-2"></i>Nivel
-                      </th>
-                      <th className="border-0 py-3 text-white">
-                        <i className="fas fa-book me-2"></i>Curso
-                      </th>
-                      <th className="border-0 py-3 text-white">
-                        <i className="fas fa-clock me-2"></i>Horario
-                      </th>
-                      <th className="border-0 py-3 text-white">
-                        <i className="fas fa-user-tie me-2"></i>Maestro Titular
-                      </th>
-                      <th className="border-0 py-3 text-white">
-                        <i className="fas fa-user-friends me-2"></i>M. Asistente
-                      </th>
-                      <th className="border-0 py-3 text-white">
-                        <i className="fas fa-users me-2"></i>Alumnos
-                      </th>
-                      <th className="border-0 py-3 text-white">
-                        <i className="fas fa-calendar-check me-2"></i>Asistencia
-                      </th>
-                      <th className="border-0 py-3 text-white">
-                        <i className="fas fa-award me-2"></i>Aprobados
-                      </th>
+                      <th className="border-0 py-3 text-white"><i className="fas fa-layer-group me-2"></i>Nivel</th>
+                      <th className="border-0 py-3 text-white"><i className="fas fa-book me-2"></i>Curso</th>
+                      <th className="border-0 py-3 text-white"><i className="fas fa-clock me-2"></i>Horario</th>
+                      <th className="border-0 py-3 text-white"><i className="fas fa-user-tie me-2"></i>Maestro Titular</th>
+                      <th className="border-0 py-3 text-white"><i className="fas fa-user-friends me-2"></i>M. Asistente</th>
+                      <th className="border-0 py-3 text-white"><i className="fas fa-users me-2"></i>Alumnos</th>
+                      <th className="border-0 py-3 text-white"><i className="fas fa-calendar-check me-2"></i>Asistencia</th>
+                      <th className="border-0 py-3 text-white"><i className="fas fa-award me-2"></i>Aprobados</th>
                     </tr>
                   </thead>
                   <tbody>
                     {cursosPorPeriodo.map((clase, i) => (
                       <tr key={i} style={{ backgroundColor: '#f8f9fa' }}>
+                        <td className="border-0 py-3"><span className="badge bg-secondary rounded-pill">{clase.nivel}</span></td>
+                        <td className="border-0 py-3"><span className="fw-bold text-dark">{clase.curso}</span></td>
                         <td className="border-0 py-3">
-                          <span className="badge bg-secondary rounded-pill">{clase.nivel}</span>
-                        </td>
-                        <td className="border-0 py-3">
-                          <span className="fw-bold text-dark">{clase.curso}</span>
-                        </td>
-                        <td className="border-0 py-3">
-                          <div>
-                            {clase.horarios?.map((h, i) => (
-                              <div key={i} className="small text-muted">
-                                <i className="fas fa-clock me-1"></i>{h}
-                              </div>
-                            ))}
-                          </div>
+                          <div>{clase.horarios?.map((h, idx) => <div key={idx} className="small text-muted"><i className="fas fa-clock me-1"></i>{h}</div>)}</div>
                         </td>
                         <td className="border-0 py-3">
                           <div className="d-flex align-items-center">
                             <div className="bg-primary bg-opacity-10 rounded-circle p-2 me-2">
                               <i className="fas fa-chalkboard-teacher text-primary small"></i>
                             </div>
-                            <span className="small">
-                              {clase.maestro_titular?.nombre_completo || "—"}
-                            </span>
+                            <span className="small">{clase.maestro_titular?.nombre_completo || "—"}</span>
                           </div>
                         </td>
                         <td className="border-0 py-3">
@@ -1084,9 +1058,7 @@ const Director = () => {
                             <div className="bg-info bg-opacity-10 rounded-circle p-2 me-2">
                               <i className="fas fa-user-friends text-info small"></i>
                             </div>
-                            <span className="small">
-                              {clase.maestro_asistente?.nombre_completo || "—"}
-                            </span>
+                            <span className="small">{clase.maestro_asistente?.nombre_completo || "—"}</span>
                           </div>
                         </td>
                         <td className="border-0 py-3">
@@ -1100,10 +1072,7 @@ const Director = () => {
                         <td className="border-0 py-3">
                           <div className="d-flex align-items-center">
                             <div className="progress flex-grow-1 me-2" style={{ height: '8px', maxWidth: '80px' }}>
-                              <div
-                                className="progress-bar bg-info"
-                                style={{ width: `${clase.asistencia_promedio}%` }}
-                              ></div>
+                              <div className="progress-bar bg-info" style={{ width: `${clase.asistencia_promedio}%` }}></div>
                             </div>
                             <span className="small fw-medium">{clase.asistencia_promedio}%</span>
                           </div>
@@ -1111,10 +1080,7 @@ const Director = () => {
                         <td className="border-0 py-3">
                           <div className="d-flex align-items-center">
                             <div className="progress flex-grow-1 me-2" style={{ height: '8px', maxWidth: '80px' }}>
-                              <div
-                                className={`progress-bar ${clase.porcentaje_aprobados >= 70 ? 'bg-success' : 'bg-warning'}`}
-                                style={{ width: `${clase.porcentaje_aprobados}%` }}
-                              ></div>
+                              <div className={`progress-bar ${clase.porcentaje_aprobados >= 70 ? 'bg-success' : 'bg-warning'}`} style={{ width: `${clase.porcentaje_aprobados}%` }}></div>
                             </div>
                             <span className="small fw-medium">{clase.porcentaje_aprobados}%</span>
                           </div>
@@ -1128,8 +1094,7 @@ const Director = () => {
 
             {!cargandoPeriodo && periodoId && cursosPorPeriodo.length === 0 && (
               <div className="text-center py-5">
-                <div className="bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" 
-                     style={{ width: '80px', height: '80px' }}>
+                <div className="bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style={{ width: '80px', height: '80px' }}>
                   <i className="fas fa-chart-line fa-2x text-muted"></i>
                 </div>
                 <h6 className="text-muted mb-2">No hay datos para este periodo</h6>
