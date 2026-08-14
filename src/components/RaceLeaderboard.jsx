@@ -18,7 +18,12 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
   const laneH = MIN_LANE_H;
   const svgW = 1100;
   const svgH = paddingTop + lanes * laneH + paddingBottom;
-  const finishX = svgW - 124; // x coordinate of finish line
+
+  // reserve right column for labels
+  const labelWidth = 360;
+  const labelX = svgW - labelWidth - 12;
+  const finishX = labelX - 24; // finish line placed before the label column
+  const trackRightPadding = labelWidth + 80; // use when computing runner X
 
   return (
     <div className="race-wrap" style={{ width: '100%' }}>
@@ -39,7 +44,7 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
                 x="16"
                 y={y}
                 rx="12"
-                width={svgW - 220}
+                width={finishX - 32}
                 height={laneH - 12}
                 fill={i % 2 ? '#fff' : '#f6faf6'}
                 stroke="#e6ece6"
@@ -62,7 +67,7 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
           const y = paddingTop + idx * laneH + laneH / 2;
           const pad = 56;
           const normalizedScore = Math.max(0, Math.min(1, (c.score || 0) / Math.max(max || 1, 1)));
-          const x = pad + normalizedScore * (svgW - pad - 360);
+          const x = pad + normalizedScore * (svgW - pad - trackRightPadding);
           const initials = (c.initials || '')
             ? String(c.initials).toUpperCase().slice(0, 2)
             : (c.courseName ? c.courseName.split(' ').map(s => s[0]).slice(0,2).join('').toUpperCase() : 'C');
@@ -96,7 +101,7 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
                 </g>
               )}
 
-              {/* hover tooltip near runner (keeps previous behavior) */}
+              {/* hover tooltip near runner */}
               {hoverId === (c.id ?? `${idx}`) && (
                 <g transform="translate(36,-54)">
                   <rect x="-8" y="-8" rx="8" width="360" height="72" fill="#fff" stroke="#ddd" />
@@ -114,7 +119,6 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
         {/* fixed column to the right of the finish line with course + teachers */}
         {list.map((c, idx) => {
           const yTop = paddingTop + idx * laneH + 8;
-          const labelX = finishX + 14;
           const teachersLabel = c.teachersLabel || ([
             c.maestro_titular?.nombre_completo,
             c.maestro_asistente?.nombre_completo
@@ -125,7 +129,7 @@ export default function RaceLeaderboard({ data = [], minHeight = 64 }) {
               key={`label-${idx}`}
               x={labelX}
               y={yTop}
-              width={svgW - labelX - 12}
+              width={labelWidth}
               height={laneH - 12}
             >
               <div className="race-item" xmlns="http://www.w3.org/1999/xhtml">
