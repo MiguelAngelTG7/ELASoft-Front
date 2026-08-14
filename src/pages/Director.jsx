@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import RaceLeaderboard from '../components/RaceLeaderboard';
+import '../components/RaceLeaderboard.css';
 
 const Director = () => {
   const [data, setData] = useState([]);
@@ -365,6 +367,44 @@ const Director = () => {
     };
   };
 
+  const [raceCourses, setRaceCourses] = useState([]);
+
+  useEffect(() => {
+    if (!Array.isArray(cursosPorPeriodo) || cursosPorPeriodo.length === 0) {
+      setRaceCourses([]);
+      return;
+    }
+
+    const arr = cursosPorPeriodo.map(clase => {
+      const titular = clase.maestro_titular || {};
+      const asist = clase.maestro_asistente || null;
+      const titularName = titular.nombre_completo || `${titular.first_name || ''} ${titular.last_name || ''}`.trim() || 'Titular';
+      const asistName = asist ? (asist.nombre_completo || `${asist.first_name || ''} ${asist.last_name || ''}`.trim()) : null;
+      const teachersLabel = asistName ? `${titularName} / ${asistName}` : titularName;
+
+      const attendance_pct = Number(clase.asistencia_promedio) || 0;
+      const grades_pct = Number(clase.porcentaje_aprobados) || 0;
+      const score = (attendance_pct + grades_pct) / 2; // 50/50
+
+      const initials = (titularName.split(' ').map(n => n[0]).slice(0,2).join('') || (clase.curso || '').slice(0,2)).toUpperCase();
+
+      return {
+        id: clase.id || `${clase.curso}-${Math.random().toString(36).slice(2,6)}`,
+        courseName: clase.curso || clase.nombre || 'Curso',
+        teachersLabel,
+        attendance_pct: Math.round(attendance_pct * 10) / 10,
+        grades_pct: Math.round(grades_pct * 10) / 10,
+        score,
+        courses_count: clase.total_alumnos || 0,
+        initials
+      };
+    });
+
+    arr.sort((a,b) => b.score - a.score);
+    setRaceCourses(arr);
+  }, [cursosPorPeriodo]);
+
+
   if (cargando) return <div className="text-center mt-5">Cargando información administrativa...</div>;
   if (!data.length) return <div className="text-center mt-5 text-danger">No hay datos disponibles.</div>;
 
@@ -424,6 +464,11 @@ const Director = () => {
           <i className="fas fa-search text-success me-2"></i>
           Consultas y Reportes
         </h6>
+        
+      <div className="mb-3">
+        <RaceLeaderboard data={raceCourses} height={260} />
+      </div>
+        
         <div className="row g-4">
           <div className="col-lg-4">
             <div 
