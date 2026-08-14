@@ -475,23 +475,6 @@ const Director = () => {
           Consultas y Reportes
         </h6>
         
-        <div className="mb-3 d-flex align-items-center gap-3">
-          <div style={{ minWidth: 220 }}>
-            <label className="form-label small mb-1">Periodo</label>
-            <select
-              className="form-select form-select-sm"
-              value={periodoId}
-              onChange={(e) => setPeriodoId(e.target.value)}
-            >
-              <option value="">Seleccione un período</option>
-              <option value="todos">📚 Todos los Períodos</option>
-              {(Array.isArray(periodos) ? periodos : []).map(p => (
-                <option key={p.id} value={p.id}>{p.nombre}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-        
         <div className="row g-4">
           <div className="col-lg-4">
             <div 
