@@ -8,6 +8,7 @@ const Alumno = () => {
   const [data, setData] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [cursosDisponibles, setCursosDisponibles] = useState([]);
+  const [nivelSeleccionado, setNivelSeleccionado] = useState('');
   const [mostrarModal, setMostrarModal] = useState(false);
   const [cargandoModal, setCargandoModal] = useState(false);
   const [cursoMatriculado, setCursoMatriculado] = useState(null);
@@ -161,6 +162,7 @@ const Alumno = () => {
   const handleAbrirModal = async () => {
     setMostrarModal(true);
     setCargandoModal(true);
+    setNivelSeleccionado('');
     try {
       const response = await fetch('https://elasoft-back.onrender.com/api/cursos-disponibles/', {
         headers: {
@@ -225,6 +227,8 @@ const Alumno = () => {
   if (!data) return <div className="text-center mt-5 text-danger">No hay datos disponibles.</div>;
 
   const clasesOrdenadas = ordenarClasesPorPeriodo(data.clases);
+  const nivelesDisponibles = [...new Set(cursosDisponibles.map((curso) => curso.nivel_nombre).filter(Boolean))].sort();
+  const cursosDelNivel = cursosDisponibles.filter((curso) => curso.nivel_nombre === nivelSeleccionado);
 
   return (
     <div className="container py-4">
@@ -574,8 +578,28 @@ const Alumno = () => {
                     <p className="text-muted">No hay cursos disponibles en este momento</p>
                   </div>
                 ) : (
-                  <div className="list-group">
-                    {cursosDisponibles.map((curso, idx) => (
+                  <>
+                    <div className="mb-4">
+                      <label htmlFor="nivel-curso" className="form-label fw-semibold">Nivel del curso</label>
+                      <select
+                        id="nivel-curso"
+                        className="form-select"
+                        value={nivelSeleccionado}
+                        onChange={(e) => setNivelSeleccionado(e.target.value)}
+                      >
+                        <option value="">Selecciona un nivel</option>
+                        {nivelesDisponibles.map((nivel) => (
+                          <option key={nivel} value={nivel}>{nivel}</option>
+                        ))}
+                      </select>
+                    </div>
+                    {!nivelSeleccionado ? (
+                      <p className="text-muted text-center">Selecciona un nivel para ver sus cursos disponibles.</p>
+                    ) : cursosDelNivel.length === 0 ? (
+                      <p className="text-muted text-center">No hay cursos disponibles para este nivel.</p>
+                    ) : (
+                      <div className="list-group">
+                    {cursosDelNivel.map((curso, idx) => (
                       <div 
                         key={idx}
                         className="list-group-item list-group-item-action p-3 mb-2"
@@ -628,7 +652,9 @@ const Alumno = () => {
                         </div>
                       </div>
                     ))}
-                  </div>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>
