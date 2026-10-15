@@ -269,22 +269,8 @@ const Alumno = () => {
               <i className="fas fa-plus-circle me-2"></i>
               Matricularme en un Curso
             </button>
-            <div>
-              <div
-                className="alert mb-1 fw-semibold"
-                role="alert"
-                style={{
-                  borderRadius: '10px',
-                  backgroundColor: '#dc3545',
-                  color: '#fff',
-                  border: 'none',
-                }}
-              >
-                ¡Atención! Solo puedes matricularte UNA VEZ. ¡Elige con cuidado!
-              </div>
-              <small className="text-secondary">
-                Cualquier error involuntario, comunícate al WhatsApp 904586438.
-              </small>
+            <div className="fw-semibold text-danger" role="alert">
+              ¡Atención! Solo puedes matricularte UNA VEZ. ¡Elige con cuidado!
             </div>
           </div>
         ) : (
