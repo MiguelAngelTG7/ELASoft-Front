@@ -762,42 +762,6 @@ const Director = () => {
         </div>
       </div>
 
-      {/* Leaderboard FINAL (después de Herramientas Administrativas) */}
-      <div className="mb-5">
-        <h6 className="text-success fw-bold mb-3 d-flex align-items-center justify-content-between">
-          <span>
-            <i className="fas fa-trophy me-2"></i>
-            ✓ Ranking de Cumplimiento: Asistencia y Notas - ELASoft
-          </span>
-
-          {/* Selector de periodo pequeño colocado a la derecha del título */}
-          <div style={{ minWidth: 180 }}>
-            <label className="form-label small mb-1" style={{ display: 'block' }}>Periodo</label>
-            <select
-              className="form-select form-select-sm"
-              value={periodoId}
-              onChange={(e) => setPeriodoId(e.target.value)}
-              style={{ borderRadius: 8 }}
-            >
-              <option value="">Seleccione un período</option>
-              <option value="todos">📚 Todos los Períodos</option>
-              {(Array.isArray(periodos) ? periodos : []).map(p => (
-                <option key={p.id} value={p.id}>{p.nombre}</option>
-              ))}
-            </select>
-          </div>
-        </h6>
-
-        <div style={{ width: '100%', height: leaderboardHeight, transition: 'height 300ms ease', maxHeight: 760, overflow: 'auto', paddingBottom: '12px' }}>
-          {!periodoId && (
-            <div className="small text-muted mb-3">Selecciona un periodo para generar el ranking de cursos aquí.</div>
-          )}
-          <RaceLeaderboard data={raceCourses} height={leaderboardHeight} />
-        </div>
-
-        <div className="text-end small text-muted mt-2">ELASoft v.1.0</div>
-      </div>
-
       {/* Buscador de alumnos */}
       {mostrarBuscadorAlumnos && (
         <div 
@@ -980,6 +944,42 @@ const Director = () => {
           </div>
         </div>
       )}
+
+      {/* Leaderboard FINAL (después de Herramientas Administrativas) */}
+      <div className="mb-5">
+        <h6 className="text-success fw-bold mb-3 d-flex align-items-center justify-content-between">
+          <span>
+            <i className="fas fa-trophy me-2"></i>
+            ✓ Ranking de Cumplimiento: Asistencia y Notas - ELASoft
+          </span>
+
+          {/* Selector de periodo pequeño colocado a la derecha del título */}
+          <div style={{ minWidth: 180 }}>
+            <label className="form-label small mb-1" style={{ display: 'block' }}>Periodo</label>
+            <select
+              className="form-select form-select-sm"
+              value={periodoId}
+              onChange={(e) => setPeriodoId(e.target.value)}
+              style={{ borderRadius: 8 }}
+            >
+              <option value="">Seleccione un período</option>
+              <option value="todos">📚 Todos los Períodos</option>
+              {(Array.isArray(periodos) ? periodos : []).map(p => (
+                <option key={p.id} value={p.id}>{p.nombre}</option>
+              ))}
+            </select>
+          </div>
+        </h6>
+
+        <div style={{ width: '100%', height: leaderboardHeight, transition: 'height 300ms ease', maxHeight: 760, overflow: 'auto', paddingBottom: '12px' }}>
+          {!periodoId && (
+            <div className="small text-muted mb-3">Selecciona un periodo para generar el ranking de cursos aquí.</div>
+          )}
+          <RaceLeaderboard data={raceCourses} height={leaderboardHeight} />
+        </div>
+
+        <div className="text-end small text-muted mt-2">ELASoft v.1.0</div>
+      </div>
 
       {/* Cursos por periodo académico */}
       {mostrarCursosPeriodo && (
