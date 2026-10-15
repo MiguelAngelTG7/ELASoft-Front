@@ -227,7 +227,16 @@ const Alumno = () => {
   if (!data) return <div className="text-center mt-5 text-danger">No hay datos disponibles.</div>;
 
   const clasesOrdenadas = ordenarClasesPorPeriodo(data.clases);
-  const nivelesDisponibles = [...new Set(cursosDisponibles.map((curso) => curso.nivel_nombre).filter(Boolean))].sort();
+  const nivelesDisponibles = [...new Set(cursosDisponibles.map((curso) => curso.nivel_nombre).filter(Boolean))]
+  .sort((a, b) => {
+    const numeroA = a.match(/^NIVEL\s+(\d+)$/i);
+    const numeroB = b.match(/^NIVEL\s+(\d+)$/i);
+
+    if (numeroA && numeroB) return Number(numeroA[1]) - Number(numeroB[1]);
+    if (numeroA) return -1;
+    if (numeroB) return 1;
+    return a.localeCompare(b, 'es');
+  });
   const cursosDelNivel = cursosDisponibles.filter((curso) => curso.nivel_nombre === nivelSeleccionado);
 
   return (
