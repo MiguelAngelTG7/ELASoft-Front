@@ -48,6 +48,7 @@ const ListaAlumnos = () => {
       <table className="table table-bordered table-hover">
         <thead className="table-light">
           <tr>
+            <th>N.º</th>
             <th>Nombre</th>
             <th>Fecha Nacimiento</th>
             <th>Edad</th>
@@ -65,8 +66,9 @@ const ListaAlumnos = () => {
               <td colSpan="10" className="text-center">No hay alumnos registrados.</td>
             </tr>
           ) : (
-            alumnos.map((a) => (
+            alumnos.map((a, index) => (
               <tr key={a.id}>
+                <td>{index + 1}</td>
                 <td>{a.nombre_completo}</td>
                 <td>{a.fecha_nacimiento || '-'}</td>
                 <td>{a.edad || '-'}</td>
