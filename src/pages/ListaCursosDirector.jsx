@@ -35,13 +35,23 @@ const ListaCursosDirector = () => {
             const match = String(nivel).match(/(\d+)/);
             return match ? parseInt(match[1], 10) : 0;
           };
+          const normalizaTexto = (texto) => String(texto || '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase();
+          const esFormacionMinisterial = (clase) =>
+            [clase.nivel, clase.curso].some((texto) =>
+              normalizaTexto(texto).includes('formacion ministerial')
+            );
           const cursosOrdenados = [...rawCursos].sort((a, b) => {
+            const ministerialA = esFormacionMinisterial(a);
+            const ministerialB = esFormacionMinisterial(b);
+            if (ministerialA !== ministerialB) return ministerialA ? 1 : -1;
+
             const nA = normalizaNivel(a.nivel);
             const nB = normalizaNivel(b.nivel);
             if (nA !== nB) return nA - nB;
-            if ((a.curso || '') < (b.curso || '')) return -1;
-            if ((a.curso || '') > (b.curso || '')) return 1;
-            return 0;
+            return (a.curso || '').localeCompare(b.curso || '', 'es', { sensitivity: 'base' });
           });
           setCursos(cursosOrdenados);
         })
@@ -166,6 +176,7 @@ const ListaCursosDirector = () => {
             <table className="table table-bordered">
               <thead className="table-light">
                 <tr>
+                  <th>N.º</th>
                   <th>Nivel</th>
                   <th>Curso</th>
                   <th>Horario</th>
@@ -179,6 +190,7 @@ const ListaCursosDirector = () => {
               <tbody>
                 {cursos.map((clase, i) => (
                   <tr key={i}>
+                    <td>{i + 1}</td>
                     <td>{clase.nivel}</td>
                     <td>{clase.curso}</td>
                     <td>{clase.horarios?.map((h, i) => <div key={i}>{h}</div>)}</td>
