@@ -115,6 +115,7 @@ const Director = () => {
     setBusquedaAlumno("");
     setResultadosAlumnos([]);
     setCursosAlumno([]);
+    setAlumnoSeleccionado({ id: null, nombre: '' });
     setAlumnoInfo(null);
   }, [periodoId]);
 
@@ -133,11 +134,18 @@ const Director = () => {
 
   // Al hacer click en un alumno, buscar sus cursos en el periodo
   const handleAlumnoClick = (alumnoId) => {
+    if (alumnoSeleccionado.id === alumnoId) {
+      setAlumnoSeleccionado({ id: null, nombre: '' });
+      setCursosAlumno([]);
+      return;
+    }
+
     setAlumnoInfo(null);
     const alumno = resultadosAlumnos.find(a => a.id === alumnoId);
     const nombreAlumno = alumno ? alumno.nombre_completo : 'Estudiante';
     
     setAlumnoSeleccionado({ id: alumnoId, nombre: nombreAlumno });
+    setCursosAlumno([]);
     
     if (periodoId === "todos") {
       axios.get(`/director/alumno-cursos-todos-periodos/?alumno_id=${alumnoId}`)
@@ -850,18 +858,23 @@ const Director = () => {
                             <div className="d-flex flex-wrap gap-2">
                               <button
                                 type="button"
-                                className="btn btn-sm btn-outline-success"
-                                onClick={() => handleAlumnoClick(a.id)}
+                                className="btn btn-sm btn-outline-primary"
+                                aria-expanded={alumnoInfo?.id === a.id}
+                                onClick={() => {
+                                  setAlumnoSeleccionado({ id: null, nombre: '' });
+                                  setCursosAlumno([]);
+                                  setAlumnoInfo(current => current?.id === a.id ? null : a);
+                                }}
                               >
-                                Click para ver cursos
+                                {alumnoInfo?.id === a.id ? 'Ocultar Info' : 'Ver Info'}
                               </button>
                               <button
                                 type="button"
-                                className="btn btn-sm btn-outline-primary"
-                                aria-expanded={alumnoInfo?.id === a.id}
-                                onClick={() => setAlumnoInfo(current => current?.id === a.id ? null : a)}
+                                className="btn btn-sm btn-outline-success"
+                                aria-expanded={alumnoSeleccionado.id === a.id}
+                                onClick={() => handleAlumnoClick(a.id)}
                               >
-                                {alumnoInfo?.id === a.id ? 'Ocultar info' : 'Click para ver info'}
+                                {alumnoSeleccionado.id === a.id ? 'Ocultar Curso(s)' : 'Ver Curso(s)'}
                               </button>
                             </div>
                           </td>
