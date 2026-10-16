@@ -409,6 +409,7 @@ const Director = () => {
 
   // altura dinámica para evitar solapamiento: mínimo 320, máximo 1200
   const leaderboardHeight = Math.max(320, Math.min(1200, (raceCourses.length || 6) * 56 + 80));
+  const alumnoVisibleId = alumnoInfo?.id ?? alumnoSeleccionado.id;
 
   const volver = () => navigate('/director');
 
@@ -833,7 +834,9 @@ const Director = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {resultadosAlumnos.map(a => (
+                      {resultadosAlumnos
+                        .filter(a => alumnoVisibleId === null || a.id === alumnoVisibleId)
+                        .map(a => (
                         <tr 
                           key={a.id} 
                           style={{ 
