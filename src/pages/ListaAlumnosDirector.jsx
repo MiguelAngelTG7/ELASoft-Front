@@ -5,37 +5,97 @@ import axios from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const ListaAlumnosDirector = () => {
+  const [periodos, setPeriodos] = useState([]);
+  const [periodoId, setPeriodoId] = useState('');
   const [clases, setClases] = useState([]);
   const [claseId, setClaseId] = useState('');
   const [alumnos, setAlumnos] = useState([]);
   const [claseSeleccionada, setClaseSeleccionada] = useState(null);
+  const [cargandoPeriodos, setCargandoPeriodos] = useState(true);
+  const [cargandoClases, setCargandoClases] = useState(false);
+  const [cargandoAlumnos, setCargandoAlumnos] = useState(false);
+  const [busquedaRealizada, setBusquedaRealizada] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchClases = async () => {
-      const res = await axios.get('/director/clases/');
-      // Ordenar clases de A a Z por nombre
-      const clasesOrdenadas = res.data.sort((a, b) => 
-        (a.nombre || '').localeCompare(b.nombre || '', 'es', { sensitivity: 'base' })
-      );
-      setClases(clasesOrdenadas);
+    let activo = true;
+
+    const fetchPeriodos = async () => {
+      try {
+        const res = await axios.get('/director/periodos/');
+        const periodosOrdenados = [...(res.data || [])].sort((a, b) =>
+          (Number(b.anio) || 0) - (Number(a.anio) || 0) ||
+          (b.fecha_inicio || '').localeCompare(a.fecha_inicio || '')
+        );
+        if (activo) setPeriodos(periodosOrdenados);
+      } catch {
+        if (activo) setError('No fue posible cargar los períodos académicos.');
+      } finally {
+        if (activo) setCargandoPeriodos(false);
+      }
     };
-    fetchClases();
+
+    fetchPeriodos();
+    return () => {
+      activo = false;
+    };
   }, []);
+
+  useEffect(() => {
+    if (!periodoId) {
+      setClases([]);
+      return undefined;
+    }
+
+    let activo = true;
+    setCargandoClases(true);
+    setError('');
+
+    axios.get(`/director/clases-periodo/?periodo_id=${periodoId}`)
+      .then(res => {
+        const clasesOrdenadas = [...(res.data || [])].sort((a, b) =>
+          (a.nivel || '').localeCompare(b.nivel || '', 'es', { numeric: true, sensitivity: 'base' }) ||
+          (a.nombre || '').localeCompare(b.nombre || '', 'es', { sensitivity: 'base' })
+        );
+        if (activo) setClases(clasesOrdenadas);
+      })
+      .catch(() => {
+        if (activo) {
+          setClases([]);
+          setError('No fue posible cargar los cursos de este período.');
+        }
+      })
+      .finally(() => {
+        if (activo) setCargandoClases(false);
+      });
+
+    return () => {
+      activo = false;
+    };
+  }, [periodoId]);
 
   const cargarAlumnos = async () => {
     if (!claseId) return;
-    const res = await axios.get(`/director/alumnos/?clase_id=${claseId}`);
-    
-    // Ordenar alumnos de A a Z por nombre completo
-    const alumnosOrdenados = (res.data.alumnos || []).sort((a, b) => 
-      (a.nombre_completo || '').localeCompare(b.nombre_completo || '', 'es', { sensitivity: 'base' })
-    );
-    
-    setAlumnos(alumnosOrdenados);
-    setClaseSeleccionada(res.data.clase); // opcional para imprimir
+    setCargandoAlumnos(true);
+    setError('');
+    try {
+      const res = await axios.get(`/director/alumnos/?clase_id=${claseId}`);
+      const alumnosOrdenados = (res.data.alumnos || []).sort((a, b) =>
+        (a.nombre_completo || '').localeCompare(b.nombre_completo || '', 'es', { sensitivity: 'base' })
+      );
+      setAlumnos(alumnosOrdenados);
+      setClaseSeleccionada(clases.find(clase => String(clase.id) === String(claseId)) || null);
+      setBusquedaRealizada(true);
+    } catch {
+      setAlumnos([]);
+      setClaseSeleccionada(null);
+      setBusquedaRealizada(false);
+      setError('No fue posible cargar los alumnos de este curso.');
+    } finally {
+      setCargandoAlumnos(false);
+    }
   };
 
-  const imprimir = () => window.print();
   const navigate = useNavigate();
   const volver = () => navigate('/director');
 
@@ -46,25 +106,72 @@ const ListaAlumnosDirector = () => {
  
       </div>
 
-      <div className="d-flex mb-3">
-        <select
-          className="form-select me-2"
-          style={{ width: 400 }}
-          value={claseId}
-          onChange={(e) => setClaseId(e.target.value)}
-        >
-          <option value="">-- Escoge Clase y Horario --</option>
-          {clases.map((clase) => (
-            <option key={clase.id} value={clase.id}>
-                {clase.nombre || 'Sin nombre'} -   
-                ({clase.periodo_nombre || 'Sin periodo'}) 
-                - {clase.horarios.join(' | ') || 'Sin horarios'}
-            </option>
-          ))}
-        </select>
+      <div className="row g-3 mb-3">
+        <div className="col-md-4">
+          <label htmlFor="periodoSelect" className="form-label">Período académico</label>
+          <select
+            id="periodoSelect"
+            className="form-select"
+            value={periodoId}
+            disabled={cargandoPeriodos}
+            onChange={(e) => {
+              setPeriodoId(e.target.value);
+              setClaseId('');
+              setAlumnos([]);
+              setClaseSeleccionada(null);
+              setBusquedaRealizada(false);
+              setError('');
+            }}
+          >
+            <option value="">{cargandoPeriodos ? 'Cargando períodos...' : 'Seleccione un período'}</option>
+            {periodos.map(periodo => (
+              <option key={periodo.id} value={periodo.id}>
+                {periodo.nombre} ({periodo.anio})
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <button onClick={cargarAlumnos} className="btn btn-primary me-2" disabled={!claseId}>Buscar</button>
+        <div className="col-md-5">
+          <label htmlFor="cursoSelect" className="form-label">Curso</label>
+          <select
+            id="cursoSelect"
+            className="form-select"
+            value={claseId}
+            disabled={!periodoId || cargandoClases || clases.length === 0}
+            onChange={(e) => {
+              setClaseId(e.target.value);
+              setAlumnos([]);
+              setClaseSeleccionada(null);
+              setBusquedaRealizada(false);
+            }}
+          >
+            <option value="">
+              {!periodoId ? 'Seleccione primero un período' : cargandoClases ? 'Cargando cursos...' : 'Seleccione un curso'}
+            </option>
+            {clases.map(clase => (
+              <option key={clase.id} value={clase.id}>
+                {clase.nivel || 'Sin nivel'} - {clase.nombre || 'Sin nombre'} - {(clase.horarios || []).join(' | ') || 'Sin horario'}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="col-md-3 d-flex align-items-end">
+          <button
+            onClick={cargarAlumnos}
+            className="btn btn-primary w-100"
+            disabled={!claseId || cargandoAlumnos}
+          >
+            {cargandoAlumnos ? 'Buscando...' : 'Ver alumnos'}
+          </button>
+        </div>
       </div>
+
+      {error && <div className="alert alert-danger" role="alert">{error}</div>}
+      {periodoId && !cargandoClases && clases.length === 0 && !error && (
+        <div className="alert alert-info">No hay cursos registrados para este período.</div>
+      )}
 
       {claseSeleccionada && (
         <div className="mb-3">
@@ -73,7 +180,11 @@ const ListaAlumnosDirector = () => {
         </div>
       )}
 
-      <table className="table table-bordered table-hover">
+      {busquedaRealizada && alumnos.length === 0 && (
+        <div className="alert alert-info">No hay alumnos asignados a este curso.</div>
+      )}
+
+      {busquedaRealizada && alumnos.length > 0 && <table className="table table-bordered table-hover">
         <thead className="table-light">
           <tr>
             <th>Nombre</th>
@@ -102,8 +213,10 @@ const ListaAlumnosDirector = () => {
             </tr>
           ))}
         </tbody>
-      </table>
-      <small>Sim = Simparizante, NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small>
+      </table>}
+      {busquedaRealizada && alumnos.length > 0 && (
+        <small>Sim = Simpatizante, NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small>
+      )}
 
       <div className="text-center mt-4">
         <button className="btn btn-outline-secondary me-3" onClick={() => window.print()}>
