@@ -8,10 +8,14 @@ import '../components/RaceLeaderboard.css';
 
 const Director = () => {
   const [mostrarCursosPeriodo, setMostrarCursosPeriodo] = useState(false);
+  const [mostrarRanking, setMostrarRanking] = useState(false);
   const [periodos, setPeriodos] = useState([]);
   const [periodoId, setPeriodoId] = useState("");
+  const [periodoRankingId, setPeriodoRankingId] = useState("");
   const [cursosPorPeriodo, setCursosPorPeriodo] = useState([]);
+  const [cursosRanking, setCursosRanking] = useState([]);
   const [cargandoPeriodo, setCargandoPeriodo] = useState(false);
+  const [cargandoRanking, setCargandoRanking] = useState(false);
   const [mostrandoTodosPeriodos, setMostrandoTodosPeriodos] = useState(false);
   const navigate = useNavigate();
 
@@ -40,12 +44,12 @@ const Director = () => {
   };
 
   useEffect(() => {
-    if (mostrarCursosPeriodo || mostrarBuscadorAlumnos) {
+    if (mostrarCursosPeriodo || mostrarBuscadorAlumnos || mostrarRanking) {
       axios.get('/director/periodos/')
         .then(res => setPeriodos(res.data || []))
         .catch(() => setPeriodos([]));
     }
-  }, [mostrarCursosPeriodo, mostrarBuscadorAlumnos]);
+  }, [mostrarCursosPeriodo, mostrarBuscadorAlumnos, mostrarRanking]);
 
   // Cargar periodos al montar la vista (asegura que el selector tenga datos)
   useEffect(() => {
@@ -55,6 +59,31 @@ const Director = () => {
         .catch(() => setPeriodos([]));
     }
   }, []);
+
+  useEffect(() => {
+    if (!mostrarRanking || !periodoRankingId) {
+      setCursosRanking([]);
+      setCargandoRanking(false);
+      return;
+    }
+
+    let activo = true;
+    setCargandoRanking(true);
+    axios.get(`/director/dashboard/?periodo_id=${periodoRankingId}`)
+      .then(res => {
+        if (activo) setCursosRanking(res.data.dashboard || []);
+      })
+      .catch(() => {
+        if (activo) setCursosRanking([]);
+      })
+      .finally(() => {
+        if (activo) setCargandoRanking(false);
+      });
+
+    return () => {
+      activo = false;
+    };
+  }, [mostrarRanking, periodoRankingId]);
 
   useEffect(() => {
     if (periodoId) {
@@ -373,12 +402,12 @@ const Director = () => {
   const [raceCourses, setRaceCourses] = useState([]);
 
   useEffect(() => {
-    if (!Array.isArray(cursosPorPeriodo) || cursosPorPeriodo.length === 0) {
+    if (!Array.isArray(cursosRanking) || cursosRanking.length === 0) {
       setRaceCourses([]);
       return;
     }
 
-    const arr = cursosPorPeriodo.map(clase => {
+    const arr = cursosRanking.map(clase => {
       const titular = clase.maestro_titular || {};
       const asist = clase.maestro_asistente || null;
       const titularName = titular.nombre_completo || `${titular.first_name || ''} ${titular.last_name || ''}`.trim() || 'Titular';
@@ -405,7 +434,7 @@ const Director = () => {
 
     arr.sort((a,b) => b.score - a.score);
     setRaceCourses(arr);
-  }, [cursosPorPeriodo]);
+  }, [cursosRanking]);
 
   // altura dinámica para evitar solapamiento: mínimo 320, máximo 1200
   const leaderboardHeight = Math.max(320, Math.min(1200, (raceCourses.length || 6) * 56 + 80));
@@ -643,7 +672,7 @@ const Director = () => {
           Herramientas Administrativas
         </h6>
         <div className="row g-4">
-          <div className="col-lg-6">
+          <div className="col-lg-4">
             <div 
               className="card border-0 h-100"
               style={{ 
@@ -698,7 +727,7 @@ const Director = () => {
             </div>
           </div>
           
-          <div className="col-lg-6">
+          <div className="col-lg-4">
             <div 
               className="card border-0 h-100"
               style={{ 
@@ -748,6 +777,56 @@ const Director = () => {
                 >
                   <i className={`fas ${mostrarBuscadorAlumnos ? 'fa-eye-slash' : 'fa-search'} me-2`}></i>
                   {mostrarBuscadorAlumnos ? "Ocultar Buscador" : "Buscar Alumno"}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-4">
+            <div
+              className="card border-0 h-100"
+              style={{
+                borderRadius: '16px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-6px)';
+                e.currentTarget.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+              }}
+            >
+              <div
+                className="text-white position-relative"
+                style={{ backgroundColor: '#1a8754', padding: '1.5rem', borderRadius: '16px 16px 0 0' }}
+              >
+                <div className="d-flex align-items-center justify-content-between">
+                  <div>
+                    <h5 className="fw-bold mb-1 text-white">Ranking de Cumplimiento</h5>
+                    <small className="text-white-50">Asistencia y notas por período</small>
+                  </div>
+                  <div className="bg-white bg-opacity-20 rounded-circle p-2">
+                    <i className="fas fa-trophy text-success fa-lg"></i>
+                  </div>
+                </div>
+              </div>
+              <div className="card-body d-flex flex-column justify-content-between" style={{ minHeight: '120px' }}>
+                <p className="text-muted mb-3">Consultar el cumplimiento académico de los cursos</p>
+                <button
+                  className="btn w-100"
+                  onClick={() => setMostrarRanking(value => !value)}
+                  style={{
+                    borderRadius: '10px',
+                    transition: 'all 0.2s ease',
+                    border: '2px solid #1a8754',
+                    color: '#1a8754',
+                    backgroundColor: 'transparent'
+                  }}
+                >
+                  <i className={`fas ${mostrarRanking ? 'fa-eye-slash' : 'fa-trophy'} me-2`}></i>
+                  {mostrarRanking ? 'Ocultar Ranking' : 'Ver Ranking'}
                 </button>
               </div>
             </div>
@@ -980,7 +1059,8 @@ const Director = () => {
         </div>
       )}
 
-      {/* Leaderboard FINAL (después de Herramientas Administrativas) */}
+      {/* Ranking de cumplimiento */}
+      {mostrarRanking && (
       <div className="mb-5">
         <h6 className="text-success fw-bold mb-3 d-flex align-items-center justify-content-between">
           <span>
@@ -993,12 +1073,11 @@ const Director = () => {
             <label className="form-label small mb-1" style={{ display: 'block' }}>Periodo</label>
             <select
               className="form-select form-select-sm"
-              value={periodoId}
-              onChange={(e) => setPeriodoId(e.target.value)}
+              value={periodoRankingId}
+              onChange={(e) => setPeriodoRankingId(e.target.value)}
               style={{ borderRadius: 8 }}
             >
               <option value="">Seleccione un período</option>
-              <option value="todos">📚 Todos los Períodos</option>
               {(Array.isArray(periodos) ? periodos : []).map(p => (
                 <option key={p.id} value={p.id}>{p.nombre}</option>
               ))}
@@ -1007,14 +1086,27 @@ const Director = () => {
         </h6>
 
         <div style={{ width: '100%', height: leaderboardHeight, transition: 'height 300ms ease', maxHeight: 760, overflow: 'auto', paddingBottom: '12px' }}>
-          {!periodoId && (
-            <div className="small text-muted mb-3">Selecciona un periodo para generar el ranking de cursos aquí.</div>
+          {!periodoRankingId && (
+            <div className="small text-muted mb-3">Selecciona un período para generar el ranking de cursos.</div>
           )}
-          <RaceLeaderboard data={raceCourses} height={leaderboardHeight} />
+          {cargandoRanking && (
+            <div className="text-center py-4">
+              <div className="spinner-border text-success" role="status">
+                <span className="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          )}
+          {periodoRankingId && !cargandoRanking && raceCourses.length > 0 && (
+            <RaceLeaderboard data={raceCourses} height={leaderboardHeight} />
+          )}
+          {periodoRankingId && !cargandoRanking && raceCourses.length === 0 && (
+            <div className="small text-muted py-3">No hay cursos para el período seleccionado.</div>
+          )}
         </div>
 
         <div className="text-end small text-muted mt-2">ELASoft v.1.0</div>
       </div>
+      )}
 
       {/* Cursos por periodo académico */}
       {mostrarCursosPeriodo && (
