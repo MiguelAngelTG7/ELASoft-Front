@@ -24,6 +24,7 @@ const Director = () => {
   const [cursosAlumno, setCursosAlumno] = useState([]);
   const [alumnosPeriodo, setAlumnosPeriodo] = useState([]);
   const [alumnoSeleccionado, setAlumnoSeleccionado] = useState({ id: null, nombre: '' });
+  const [alumnoInfo, setAlumnoInfo] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem('access');
@@ -130,6 +131,7 @@ const Director = () => {
     setBusquedaAlumno("");
     setResultadosAlumnos([]);
     setCursosAlumno([]);
+    setAlumnoInfo(null);
   }, [periodoId]);
 
   // Filtrar alumnos en tiempo real
@@ -147,6 +149,7 @@ const Director = () => {
 
   // Al hacer click en un alumno, buscar sus cursos en el periodo
   const handleAlumnoClick = (alumnoId) => {
+    setAlumnoInfo(null);
     const alumno = resultadosAlumnos.find(a => a.id === alumnoId);
     const nombreAlumno = alumno ? alumno.nombre_completo : 'Estudiante';
     
@@ -845,10 +848,8 @@ const Director = () => {
                         <tr 
                           key={a.id} 
                           style={{ 
-                            cursor: 'pointer',
                             backgroundColor: '#f8f9fa'
-                          }} 
-                          onClick={() => handleAlumnoClick(a.id)}
+                          }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor = '#e9ecef';
                           }}
@@ -865,12 +866,49 @@ const Director = () => {
                             </div>
                           </td>
                           <td className="border-0 py-3">
-                            <small className="text-muted">Click para ver cursos</small>
+                            <div className="d-flex flex-wrap gap-2">
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-outline-success"
+                                onClick={() => handleAlumnoClick(a.id)}
+                              >
+                                Click para ver cursos
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-outline-primary"
+                                aria-expanded={alumnoInfo?.id === a.id}
+                                onClick={() => setAlumnoInfo(current => current?.id === a.id ? null : a)}
+                              >
+                                {alumnoInfo?.id === a.id ? 'Ocultar info' : 'Click para ver info'}
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                </div>
+              </div>
+            )}
+
+            {alumnoInfo && (
+              <div className="card mt-3 border-primary-subtle">
+                <div className="card-header bg-light fw-bold">
+                  Información del alumno: {alumnoInfo.nombre_completo}
+                </div>
+                <div className="card-body">
+                  <div className="row g-3">
+                    <div className="col-md-6 col-lg-4"><strong>Nombre:</strong> {alumnoInfo.nombre_completo || '-'}</div>
+                    <div className="col-md-6 col-lg-4"><strong>Fecha de nacimiento:</strong> {alumnoInfo.fecha_nacimiento || '-'}</div>
+                    <div className="col-md-6 col-lg-4"><strong>Edad:</strong> {alumnoInfo.edad ?? '-'}</div>
+                    <div className="col-md-6 col-lg-4"><strong>Email:</strong> {alumnoInfo.email || '-'}</div>
+                    <div className="col-md-6 col-lg-4"><strong>Teléfono:</strong> {alumnoInfo.telefono || '-'}</div>
+                    <div className="col-md-6 col-lg-4"><strong>Dirección:</strong> {alumnoInfo.direccion || '-'}</div>
+                    <div className="col-md-6 col-lg-4"><strong>NC (Nuevo Creyente):</strong> {alumnoInfo.nuevo_creyente ? 'Sí' : 'No'}</div>
+                    <div className="col-md-6 col-lg-4"><strong>Btz (Bautizado):</strong> {alumnoInfo.bautizado ? 'Sí' : 'No'}</div>
+                    <div className="col-md-6 col-lg-4"><strong>Min (Tiene Ministerio):</strong> {alumnoInfo.tiene_ministerio ? 'Sí' : 'No'}</div>
+                  </div>
                 </div>
               </div>
             )}
