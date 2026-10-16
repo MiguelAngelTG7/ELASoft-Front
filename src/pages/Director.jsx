@@ -7,8 +7,6 @@ import RaceLeaderboard from '../components/RaceLeaderboard';
 import '../components/RaceLeaderboard.css';
 
 const Director = () => {
-  const [data, setData] = useState([]);
-  const [cargando, setCargando] = useState(true);
   const [mostrarCursosPeriodo, setMostrarCursosPeriodo] = useState(false);
   const [periodos, setPeriodos] = useState([]);
   const [periodoId, setPeriodoId] = useState("");
@@ -40,20 +38,6 @@ const Director = () => {
     link.click();
     document.body.removeChild(link);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const resp = await axios.get('/director/dashboard/');
-        setData(resp.data.dashboard);
-      } catch (err) {
-        console.error('Error al cargar dashboard director:', err);
-      } finally {
-        setCargando(false);
-      }
-    };
-    fetchData();
-  }, []);
 
   useEffect(() => {
     if (mostrarCursosPeriodo || mostrarBuscadorAlumnos) {
@@ -417,9 +401,6 @@ const Director = () => {
 
   // altura dinámica para evitar solapamiento: mínimo 320, máximo 1200
   const leaderboardHeight = Math.max(320, Math.min(1200, (raceCourses.length || 6) * 56 + 80));
-
-  if (cargando) return <div className="text-center mt-5">Cargando información administrativa...</div>;
-  if (!data.length) return <div className="text-center mt-5 text-danger">No hay datos disponibles.</div>;
 
   const volver = () => navigate('/director');
 
