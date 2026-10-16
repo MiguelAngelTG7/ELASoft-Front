@@ -53,7 +53,16 @@ const ListaAlumnosDirector = () => {
 
     axios.get(`/director/clases-periodo/?periodo_id=${periodoId}`)
       .then(res => {
+        const ordenNivel = nivel => {
+          const coincidencia = (nivel || '').match(/^nivel\s*(\d+)/i);
+          if (coincidencia) {
+            const numero = Number(coincidencia[1]);
+            return numero <= 4 ? numero : numero + 1;
+          }
+          return (nivel || '').toLocaleLowerCase().includes('ministerial') ? 5 : 100;
+        };
         const clasesOrdenadas = [...(res.data || [])].sort((a, b) =>
+          ordenNivel(a.nivel) - ordenNivel(b.nivel) ||
           (a.nivel || '').localeCompare(b.nivel || '', 'es', { numeric: true, sensitivity: 'base' }) ||
           (a.nombre || '').localeCompare(b.nombre || '', 'es', { sensitivity: 'base' })
         );
