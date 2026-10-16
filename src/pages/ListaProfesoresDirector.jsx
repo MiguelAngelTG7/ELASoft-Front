@@ -4,6 +4,11 @@ import React, { useEffect, useState } from "react";
 import { getPeriodosAcademicos, getProfesoresPorPeriodo } from "../services/api";
 import { useNavigate } from 'react-router-dom';
 
+const obtenerOrdenSemestre = (nombre = '') => {
+  const semestre = nombre.match(/\b(III|II|I)\b/i)?.[1]?.toUpperCase();
+  return { I: 1, II: 2, III: 3 }[semestre] || 0;
+};
+
 const ListaProfesoresDirector = () => {
   const [periodos, setPeriodos] = useState([]);
   const [periodoId, setPeriodoId] = useState("");
@@ -13,7 +18,16 @@ const ListaProfesoresDirector = () => {
   useEffect(() => {
     getPeriodosAcademicos()
       .then(data => {
-        setPeriodos(Array.isArray(data) ? data : []);
+        const periodosOrdenados = Array.isArray(data) ? [...data].sort((a, b) => {
+          const ordenAnio = Number(b.anio || 0) - Number(a.anio || 0);
+          if (ordenAnio !== 0) return ordenAnio;
+
+          const ordenSemestre = obtenerOrdenSemestre(b.nombre) - obtenerOrdenSemestre(a.nombre);
+          if (ordenSemestre !== 0) return ordenSemestre;
+
+          return String(b.fecha_inicio || '').localeCompare(String(a.fecha_inicio || ''));
+        }) : [];
+        setPeriodos(periodosOrdenados);
       })
       .catch(() => setPeriodos([]));
   }, []);
