@@ -201,7 +201,6 @@ const ListaAlumnosDirector = () => {
             <th>Edad</th>
             <th>Teléfono</th>
             <th>Dirección</th>
-            <th>Sim</th>
             <th>NC</th>
             <th>Btz</th>
             <th>Min</th>
@@ -215,7 +214,6 @@ const ListaAlumnosDirector = () => {
               <td>{a.edad || '-'}</td>
               <td>{a.telefono}</td>
               <td>{a.direccion}</td>
-              <td>{a.interesado ? '✓' : ''}</td>
               <td>{a.nuevo_creyente ? '✓' : ''}</td>
               <td>{a.bautizado ? '✓' : ''}</td>
               <td>{a.tiene_ministerio ? '✓' : ''}</td>
@@ -224,7 +222,7 @@ const ListaAlumnosDirector = () => {
         </tbody>
       </table>}
       {busquedaRealizada && alumnos.length > 0 && (
-        <small>Sim = Simpatizante, NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small>
+        <small>NC = Nuevo Creyente, Btz = Bautizado, Min = Con Ministerio</small>
       )}
 
       <div className="text-center mt-4">
