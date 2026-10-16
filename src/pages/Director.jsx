@@ -580,8 +580,8 @@ const Director = () => {
               >
                 <div className="d-flex align-items-center justify-content-between">
                   <div>
-                    <h5 className="fw-bold mb-1 text-white">Lista de Maestros</h5>
-                    <small className="text-white-50">Ver todos los maestros por ciclo</small>
+                    <h5 className="fw-bold mb-1 text-white">Lista de Profesores</h5>
+                    <small className="text-white-50">Ver todos los profesores por ciclo</small>
                   </div>
                   <div className="bg-white bg-opacity-20 rounded-circle p-2">
                     <i className="fas fa-chalkboard-teacher text-success fa-lg"></i>

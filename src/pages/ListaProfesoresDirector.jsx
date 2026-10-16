@@ -13,12 +13,7 @@ const ListaProfesoresDirector = () => {
   useEffect(() => {
     getPeriodosAcademicos()
       .then(data => {
-        console.log("Periodos recibidos:", data); // <-- Agrega este log
-        // Ordenar periodos de A a Z por nombre
-        const periodosOrdenados = Array.isArray(data) ? 
-          data.sort((a, b) => (a.nombre || '').localeCompare(b.nombre || '', 'es', { sensitivity: 'base' })) : 
-          [];
-        setPeriodos(periodosOrdenados);
+        setPeriodos(Array.isArray(data) ? data : []);
       })
       .catch(() => setPeriodos([]));
   }, []);
