@@ -196,6 +196,7 @@ const ListaAlumnosDirector = () => {
       {busquedaRealizada && alumnos.length > 0 && <table className="table table-bordered table-hover">
         <thead className="table-light">
           <tr>
+            <th>N°</th>
             <th>Nombre</th>
             <th>Email</th>
             <th>Edad</th>
@@ -207,8 +208,9 @@ const ListaAlumnosDirector = () => {
           </tr>
         </thead>
         <tbody>
-          {alumnos.map((a) => (
+          {alumnos.map((a, index) => (
             <tr key={a.id}>
+              <td>{index + 1}</td>
               <td>{a.nombre_completo}</td>
               <td>{a.email}</td>
               <td>{a.edad || '-'}</td>
