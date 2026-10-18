@@ -89,6 +89,7 @@ const ListaProfesoresDirector = () => {
         <table className="table table-bordered">
           <thead className="table-light">
             <tr>
+              <th>N°</th>
               <th>Nombre</th>
               <th>Cursos</th>
               <th>Email</th>
@@ -97,8 +98,9 @@ const ListaProfesoresDirector = () => {
             </tr>
           </thead>
           <tbody>
-            {profesores.map((profesor) => (
+            {profesores.map((profesor, index) => (
               <tr key={profesor.id}>
+                <td>{index + 1}</td>
                 <td>{profesor.nombre_completo}</td>
                 <td>
                   {profesor.cursos && profesor.cursos.length > 0
