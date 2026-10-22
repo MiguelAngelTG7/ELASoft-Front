@@ -11,9 +11,9 @@ const Footer = () => {
           <img
             src={logoEkklesia}
             alt="Ekklesia Systems Logo"
-            style={{ height: '40px', marginBottom: '5px' }}
+            style={{ height: '70px', marginBottom: '5px' }}
           />
-          <small className="text-muted">Ekklesia Systems</small>
+          <small className="text-muted">Gospel | Community | Mission</small>
         </div>
       </div>
     </footer>
