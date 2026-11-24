@@ -311,6 +311,12 @@ const Director = () => {
               padding: 3px 6px;
               border-radius: 3px;
             }
+            .pendiente {
+              color: #856404;
+              background-color: #fff3cd;
+              padding: 3px 6px;
+              border-radius: 3px;
+            }
             @media print {
               body {
                 margin: 0;
@@ -354,7 +360,17 @@ const Director = () => {
               <tbody>
                 ${cursosAlumno.map((curso, index) => {
                   const promedio = parseFloat(curso.promedio) || 0;
-                  const aprobado = curso.aprobado ?? (promedio >= 14);
+                  const estado = curso.estado || (curso.aprobado ? 'Aprobado' : 'Pendiente');
+                  const claseEstado = estado === 'Aprobado'
+                    ? 'aprobado'
+                    : estado === 'Desaprobado'
+                      ? 'desaprobado'
+                      : 'pendiente';
+                  const textoEstado = estado === 'Aprobado'
+                    ? '✓ APROBADO'
+                    : estado === 'Desaprobado'
+                      ? '✗ DESAPROBADO'
+                      : '◷ PENDIENTE';
                   return `
                     <tr>
                       <td>${index + 1}</td>
@@ -363,7 +379,7 @@ const Director = () => {
                       <td>${curso.periodo || 'N/A'}</td>
                       <td>${promedio.toFixed(2)}</td>
                       <td>${Array.isArray(curso.horarios) ? curso.horarios.join(', ') : 'N/A'}</td>
-                      <td><strong class="${aprobado ? 'aprobado' : 'desaprobado'}">${aprobado ? '✓ APROBADO' : '✗ DESAPROBADO'}</strong></td>
+                      <td><strong class="${claseEstado}">${textoEstado}</strong></td>
                     </tr>
                   `;
                 }).join('')}
@@ -1015,7 +1031,17 @@ const Director = () => {
                 <div className="row g-3">
                   {cursosAlumno.map(c => {
                     const promedio = parseFloat(c.promedio) || 0;
-                    const aprobado = c.aprobado ?? (promedio >= 14);
+                    const estado = c.estado || (c.aprobado ? 'Aprobado' : 'Pendiente');
+                    const badgeClass = estado === 'Aprobado'
+                      ? 'bg-success'
+                      : estado === 'Desaprobado'
+                        ? 'bg-danger'
+                        : 'bg-warning text-dark';
+                    const textoEstado = estado === 'Aprobado'
+                      ? '✓ Aprobado'
+                      : estado === 'Desaprobado'
+                        ? '✗ Desaprobado'
+                        : '◷ Pendiente';
                     
                     return (
                       <div className="col-md-6" key={c.id}>
@@ -1023,8 +1049,8 @@ const Director = () => {
                           <div className="card-body p-3">
                             <div className="d-flex justify-content-between align-items-start mb-2">
                               <h6 className="fw-bold text-dark mb-0">{c.nombre}</h6>
-                              <span className={`badge ${aprobado ? 'bg-success' : 'bg-danger'} ms-2`} style={{ whiteSpace: 'nowrap' }}>
-                                {aprobado ? '✓ Aprobado' : '✗ Desaprobado'}
+                              <span className={`badge ${badgeClass} ms-2`} style={{ whiteSpace: 'nowrap' }}>
+                                {textoEstado}
                               </span>
                             </div>
                             <div className="d-flex align-items-center mb-2">
